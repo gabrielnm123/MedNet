@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Paciente, Acompanhante
+from core.models import Bloco, Enfermaria, Leito, Paciente, Acompanhante
 # Register your models here.
 
 class PacienteAdmin(admin.ModelAdmin):
@@ -10,5 +10,8 @@ class AcompanhanteAdmin(admin.ModelAdmin):
     list_display = ('paciente', 'acompanhante', 'data_registro_acompanhante', 'usuario')
     list_filter = ('paciente', 'acompanhante', 'data_registro_acompanhante', 'usuario')
 
+admin.site.register(Bloco)
+admin.site.register(Enfermaria)
+admin.site.register(Leito)
 admin.site.register(Paciente, PacienteAdmin)
 admin.site.register(Acompanhante, AcompanhanteAdmin)
