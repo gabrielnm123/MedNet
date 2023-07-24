@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "core"
+    "core",
+    "smart_selects" # adicionar app da biblioteca smart_selects
 ]
 
 MIDDLEWARE = [
