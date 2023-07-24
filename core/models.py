@@ -1,37 +1,37 @@
 from django.db import models
 from django.contrib.auth.models import User
-from smart_selects.db_fields import ChainedForeignKey
+from smart_selects.db_fields import ChainedForeignKey # smart_selects para criar campos de seleção encadeados que dependem uns dos outros
 
 # Create your models here.
 
 class Bloco(models.Model):
-    nome = models.CharField(max_length=100)
+    bloco = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'bloco'
 
     def __str__(self):
-        return self.nome
+        return self.bloco
 
 class Enfermaria(models.Model):
     bloco = models.ForeignKey(Bloco, on_delete=models.CASCADE)
-    numero = models.IntegerField() # Este é um campo para armazenar valores inteiros.
+    enfermaria = models.CharField(max_length=100) # Este é um campo para armazenar valores inteiros.
 
     class Meta:
         db_table = 'enfermaria'
 
     def __str__(self):
-        return f"Enfermaria {self.numero} - Bloco {self.bloco}"
+        return self.enfermaria
 
 class Leito(models.Model):
     enfermaria = models.ForeignKey(Enfermaria, on_delete=models.CASCADE)
-    numero = models.IntegerField()
+    leito = models.CharField(max_length=100)
 
     class Meta:
         db_table = 'leito'
 
     def __str__(self):
-        return f"Leito {self.numero} - Enfermaria {self.enfermaria}"
+        return self.leito
 
 class Paciente(models.Model):
     paciente = models.CharField(
