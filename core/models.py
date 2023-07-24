@@ -49,7 +49,8 @@ class Paciente(models.Model):
         chained_model_field="bloco", # chained_model_field: Este é o nome do campo no modelo relacionado que corresponde ao campo especificado em chained_field. Aqui o modelo relacionado para o campo enfermaria é Enfermaria, e o campo correspondente no modelo Enfermaria é bloco, então o valor de chained_model_field é "bloco". O modelo relacionado para o campo leito é Leito, e o campo correspondente no modelo Leito é enfermaria, então o valor de chained_model_field é "enfermaria".
         show_all=False, # show_all: Se este parâmetro for definido como True, todas as opções disponíveis serão mostradas no campo de seleção, independentemente da seleção do usuário no campo especificado em chained_field. Se for definido como False, apenas as opções relevantes serão mostradas com base na seleção do usuário.
         auto_choose=True, # auto_choose: Se este parâmetro for definido como True e houver apenas uma opção disponível, essa opção será selecionada automaticamente.
-        sort=True)
+        sort=True #  Quando sort=True, as opções serão apresentadas em ordem alfabética, facilitando a visualização e seleção para o usuário. Se sort=False, as opções serão exibidas na ordem em que foram cadastradas no banco de dados, sem qualquer ordenação específica.
+        )
     leito = ChainedForeignKey(
         Leito,
         chained_field="enfermaria",
@@ -70,6 +71,11 @@ class Paciente(models.Model):
     class Meta: # pra mudar o nome da tabale pra paciente, se não ia ser core_paciente -- cuidado caso faça migrate tem que desfazer, por conta do nome dele que muda
         db_table = 'paciente'
 
+    def save(self, *args, **kwargs):
+        # Transforma o nome do paciente em letras maiúsculas antes de salvar
+        self.paciente = self.paciente.upper()
+        super(Paciente, self).save(*args, **kwargs)    
+    
     def __str__(self) -> str: # aparece o nome do paciente em vez de Internacao object(1)
         return self.paciente
 
@@ -82,6 +88,10 @@ class Acompanhante(models.Model):
 
     class Meta:
         db_table = 'acompanhante'
+
+    def save(self, *args, **kwargs):
+        self.acompanhante = self.acompanhante.upper()
+        super(Acompanhante, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.acompanhante

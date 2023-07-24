@@ -16,8 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from core import views
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("chaining/", include("smart_selects.urls")) # pra funcionar a biblioteca smart_selects
+    path("chaining/", include("smart_selects.urls")), # pra funcionar a biblioteca smart_selects
+    path('internacao/', views.internacao),
+    path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a agenda
+    path('login/', views.login_user), # criando a parte de login
+    path('login/submit', views.submit_login), # tem que tirar a barra do final se não da erro quando for fazer o post e get
+    path('logout/', views.logout_user),
 ]
