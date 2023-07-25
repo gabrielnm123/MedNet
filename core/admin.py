@@ -1,11 +1,45 @@
 from django.contrib import admin
+from django.http import HttpResponse
 from core.models import *
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import gettext_lazy as _
+from dal import autocomplete
+from django import forms
+import pandas as pd
+from django.utils.timezone import make_naive
 
 # Register your models here.
 
+def exportar_acompanhantes_para_excel(modeladmin, request, queryset):
+    data = {
+        'PACIENTE': [],
+        'ACOMPANHANTE': [],
+        'BLOCO': [],
+        'ENFERMARIA': [],
+        'LEITO': [],
+        'DATA DE REGISTRO DO ACOMPANHANTE': [],
+        'USUÁRIO': [],
+    }
+
+    for acompanhante in queryset:
+        data['PACIENTE'].append(acompanhante.paciente.paciente)
+        data['ACOMPANHANTE'].append(acompanhante.acompanhante)
+        data['BLOCO'].append(acompanhante.paciente.bloco.bloco)
+        data['ENFERMARIA'].append(acompanhante.paciente.enfermaria.enfermaria)
+        data['LEITO'].append(acompanhante.paciente.leito.leito)
+        data['DATA DE REGISTRO DO ACOMPANHANTE'].append(make_naive(acompanhante.data_registro_acompanhante))
+        data['USUÁRIO'].append(acompanhante.usuario.username)
+
+    df = pd.DataFrame(data)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=acompanhantes.xlsx'
+    df.to_excel(response, index=False)
+    return response
+
+exportar_acompanhantes_para_excel.short_description = "Exportar para Excel"
+
 class PacienteAdmin(admin.ModelAdmin):
+    search_fields = ['paciente']
     list_display = ('paciente', 'data_registro_paciente', 'bloco', 'enfermaria', 'leito','usuario') # pra aparecer no resgistro do paciente logo de cara
     list_filter = ('paciente', 'data_registro_paciente', 'bloco', 'usuario') # pra filtrar
 
@@ -21,9 +55,52 @@ class BlocoFilter(SimpleListFilter):
         if self.value():
             return queryset.filter(paciente__bloco__bloco=self.value())
 
+class AcompanhanteAdminForm(forms.ModelForm):
+    class Meta:
+        model = Acompanhante
+        fields = '__all__'
+        widgets = {
+            'paciente': autocomplete.ModelSelect2(url='paciente-autocomplete')
+        }
+
+class VisitanteAdminForm(forms.ModelForm):
+    class Meta:
+        model = Visitante
+        fields = '__all__'
+        widgets = {
+            'paciente': autocomplete.ModelSelect2(url='paciente-autocomplete')
+        }
+
 class AcompanhanteAdmin(admin.ModelAdmin):
+    search_fields = ['paciente__paciente', 'acompanhante']
+    form = AcompanhanteAdminForm
     list_display = ('paciente', 'acompanhante', 'get_bloco', 'get_enfermaria', 'get_leito', 'data_registro_acompanhante', 'usuario')
-    list_filter = ('data_registro_acompanhante', 'paciente', 'acompanhante', BlocoFilter, 'usuario') # usuario não esta sendo filtrado
+    list_filter = ('data_registro_acompanhante', BlocoFilter, 'usuario') # usuario não esta sendo filtrado
+
+    def get_bloco(self, obj):
+        return obj.paciente.bloco.bloco
+
+    def get_enfermaria(self, obj):
+        return obj.paciente.enfermaria.enfermaria
+
+    def get_leito(self, obj):
+        return obj.paciente.leito.leito
+
+    get_bloco.admin_order_field = 'paciente__bloco__bloco'
+    get_bloco.short_description = 'Bloco'
+
+    get_enfermaria.admin_order_field = 'paciente__enfermaria__enfermaria'
+    get_enfermaria.short_description = 'Enfermaria'
+
+    get_leito.admin_order_field = 'paciente__leito__leito'
+    get_leito.short_description = 'Leito'
+    actions = [exportar_acompanhantes_para_excel]
+    
+class VisitanteAdmin(admin.ModelAdmin):
+    search_fields = ['paciente__paciente', 'vizitante']
+    form = VisitanteAdminForm
+    list_display = ('paciente', 'visitante', 'get_bloco', 'get_enfermaria', 'get_leito', 'data_registro_visitante', 'usuario')
+    list_filter = ('data_registro_visitante', BlocoFilter, 'usuario') # usuario não esta sendo filtrado
 
     def get_bloco(self, obj):
         return obj.paciente.bloco.bloco
@@ -43,31 +120,6 @@ class AcompanhanteAdmin(admin.ModelAdmin):
     get_leito.admin_order_field = 'paciente__leito__leito'
     get_leito.short_description = 'Leito'
 
-class VizitanteAdmin(admin.ModelAdmin):
-    list_display = ('paciente', 'vizitante', 'get_bloco', 'get_enfermaria', 'get_leito', 'data_registro_vizitante', 'usuario')
-    list_filter = ('data_registro_vizitante', 'paciente', 'vizitante', BlocoFilter, 'usuario') # usuario não esta sendo filtrado
-
-    def get_bloco(self, obj):
-        return obj.paciente.bloco.bloco
-
-    def get_enfermaria(self, obj):
-        return obj.paciente.enfermaria.enfermaria
-
-    def get_leito(self, obj):
-        return obj.paciente.leito.leito
-
-    get_bloco.admin_order_field = 'paciente__bloco__bloco'
-    get_bloco.short_description = 'Bloco'
-
-    get_enfermaria.admin_order_field = 'paciente__enfermaria__enfermaria'
-    get_enfermaria.short_description = 'Enfermaria'
-
-    get_leito.admin_order_field = 'paciente__leito__leito'
-    get_leito.short_description = 'Leito'
-
-admin.site.register(Bloco)
-admin.site.register(Enfermaria)
-admin.site.register(Leito)
 admin.site.register(Paciente, PacienteAdmin)
 admin.site.register(Acompanhante, AcompanhanteAdmin)
-admin.site.register(Vizitante, VizitanteAdmin)
+admin.site.register(Visitante, VisitanteAdmin)

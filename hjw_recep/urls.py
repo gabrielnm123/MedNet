@@ -18,13 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from core import views
 from django.views.generic import RedirectView
+from core.views import PacienteAutocomplete
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("chaining/", include("smart_selects.urls")), # pra funcionar a biblioteca smart_selects
     path('internacao/', views.internacao),
-    path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a agenda
+#    path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a agenda
+    path('', RedirectView.as_view(url='/admin/')),
     path('login/', views.login_user), # criando a parte de login
     path('login/submit', views.submit_login), # tem que tirar a barra do final se não da erro quando for fazer o post e get
     path('logout/', views.logout_user),
+    path('paciente-autocomplete/', PacienteAutocomplete.as_view(), name='paciente-autocomplete')
 ]

@@ -33,15 +33,20 @@ class Leito(models.Model):
     def __str__(self):
         return self.leito
 
+class Parentesco(models.Model):
+    parentesco = models.CharField(max_length=100, verbose_name='Parentesco')
+
+    class Meta:
+        db_table = 'parentesco'
+    
+    def __str__(self) -> str:
+        return self.parentesco
+
 class Paciente(models.Model):
     paciente = models.CharField(
         max_length=100, # 100 pixeos para o campo
         verbose_name='Paciente' # como ele é expressado
     )
-    # Observacao = models.TextField(
-    #     blank=True, # pode ser branco
-    #     null=True # pode ser nulo
-    # )
     bloco = models.ForeignKey(Bloco, on_delete=models.CASCADE)
     enfermaria = ChainedForeignKey(
         Enfermaria,
@@ -70,6 +75,7 @@ class Paciente(models.Model):
 
     class Meta: # pra mudar o nome da tabale pra paciente, se não ia ser core_paciente -- cuidado caso faça migrate tem que desfazer, por conta do nome dele que muda
         db_table = 'paciente'
+        unique_together = ['bloco', 'enfermaria', 'leito']
 
     def save(self, *args, **kwargs):
         # Transforma o nome do paciente em letras maiúsculas antes de salvar
@@ -80,11 +86,11 @@ class Paciente(models.Model):
         return self.paciente
 
 class Acompanhante(models.Model):
-    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
-    acompanhante = models.CharField(max_length=100, verbose_name='Acompanhante')
     data_registro_acompanhante = models.DateTimeField(
         auto_now=True, verbose_name='Data de Registro do Acompanhante')
-
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
+    acompanhante = models.CharField(max_length=100, verbose_name='Acompanhante')
+    parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
     contato1 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (1)')
     contato2 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (2)')
     observacao = models.TextField(blank=True, null=True)
@@ -100,22 +106,23 @@ class Acompanhante(models.Model):
     def __str__(self) -> str:
         return self.acompanhante
 
-class Vizitante(models.Model):
+class Visitante(models.Model):
+    data_registro_visitante = models.DateTimeField(
+        auto_now=True, verbose_name='Data de Registro do Visitante')
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
-    vizitante = models.CharField(max_length=100, verbose_name='Vizitante')    
-    data_registro_vizitante = models.DateTimeField(
-        auto_now=True, verbose_name='Data de Registro do Vizitante')
+    visitante = models.CharField(max_length=100, verbose_name='Visitante')    
+    parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
     contato1 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (1)')
     contato2 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (2)')
     observacao = models.TextField(blank=True, null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
 
     class Meta:
-        db_table = 'vizitante'
+        db_table = 'visitante'
 
     def save(self, *args, **kwargs):
-        self.vizitante = self.vizitante.upper()
-        super(Vizitante, self).save(*args, **kwargs)
+        self.visitante = self.visitante.upper()
+        super(Visitante, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return self.vizitante
+        return self.visitante

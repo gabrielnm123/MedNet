@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from dal import autocomplete
+from core.models import Paciente
 
 # Create your views here.
 
@@ -28,3 +30,10 @@ def logout_user(request):
 @login_required(login_url='/login/')
 def internacao(request):
     return render(request, 'internacao.html')
+
+class PacienteAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Paciente.objects.all()
+        if self.q:
+            qs = qs.filter(paciente__icontains=self.q)  # Corrigindo o filtro para o campo 'paciente'
+        return qs
