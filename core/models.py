@@ -101,6 +101,7 @@ class Acompanhante(models.Model):
 
     def save(self, *args, **kwargs):
         self.acompanhante = self.acompanhante.upper()
+        self.observacao = self.observacao.upper()
         super(Acompanhante, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
@@ -122,6 +123,7 @@ class Visitante(models.Model):
 
     def save(self, *args, **kwargs):
         self.visitante = self.visitante.upper()
+        self.observacao = self.observacao.upper()
         super(Visitante, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
