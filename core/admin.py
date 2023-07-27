@@ -38,6 +38,34 @@ def exportar_acompanhantes_para_excel(modeladmin, request, queryset):
 
 exportar_acompanhantes_para_excel.short_description = "Exportar para Excel"
 
+def exportar_visitantes_para_excel(modeladmin, request, queryset):
+    data = {
+        'PACIENTE': [],
+        'VISITANTE': [],
+        'BLOCO': [],
+        'ENFERMARIA': [],
+        'LEITO': [],
+        'DATA DE REGISTRO DO ACOMPANHANTE': [],
+        'USUÁRIO': [],
+    }
+
+    for visitante in queryset:
+        data['PACIENTE'].append(visitante.paciente.paciente)
+        data['ACOMPANHANTE'].append(visitante.visitante)
+        data['BLOCO'].append(visitante.paciente.bloco.bloco)
+        data['ENFERMARIA'].append(visitante.paciente.enfermaria.enfermaria)
+        data['LEITO'].append(visitante.paciente.leito.leito)
+        data['DATA DE REGISTRO DO ACOMPANHANTE'].append(make_naive(visitante.data_registro_acompanhante))
+        data['USUÁRIO'].append(visitante.usuario.username)
+
+    df = pd.DataFrame(data)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=visitantes.xlsx'
+    df.to_excel(response, index=False)
+    return response
+
+exportar_visitantes_para_excel.short_description = "Exportar para Excel"
+
 class PacienteAdmin(admin.ModelAdmin):
     search_fields = ['paciente']
     list_display = ('paciente', 'data_registro_paciente', 'bloco', 'enfermaria', 'leito','usuario') # pra aparecer no resgistro do paciente logo de cara
@@ -72,8 +100,8 @@ class VisitanteAdminForm(forms.ModelForm):
         }
 
 class AcompanhanteAdmin(admin.ModelAdmin):
-    search_fields = ['paciente__paciente', 'acompanhante']
     form = AcompanhanteAdminForm
+    search_fields = ['paciente__paciente', 'acompanhante']
     list_display = ('paciente', 'acompanhante', 'get_bloco', 'get_enfermaria', 'get_leito', 'data_registro_acompanhante', 'usuario')
     list_filter = ('data_registro_acompanhante', BlocoFilter, 'usuario') # usuario não esta sendo filtrado
 
@@ -94,11 +122,12 @@ class AcompanhanteAdmin(admin.ModelAdmin):
 
     get_leito.admin_order_field = 'paciente__leito__leito'
     get_leito.short_description = 'Leito'
+
     actions = [exportar_acompanhantes_para_excel]
     
 class VisitanteAdmin(admin.ModelAdmin):
-    search_fields = ['paciente__paciente', 'vizitante']
     form = VisitanteAdminForm
+    search_fields = ['paciente__paciente', 'vizitante']
     list_display = ('paciente', 'visitante', 'get_bloco', 'get_enfermaria', 'get_leito', 'data_registro_visitante', 'usuario')
     list_filter = ('data_registro_visitante', BlocoFilter, 'usuario') # usuario não esta sendo filtrado
 
@@ -119,6 +148,8 @@ class VisitanteAdmin(admin.ModelAdmin):
 
     get_leito.admin_order_field = 'paciente__leito__leito'
     get_leito.short_description = 'Leito'
+    
+    actions = [exportar_visitantes_para_excel]
 
 admin.site.register(Paciente, PacienteAdmin)
 admin.site.register(Acompanhante, AcompanhanteAdmin)
