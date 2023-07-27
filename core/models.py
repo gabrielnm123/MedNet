@@ -93,7 +93,7 @@ class Acompanhante(models.Model):
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
     contato1 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (1)')
     contato2 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (2)')
-    observacao = models.TextField(blank=True, null=True)
+    documento = models.CharField(max_length=100, blank=True, null=True, verbose_name='Documento')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
 
     class Meta:
@@ -101,7 +101,7 @@ class Acompanhante(models.Model):
 
     def save(self, *args, **kwargs):
         self.acompanhante = self.acompanhante.upper()
-        self.observacao = self.observacao.upper()
+        self.documento = self.documento.upper()
         super(Acompanhante, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
@@ -115,7 +115,7 @@ class Visitante(models.Model):
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
     contato1 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (1)')
     contato2 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (2)')
-    observacao = models.TextField(blank=True, null=True)
+    documento = models.CharField(max_length=100, blank=True, null=True, verbose_name='Documento')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
 
     class Meta:
@@ -123,7 +123,7 @@ class Visitante(models.Model):
 
     def save(self, *args, **kwargs):
         self.visitante = self.visitante.upper()
-        self.observacao = self.observacao.upper()
+        self.documento = self.documento.upper()
         super(Visitante, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
