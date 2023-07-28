@@ -1,0 +1,1 @@
+web: gunicorn hjw_recep.wsgi --log-file -
