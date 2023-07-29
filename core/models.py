@@ -91,8 +91,6 @@ class Acompanhante(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
     acompanhante = models.CharField(max_length=100, verbose_name='Acompanhante')
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
-    contato1 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (1)')
-    contato2 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (2)')
     documento = models.CharField(max_length=100, blank=True, null=True, verbose_name='Documento')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
 
@@ -113,8 +111,6 @@ class Visitante(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
     visitante = models.CharField(max_length=100, verbose_name='Visitante')    
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
-    contato1 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (1)')
-    contato2 = models.CharField(max_length=11, blank=True, null=True, verbose_name='Contado (2)')
     documento = models.CharField(max_length=100, blank=True, null=True, verbose_name='Documento')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
 

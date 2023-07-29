@@ -102,7 +102,7 @@ class VisitanteAdminForm(forms.ModelForm):
 class AcompanhanteAdmin(admin.ModelAdmin):
     form = AcompanhanteAdminForm
     search_fields = ['paciente__paciente', 'acompanhante']
-    list_display = ('paciente', 'acompanhante', 'get_bloco', 'get_enfermaria', 'get_leito', 'data_registro_acompanhante', 'documento', 'usuario')
+    list_display = ('paciente', 'acompanhante', 'parentesco', 'get_bloco', 'get_enfermaria', 'get_leito', 'data_registro_acompanhante', 'documento', 'usuario')
     list_filter = ('data_registro_acompanhante', BlocoFilter, 'usuario') # usuario não esta sendo filtrado
 
     def get_bloco(self, obj):
@@ -128,7 +128,7 @@ class AcompanhanteAdmin(admin.ModelAdmin):
 class VisitanteAdmin(admin.ModelAdmin):
     form = VisitanteAdminForm
     search_fields = ['paciente__paciente', 'vizitante']
-    list_display = ('paciente', 'visitante', 'get_bloco', 'get_enfermaria', 'get_leito', 'data_registro_visitante', 'documento', 'usuario')
+    list_display = ('paciente', 'visitante', 'parentesco', 'get_bloco', 'get_enfermaria', 'get_leito', 'data_registro_visitante', 'documento', 'usuario')
     list_filter = ('data_registro_visitante', BlocoFilter, 'usuario') # usuario não esta sendo filtrado
 
     def get_bloco(self, obj):
