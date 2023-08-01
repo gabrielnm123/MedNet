@@ -13,11 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from subprocess import run
-
-run('sudo apt update && sudo apt install -y git-crypt gnupg')
-run('echo $GIT_CRYPT_KEY > old_git_crypt_key && base64 --decode old_git_crypt_key > git_crypt_key', shell=True)
-run('git-crypt unlock git_crypt_key && rm old_git_crypt_key', shell=True)
 
 load_dotenv()
 
