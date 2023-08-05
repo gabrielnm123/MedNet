@@ -28,6 +28,7 @@ SECRET_KEY = "django-insecure-s3@^1rn&cwt+%(%r!)a*6*28v9x3jk@ieyc7f*f$abz=300s*e
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = 'RENDER' not in os.environ
+# DEBUG = True
 
 # https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -124,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "America/Sao_Paulo"
+TIME_ZONE = "America/Fortaleza"
 
 USE_I18N = True
 

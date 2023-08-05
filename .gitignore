@@ -3,4 +3,5 @@ core/__pycache__
 core/migrations/__pycache__
 hjw_recep/__pycache__
 .git-crypt
-privat_key.asc
+private_key.asc
+.env
