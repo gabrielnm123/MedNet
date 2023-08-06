@@ -6,4 +6,3 @@ hjw_recep/__pycache__
 private_key.asc
 .env
 backup_hjw_recep.sql
-.env.gpg
