@@ -2,7 +2,6 @@
 core/__pycache__
 core/migrations/__pycache__
 hjw_recep/__pycache__
-.git-crypt
 private_key.asc
 .env
 backup_hjw_recep.sql
