@@ -45,17 +45,17 @@ def exportar_visitantes_para_excel(modeladmin, request, queryset):
         'BLOCO': [],
         'ENFERMARIA': [],
         'LEITO': [],
-        'DATA DE REGISTRO DO ACOMPANHANTE': [],
+        'DATA DE REGISTRO DO VISITANTE': [],
         'USUÁRIO': [],
     }
 
     for visitante in queryset:
         data['PACIENTE'].append(visitante.paciente.paciente)
-        data['ACOMPANHANTE'].append(visitante.visitante)
+        data['VISITANTE'].append(visitante.visitante)
         data['BLOCO'].append(visitante.paciente.bloco.bloco)
         data['ENFERMARIA'].append(visitante.paciente.enfermaria.enfermaria)
         data['LEITO'].append(visitante.paciente.leito.leito)
-        data['DATA DE REGISTRO DO ACOMPANHANTE'].append(make_naive(visitante.data_registro_acompanhante))
+        data['DATA DE REGISTRO DO VISITANTE'].append(make_naive(visitante.data_registro_visitante))
         data['USUÁRIO'].append(visitante.usuario.username)
 
     df = pd.DataFrame(data)
