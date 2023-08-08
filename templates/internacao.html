@@ -7,5 +7,17 @@
 </head>
 <body>
   <h1>Internação</h1>
+  <!-- Formulário de pesquisa -->
+  <form method="GET" action="{% url 'internacao' %}">
+    <input type="text" name="search" placeholder="Buscar paciente...">
+    <button type="submit">Buscar</button>
+  </form>
+  <ul>
+    {% for paciente in pacientes %}
+    <li>
+      {{ paciente.paciente }} - {{ paciente.bloco }} - {{ paciente.enfermaria }} - {{ paciente.leito }}
+    </li>
+    {% endfor %}
+  </ul>
 </body>
 </html>

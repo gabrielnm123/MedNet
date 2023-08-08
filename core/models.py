@@ -63,6 +63,7 @@ class Paciente(models.Model):
         show_all=False,
         auto_choose=True,
         sort=True)
+    comunicado_interno = models.TextField(blank=True, null=True, verbose_name='C.I')
     usuario = models.ForeignKey( # para poder vincular a um usuario
         User,
         on_delete=models.CASCADE, # se apagar usuário todos os pacientes criados por esse usuario é apagado em cascata
@@ -80,6 +81,7 @@ class Paciente(models.Model):
     def save(self, *args, **kwargs):
         # Transforma o nome do paciente em letras maiúsculas antes de salvar
         self.paciente = self.paciente.upper()
+        self.comunicado_interno = self.comunicado_interno.upper()
         super(Paciente, self).save(*args, **kwargs)    
     
     def __str__(self) -> str: # aparece o nome do paciente em vez de Internacao object(1)
