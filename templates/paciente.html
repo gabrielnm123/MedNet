@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paciente</title>
+</head>
+<body>
+  <input type="number" name="id_paciente" value="{{paciente.id}}" hidden> <!-- dessa forma capitura o id do evento e hidden é pra ocultar -->
+  <h1>Detalhes do Paciente</h1>
+  <p>Nome: {{ paciente.paciente }}</p>
+  <p>Bloco: {{ paciente.bloco }}</p>
+  <p>Enfermaria: {{ paciente.enfermaria }}</p>
+  <p>Leito: {{ paciente.leito }}</p>
+  {% if paciente.comunicado_interno != None %}
+  <p>C.I: {{ paciente.comunicado_interno }}</p>
+  {% endif %}
+  <a href="acompanhante"><button>Acompanhante</button></a><a href="visitante"><button>Visitante</button></a>
+</body>
+</html>

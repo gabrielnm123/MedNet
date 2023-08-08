@@ -23,6 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("chaining/", include("smart_selects.urls")), # pra funcionar a biblioteca smart_selects
     path('internacao/', views.internacao, name='internacao'),
+    path('paciente/', views.paciente, name='paciente'),
     path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a internação
 #    path('', RedirectView.as_view(url='/admin/')),
     path('login/', views.login_user), # criando a parte de login

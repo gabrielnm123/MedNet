@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from dal import autocomplete
 from core.models import *
+from django.http.response import Http404, JsonResponse # http404 pra implicar esse erro, jsanresponse pra trabalhar com javascript
 
 # Create your views here.
 
@@ -37,6 +38,16 @@ def internacao(request):
         pacientes = None
 
     return render(request, 'internacao.html', {'pacientes': pacientes})
+
+def paciente(request):
+    id_paciente = request.GET.get('id')
+    dados = {}
+    if id_paciente:
+        try:
+            dados['paciente'] = Paciente.objects.get(id=id_paciente)
+        except Exception:
+            raise Http404()
+    return render(request, 'paciente.html', dados)
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
