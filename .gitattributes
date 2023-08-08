@@ -1,2 +1,3 @@
 .env.gpg merge=ours
 hjw_recep/settings.py merge=ours
+.gitattributes merge=ours
