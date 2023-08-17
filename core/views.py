@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from dal import autocomplete
 from core.models import *
-from django.http.response import Http404, JsonResponse # http404 pra implicar esse erro, jsanresponse pra trabalhar com javascript
+from django.http.response import Http404
 import json
 
 # Create your views here.
