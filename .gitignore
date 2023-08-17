@@ -6,3 +6,5 @@ private_key.asc
 .env
 backup_hjw_recep.sql
 .vscode
+backup_hjw_recep_dev.sql
+backup_hjw_recep_main.sql

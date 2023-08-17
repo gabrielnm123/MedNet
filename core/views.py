@@ -6,6 +6,7 @@ from django.contrib import messages
 from dal import autocomplete
 from core.models import *
 from django.http.response import Http404, JsonResponse # http404 pra implicar esse erro, jsanresponse pra trabalhar com javascript
+import json
 
 # Create your views here.
 
@@ -55,3 +56,7 @@ class PacienteAutocomplete(autocomplete.Select2QuerySetView):
         if self.q:
             qs = qs.filter(paciente__icontains=self.q)  # Corrigindo o filtro para o campo 'paciente'
         return qs
+
+def my_view(request):
+    return render(request, 'my_template.html')
+    

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meu Template</title>
+</head>
+<body>
+    <!-- Conteúdo do seu template aqui -->
+
+    <script>
+        // Função para obter o token CSRF do cookie
+        function getCSRFToken() {
+            const csrfCookie = document.cookie.match(/csrftoken=([^;]*)/);
+            return csrfCookie ? csrfCookie[1] : null;
+        }
+
+        // Seu código JavaScript aqui
+        const csrfToken = getCSRFToken();
+
+        fetch('https://cors-anywhere.herokuapp.com/http://172.16.201.60/sigis/public/internacao/internacao/imprimir-censo?usuario_id=&prontuario=&rae=&nome=&nascimento=&undefined=&mae=&acompanhante=&periodo=entrada&dataInicial=&dataFinal=&exibirFechados=0&saida=pagina&submit=Pesquisar&reset=Limpar&localizacao=&estadopaciente_id=0&endereco_municipio=Fortaleza&formaentrada_id=0&carater_id=0&origem=&operadormedicoprincipal_id=0&operadormedicoauxiliar_id=0')
+            .then(response => response.text())
+            .then(htmlContent => {
+                // Modifique o código conforme necessário para lidar com o conteúdo HTML
+                // Por exemplo, você pode querer exibir o HTML na página ou processá-lo de alguma forma
+
+                // Exemplo: exibir o conteúdo HTML em uma div com id "htmlContent"
+                document.getElementById('htmlContent').innerHTML = htmlContent;
+
+                // Enviar o conteúdo HTML para o servidor Django
+                fetch('/save_html/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': csrfToken,
+                    },
+                    body: `html_content=${encodeURIComponent(htmlContent)}`,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    console.error('Erro ao salvar HTML:', error);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao obter o HTML da URL externa:', error);
+            });
+    </script>
+</body>
+</html>
