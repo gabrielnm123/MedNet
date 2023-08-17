@@ -30,5 +30,4 @@ urlpatterns = [
     path('login/submit', views.submit_login), # tem que tirar a barra do final se não da erro quando for fazer o post e get
     path('logout/', views.logout_user),
     path('paciente-autocomplete/', views.PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
-    path('my_view/', views.my_view, name='my_view')
 ]
