@@ -45,7 +45,16 @@ class PacienteAdmin(admin.ModelAdmin):
     list_display = ('data_registro_paciente', 'paciente', 'clinica', 'leito') # pra aparecer no resgistro do paciente logo de cara
     list_filter = ('clinica')
 
+class VisitanteAdminForm(forms.ModelForm):
+    class Meta:
+        model = Visitante
+        fields = '__all__'
+        widgets = {
+            'paciente': autocomplete.ModelSelect2(url='paciente-autocomplete')
+        }
+
 class VisitanteAdmin(admin.ModelAdmin):
+    form = VisitanteAdminForm
     search_fields = ['paciente__paciente', 'visitante']
     list_display = ('data_registro_visitante','get_clinica', 'get_leito', 'paciente', 'visitante', 'parentesco', 'documento', 'operador')
     list_filter = ('data_registro_visitante', 'operador')
