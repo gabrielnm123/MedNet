@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     "core",
     "smart_selects", # adicionar app da biblioteca smart_selects
     'dal',
-    'dal_select2'
+    'dal_select2',
+    'rest_framework' # app django rest
 ]
 
 MIDDLEWARE = [
