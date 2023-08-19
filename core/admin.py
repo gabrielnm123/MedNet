@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponse
 from core.models import *
-from django.contrib.admin import SimpleListFilter
 from django.utils.translation import gettext_lazy as _
 from dal import autocomplete
 from django import forms
@@ -42,8 +41,8 @@ exportar_visitantes_para_excel.short_description = "Exportar para Excel"
 
 class PacienteAdmin(admin.ModelAdmin):
     search_fields = ['paciente']
-    list_display = ('data_registro_paciente', 'paciente', 'clinica', 'leito') # pra aparecer no resgistro do paciente logo de cara
-    list_filter = ('clinica')
+    list_display = ('paciente', 'data_registro_paciente', 'clinica', 'leito') # pra aparecer no resgistro do paciente logo de cara
+    list_filter = ('clinica',)
 
 class VisitanteAdminForm(forms.ModelForm):
     class Meta:
@@ -56,7 +55,7 @@ class VisitanteAdminForm(forms.ModelForm):
 class VisitanteAdmin(admin.ModelAdmin):
     form = VisitanteAdminForm
     search_fields = ['paciente__paciente', 'visitante']
-    list_display = ('data_registro_visitante','get_clinica', 'get_leito', 'paciente', 'visitante', 'parentesco', 'documento', 'operador')
+    list_display = ('paciente', 'data_registro_visitante','get_clinica', 'get_leito', 'visitante', 'parentesco', 'documento', 'operador')
     list_filter = ('data_registro_visitante', 'operador')
 
     def get_clinica(self, obj):
@@ -75,3 +74,4 @@ class VisitanteAdmin(admin.ModelAdmin):
 
 admin.site.register(Paciente, PacienteAdmin)
 admin.site.register(Visitante, VisitanteAdmin)
+admin.site.register(Parentesco)
