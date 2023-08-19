@@ -6,7 +6,7 @@ from django.contrib import messages
 from dal import autocomplete
 from core.models import *
 from django.http.response import Http404
-from rest_framework import viewsets
+from rest_framework import viewsets # fornece uma maneira conveniente de criar views que lidam com ações comuns em um modelo.
 from .serializers import PacienteSerializer
 
 # Create your views here.
@@ -58,6 +58,6 @@ class PacienteAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(paciente__icontains=self.q)  # Corrigindo o filtro para o campo 'paciente'
         return qs
 
-class PacienteViewSet(viewsets.ModelViewSet):
-    queryset = Paciente.objects.all()
-    serializer_class = PacienteSerializer
+class PacienteViewSet(viewsets.ModelViewSet): # classe será uma subclasse de ModelViewSet, que já possui funcionalidades predefinidas para lidar com operações CRUD (Create, Retrieve, Update, Delete) em um modelo.
+    queryset = Paciente.objects.all() # Define o queryset (conjunto de objetos do banco de dados) que será usado para a visualização. Neste caso, todos os objetos do modelo Paciente são recuperados.
+    serializer_class = PacienteSerializer # Define a classe de serializer que será usada para serializar e desserializar os objetos Paciente. O serializer é responsável por converter os objetos em dados JSON (ou outros formatos) e vice-versa.
