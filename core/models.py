@@ -9,6 +9,10 @@ class Parentesco(models.Model):
     class Meta:
         db_table = 'parentesco'
     
+    def save(self, *args, **kwargs):
+        self.parentesco = self.parentesco.upper().strip()
+        super(Parentesco, self).save(*args, *kwargs)
+    
     def __str__(self) -> str:
         return self.parentesco
 
@@ -28,7 +32,6 @@ class Paciente(models.Model):
 
     class Meta: # pra mudar o nome da tabale pra paciente, se não ia ser core_paciente -- cuidado caso faça migrate tem que desfazer, por conta do nome dele que muda
         db_table = 'paciente'
-        unique_together = ['bloco', 'clinica', 'leito']
 
     def save(self, *args, **kwargs):
         # Transforma o nome do paciente em letras maiúsculas antes de salvar
