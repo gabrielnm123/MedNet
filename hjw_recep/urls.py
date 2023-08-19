@@ -20,8 +20,9 @@ from core import views
 from django.views.generic import RedirectView
 from rest_framework import routers
 
+# configurando o rotiador
 router = routers.DefaultRouter()
-router.register(r'pacientes', views.PacienteViewSet)
+router.register(r'pacientes', views.PacienteViewSet) # egistra um ViewSet chamado PacienteViewSet para o endpoint 'pacientes' usando o método .register(). Isso cria automaticamente as URLs RESTful para as operações CRUD (Create, Read, Update, Delete) relacionadas aos pacientes
 
 urlpatterns = [
     path("admin/", admin.site.urls),
