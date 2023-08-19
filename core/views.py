@@ -6,6 +6,8 @@ from django.contrib import messages
 from dal import autocomplete
 from core.models import *
 from django.http.response import Http404
+from rest_framework import viewsets
+from .serializers import PacienteSerializer
 
 # Create your views here.
 
@@ -55,3 +57,7 @@ class PacienteAutocomplete(autocomplete.Select2QuerySetView):
         if self.q:
             qs = qs.filter(paciente__icontains=self.q)  # Corrigindo o filtro para o campo 'paciente'
         return qs
+
+class PacienteViewSet(viewsets.ModelViewSet):
+    queryset = Paciente.objects.all()
+    serializer_class = PacienteSerializer
