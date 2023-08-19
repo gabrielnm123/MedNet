@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from core import views
 from django.views.generic import RedirectView
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'pacientes', views.PacienteViewSet)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("chaining/", include("smart_selects.urls")), # pra funcionar a biblioteca smart_selects
     path('internacao/', views.internacao, name='internacao'),
     path('paciente/', views.paciente, name='paciente'),
     path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a internação
@@ -30,5 +33,5 @@ urlpatterns = [
     path('login/submit', views.submit_login), # tem que tirar a barra do final se não da erro quando for fazer o post e get
     path('logout/', views.logout_user),
     path('paciente-autocomplete/', views.PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
-    path('api-auth/', include('rest_framework.urls')) # visualizar a api
+    path('api/', include(router.urls)), # visualizar a api
 ]
