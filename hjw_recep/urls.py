@@ -22,7 +22,7 @@ from rest_framework import routers
 
 # configurando o rotiador
 router = routers.DefaultRouter()
-router.register(r'pacientes', views.PacienteViewSet) # egistra um ViewSet chamado PacienteViewSet para o endpoint 'pacientes' usando o método .register(). Isso cria automaticamente as URLs RESTful para as operações CRUD (Create, Read, Update, Delete) relacionadas aos pacientes
+router.register(r'pacientes', views.PacienteViewSet) # Registra um ViewSet chamado PacienteViewSet para o endpoint 'pacientes' usando o método .register(). Isso cria automaticamente as URLs RESTful para as operações CRUD (Create, Read, Update, Delete) relacionadas aos pacientes
 
 urlpatterns = [
     path("admin/", admin.site.urls),
