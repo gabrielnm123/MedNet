@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -50,7 +51,8 @@ INSTALLED_APPS = [
     "core",
     'dal',
     'dal_select2',
-    'rest_framework' # app django rest
+    'rest_framework', # app django rest
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +148,14 @@ if not DEBUG:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=365),  # Define o tempo de expiração do token para 1 ano
+    # ... outras configurações do rest_framework_simplejwt
+}

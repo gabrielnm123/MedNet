@@ -21,7 +21,7 @@ class Paciente(models.Model):
         max_length=100, # 100 pixeos para o campo
         verbose_name='Paciente' # como ele é expressado
     )
-    prontuario = models.AutoField(primary_key=True)
+    prontuario = models.IntegerField(primary_key=True)
     clinica = models.CharField(max_length=100, verbose_name='clinica')
     leito = models.CharField(max_length=100, verbose_name='leito')
     comunicado_interno = models.TextField(blank=True, null=True, verbose_name='C.I')

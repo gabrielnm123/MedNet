@@ -19,6 +19,7 @@ from django.urls import path, include
 from core import views
 from django.views.generic import RedirectView
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # configurando o rotiador
 router = routers.DefaultRouter()
@@ -35,4 +36,6 @@ urlpatterns = [
     path('logout/', views.logout_user),
     path('paciente-autocomplete/', views.PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
     path('api/', include(router.urls)), # visualizar a api
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
