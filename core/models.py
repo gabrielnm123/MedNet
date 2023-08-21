@@ -17,13 +17,13 @@ class Parentesco(models.Model):
         return self.parentesco
 
 class Paciente(models.Model):
+    prontuario = models.IntegerField(primary_key=True, verbose_name='Prontuário')
     paciente = models.CharField(
         max_length=100, # 100 pixeos para o campo
         verbose_name='Paciente' # como ele é expressado
     )
-    prontuario = models.IntegerField(primary_key=True)
-    clinica = models.CharField(max_length=100, verbose_name='clinica')
-    leito = models.CharField(max_length=100, verbose_name='leito')
+    clinica = models.CharField(max_length=100, verbose_name='Clínica')
+    leito = models.CharField(max_length=100, verbose_name='Leito')
     comunicado_interno = models.TextField(blank=True, null=True, verbose_name='C.I')
     data_registro_paciente = models.DateTimeField(
         auto_now=True, # auto_now=True, sempre coloca a hora atual
@@ -38,7 +38,11 @@ class Paciente(models.Model):
         self.paciente = self.paciente.upper().strip()
         self.clinica = self.clinica.upper().strip()
         self.leito = self.leito.upper().strip()
-        self.comunicado_interno = self.comunicado_interno.upper().strip()
+        if self.comunicado_interno != None:
+            if self.comunicado_interno.strip() == '':
+                self.comunicado_interno = None
+            else:
+                self.comunicado_interno = self.comunicado_interno.upper().strip()
         super(Paciente, self).save(*args, **kwargs)    
     
     def __str__(self) -> str: # aparece o nome do paciente em vez de Internacao object(1)
