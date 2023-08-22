@@ -41,7 +41,7 @@ exportar_visitantes_para_excel.short_description = "Exportar para Excel"
 
 class PacienteAdmin(admin.ModelAdmin):
     search_fields = ['paciente']
-    list_display = ('paciente', 'data_registro_paciente', 'clinica', 'leito') # pra aparecer no resgistro do paciente logo de cara
+    list_display = ('prontuario', 'paciente', 'data_registro_paciente', 'clinica', 'leito') # pra aparecer no resgistro do paciente logo de cara
     list_filter = ('clinica',)
 
 class VisitanteAdminForm(forms.ModelForm):
