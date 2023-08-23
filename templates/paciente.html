@@ -9,12 +9,11 @@
   <input type="number" name="id_paciente" value="{{paciente.id}}" hidden> <!-- dessa forma capitura o id do evento e hidden é pra ocultar -->
   <h1>Detalhes do Paciente</h1>
   <p>Nome: {{ paciente.paciente }}</p>
-  <p>Bloco: {{ paciente.bloco }}</p>
-  <p>Enfermaria: {{ paciente.enfermaria }}</p>
+  <p>Clínica: {{ paciente.clinica }}</p>
   <p>Leito: {{ paciente.leito }}</p>
   {% if paciente.comunicado_interno != None %}
   <p>C.I: {{ paciente.comunicado_interno }}</p>
   {% endif %}
-  <a href="acompanhante"><button>Acompanhante</button></a><a href="visitante"><button>Visitante</button></a>
+  </a><a href="visitante"><button>Visitante</button></a>
 </body>
 </html>

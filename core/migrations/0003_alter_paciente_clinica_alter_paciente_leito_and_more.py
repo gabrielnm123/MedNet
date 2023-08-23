@@ -4,26 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+
     dependencies = [
-        ("core", "0002_alter_paciente_prontuario"),
+        ('core', '0002_alter_paciente_prontuario'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name="paciente",
-            name="clinica",
-            field=models.CharField(max_length=100, verbose_name="Clinica"),
+            model_name='paciente',
+            name='clinica',
+            field=models.CharField(max_length=100, verbose_name='Clínica'),
         ),
         migrations.AlterField(
-            model_name="paciente",
-            name="leito",
-            field=models.CharField(max_length=100, verbose_name="Leito"),
+            model_name='paciente',
+            name='leito',
+            field=models.CharField(max_length=100, verbose_name='Leito'),
         ),
         migrations.AlterField(
-            model_name="paciente",
-            name="prontuario",
-            field=models.IntegerField(
-                primary_key=True, serialize=False, verbose_name="Prontuário"
-            ),
+            model_name='paciente',
+            name='prontuario',
+            field=models.IntegerField(primary_key=True, serialize=False, verbose_name='Prontuário'),
         ),
     ]
