@@ -37,10 +37,11 @@ def internacao(request):
     if search_term:
         pacientes = Paciente.objects.filter(nome__icontains=search_term)
     else:
-        pacientes = None
+        pacientes = Paciente.objects.all()
 
     return render(request, 'internacao.html', {'pacientes': pacientes})
 
+@login_required(login_url='/login/')
 def paciente(request):
     prontuario = request.GET.get('prontuario')
     dados = {}
@@ -50,6 +51,17 @@ def paciente(request):
         except Exception:
             raise Http404()
     return render(request, 'paciente.html', dados)
+
+@login_required(login_url='/login/')
+def visitante(request):
+    prontuario = request.GET.get('prontuario')
+    dados_paciente = {}
+    if prontuario:
+        try:
+            dados_paciente['paciente'] = Paciente.objects.get(prontuario=prontuario)
+        except Exception:
+            raise Http404()
+    return render(request, 'visitante.html', dados_paciente)
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):

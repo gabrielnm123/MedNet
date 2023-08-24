@@ -28,14 +28,15 @@ router.register(r'pacientes', views.PacienteViewSet) # Registra um ViewSet chama
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('internacao/', views.internacao, name='internacao'),
-    path('paciente/', views.paciente, name='paciente'),
+    path('internacao/paciente/', views.paciente, name='paciente'),
+    path('internacao/paciente/visitante/', views.visitante, name='visitante'),
     path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a internação
     # path('', RedirectView.as_view(url='/admin/')),
-    path('login/', views.login_user), # criando a parte de login
-    path('login/submit', views.submit_login), # tem que tirar a barra do final se não da erro quando for fazer o post e get
-    path('logout/', views.logout_user),
+    path('login/', views.login_user, name='login'), # criando a parte de login
+    path('login/submit', views.submit_login, name='submit_login'), # tem que tirar a barra do final se não da erro quando for fazer o post e get
+    path('logout/', views.logout_user, name='logout'),
     path('paciente-autocomplete/', views.PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
-    path('api/', include(router.urls)), # visualizar a api
+    path('api/', include(router.urls), name='api'), # visualizar a api
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

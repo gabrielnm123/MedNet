@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visitante</title>
+</head>
+<body>
+  <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
+  <h1>Registro de Visitante</h1>
+  <h2>Detalhes do Paciente</h2>
+  <p>Nome: {{ paciente.nome }}</p>
+  <p>Clínica: {{ paciente.clinica }}</p>
+  <p>Leito: {{ paciente.leito }}</p>
+</body>
+</html>

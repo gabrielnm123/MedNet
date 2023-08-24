@@ -47,7 +47,7 @@ class Paciente(models.Model):
 
 class Visitante(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
-    nome = models.CharField(max_length=100, verbose_name='Visitante')    
+    nome = models.CharField(max_length=100, verbose_name='Visitante')
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
     documento = models.CharField(max_length=100, blank=True, null=True, verbose_name='Documento')
     data_registro_visitante = models.DateTimeField(

@@ -14,6 +14,6 @@
   {% if paciente.comunicado_interno != None %}
   <p>C.I: {{ paciente.comunicado_interno }}</p>
   {% endif %}
-  </a><a href="visitante"><button>Visitante</button></a>
+  </a><a href="{% url 'visitante' %}?prontuario={{ paciente.prontuario }}"><button>Visitante</button></a>
 </body>
 </html>

@@ -54,9 +54,9 @@ class VisitanteAdminForm(forms.ModelForm):
 
 class VisitanteAdmin(admin.ModelAdmin):
     form = VisitanteAdminForm
-    search_fields = ['paciente__paciente', 'visitante']
+    search_fields = ['paciente__nome', 'visitante']
     list_display = ('paciente', 'nome', 'get_clinica', 'get_leito', 'data_registro_visitante', 'parentesco', 'documento', 'operador')
-    list_filter = ('data_registro_visitante', 'operador')
+    list_filter = ('data_registro_visitante', 'operador', 'paciente__clinica')
 
     def get_clinica(self, obj):
         return obj.paciente.clinica
