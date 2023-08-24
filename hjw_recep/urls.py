@@ -29,8 +29,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('internacao/', views.internacao, name='internacao'),
     path('paciente/', views.paciente, name='paciente'),
-#    path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a internação
-    path('', RedirectView.as_view(url='/admin/')),
+    path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a internação
+    # path('', RedirectView.as_view(url='/admin/')),
     path('login/', views.login_user), # criando a parte de login
     path('login/submit', views.submit_login), # tem que tirar a barra do final se não da erro quando for fazer o post e get
     path('logout/', views.logout_user),

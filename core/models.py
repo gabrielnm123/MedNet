@@ -18,7 +18,7 @@ class Parentesco(models.Model):
 
 class Paciente(models.Model):
     prontuario = models.IntegerField(primary_key=True, verbose_name='Prontuário')
-    paciente = models.CharField(
+    nome = models.CharField(
         max_length=100, # 100 pixeos para o campo
         verbose_name='Paciente' # como ele é expressado
     )
@@ -35,34 +35,33 @@ class Paciente(models.Model):
 
     def save(self, *args, **kwargs):
         # Transforma o nome do paciente em letras maiúsculas antes de salvar
-        self.paciente = self.paciente.upper().strip()
+        self.nome = self.nome.upper().strip()
         self.clinica = self.clinica.upper().strip()
         self.leito = self.leito.upper().strip()
-        if self.comunicado_interno != None or self.comunicado_interno.strip() == '':
-            self.comunicado_interno = None
-        else:
+        if self.comunicado_interno != None:
             self.comunicado_interno = self.comunicado_interno.upper().strip()
         super(Paciente, self).save(*args, **kwargs)    
     
     def __str__(self) -> str: # aparece o nome do paciente em vez de Internacao object(1)
-        return self.paciente
+        return self.nome
 
 class Visitante(models.Model):
-    data_registro_visitante = models.DateTimeField(
-        auto_now=True, verbose_name='Data de Registro do Visitante')
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
-    visitante = models.CharField(max_length=100, verbose_name='Visitante')    
+    nome = models.CharField(max_length=100, verbose_name='Visitante')    
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
     documento = models.CharField(max_length=100, blank=True, null=True, verbose_name='Documento')
-    operador = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
+    data_registro_visitante = models.DateTimeField(
+        auto_now=True, verbose_name='Data de Registro do Visitante')
+    operador = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Operador')
 
     class Meta:
         db_table = 'visitante'
 
     def save(self, *args, **kwargs):
-        self.visitante = self.visitante.upper()
-        self.documento = self.documento.upper()
+        self.nome = self.nome.upper().strip()
+        if self.documento != None:
+            self.documento = self.documento.upper().strip()
         super(Visitante, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return self.visitante
+        return self.nome

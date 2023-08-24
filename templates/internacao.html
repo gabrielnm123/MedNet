@@ -15,7 +15,7 @@
   <ul>
     {% for paciente in pacientes %}
     <li>
-      <a href="{% url 'paciente' %}?id={{paciente.prontuario}}">{{ paciente.paciente }}</a> - {{ paciente.clinica }} - {{ paciente.leito }}
+      <a href="{% url 'paciente' %}?prontuario={{ paciente.prontuario }}">{{ paciente.nome }}</a> - {{ paciente.clinica }} - {{ paciente.leito }}
     </li>
     {% endfor %}
   </ul>

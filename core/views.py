@@ -35,18 +35,18 @@ def internacao(request):
     search_term = request.GET.get('search')
 
     if search_term:
-        pacientes = Paciente.objects.filter(paciente__icontains=search_term)
+        pacientes = Paciente.objects.filter(nome__icontains=search_term)
     else:
         pacientes = None
 
     return render(request, 'internacao.html', {'pacientes': pacientes})
 
 def paciente(request):
-    id_paciente = request.GET.get('id')
+    prontuario = request.GET.get('prontuario')
     dados = {}
-    if id_paciente:
+    if prontuario:
         try:
-            dados['paciente'] = Paciente.objects.get(id=id_paciente)
+            dados['paciente'] = Paciente.objects.get(prontuario=prontuario)
         except Exception:
             raise Http404()
     return render(request, 'paciente.html', dados)
@@ -55,7 +55,7 @@ class PacienteAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Paciente.objects.all()
         if self.q:
-            qs = qs.filter(paciente__icontains=self.q)  # Corrigindo o filtro para o campo 'paciente'
+            qs = qs.filter(nome__icontains=self.q)  # Corrigindo o filtro para o campo 'paciente'
         return qs
 
 class PacienteViewSet(viewsets.ModelViewSet): # classe será uma subclasse de ModelViewSet, que já possui funcionalidades predefinidas para lidar com operações CRUD (Create, Retrieve, Update, Delete) em um modelo.

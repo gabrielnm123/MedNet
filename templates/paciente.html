@@ -6,9 +6,9 @@
   <title>Paciente</title>
 </head>
 <body>
-  <input type="number" name="id_paciente" value="{{paciente.id}}" hidden> <!-- dessa forma capitura o id do evento e hidden é pra ocultar -->
+  <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden> <!-- dessa forma capitura o id do evento e hidden é pra ocultar -->
   <h1>Detalhes do Paciente</h1>
-  <p>Nome: {{ paciente.paciente }}</p>
+  <p>Nome: {{ paciente.nome }}</p>
   <p>Clínica: {{ paciente.clinica }}</p>
   <p>Leito: {{ paciente.leito }}</p>
   {% if paciente.comunicado_interno != None %}
