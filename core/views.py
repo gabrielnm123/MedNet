@@ -55,13 +55,14 @@ def paciente(request):
 @login_required(login_url='/login/')
 def visitante(request):
     prontuario = request.GET.get('prontuario')
-    dados_paciente = {}
+    dados = {}
     if prontuario:
         try:
-            dados_paciente['paciente'] = Paciente.objects.get(prontuario=prontuario)
+            dados['paciente'] = Paciente.objects.get(prontuario=prontuario)
         except Exception:
             raise Http404()
-    return render(request, 'visitante.html', dados_paciente)
+    dados['parentesco'] = Parentesco.objects.all()
+    return render(request, 'visitante.html', dados)
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
