@@ -4,13 +4,13 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Parentesco(models.Model):
-    parentesco = models.CharField(max_length=100, verbose_name='Parentesco')
+    tipo = models.CharField(max_length=100, verbose_name='Parentesco')
 
     class Meta:
         db_table = 'parentesco'
     
     def save(self, *args, **kwargs):
-        self.parentesco = self.parentesco.upper().strip()
+        self.tipo = self.tipo.upper().strip()
         super(Parentesco, self).save(*args, *kwargs)
     
     def __str__(self) -> str:
