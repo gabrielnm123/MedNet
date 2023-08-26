@@ -59,6 +59,7 @@ def visitante(request):
     if prontuario:
         try:
             dados['paciente'] = Paciente.objects.get(prontuario=prontuario)
+            dados['visitante'] = Visitante.objects.get(paciente__prontuario=prontuario)
         except Exception:
             raise Http404()
     dados['parentesco'] = Parentesco.objects.all()

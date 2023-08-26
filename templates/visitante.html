@@ -12,5 +12,12 @@
   <p>Nome: {{ paciente.nome }}</p>
   <p>Clínica: {{ paciente.clinica }}</p>
   <p>Leito: {{ paciente.leito }}</p>
+  <br>
+  <input type="number" name="visitante_prontuario" value="{{ visitante.paciente.prontuario }}" hidden>
+  <input type="text" name="paciente" value="{{ visitante.paciente }}" hidden>
+  <label for="">Visitante</label>
+  <br>
+  <input type="text" name="nome" size="100" value="{{ visitante.nome }} ">
+  <label for=""></label>
 </body>
 </html>
