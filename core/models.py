@@ -14,7 +14,7 @@ class Parentesco(models.Model):
         super(Parentesco, self).save(*args, *kwargs)
     
     def __str__(self) -> str:
-        return self.parentesco
+        return self.tipo
 
 class Paciente(models.Model):
     prontuario = models.IntegerField(primary_key=True, verbose_name='Prontuário')

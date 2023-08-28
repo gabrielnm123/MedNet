@@ -8,16 +8,27 @@
 <body>
   <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
   <h1>Registro de Visitante</h1>
-  <h2>Detalhes do Paciente</h2>
-  <p>Nome: {{ paciente.nome }}</p>
+  <p>Paciente: {{ paciente.nome }}</p>
   <p>Clínica: {{ paciente.clinica }}</p>
   <p>Leito: {{ paciente.leito }}</p>
-  <br>
   <input type="number" name="visitante_prontuario" value="{{ visitante.paciente.prontuario }}" hidden>
-  <input type="text" name="paciente" value="{{ visitante.paciente }}" hidden>
+  <input type="text" name="paciente" value="{{ paciente }}" hidden>
+  <!-- <br>
   <label for="">Visitante</label>
   <br>
-  <input type="text" name="nome" size="100" value="{{ visitante.nome }} ">
-  <label for=""></label>
+  <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
+  <label for="">Parentesco</label>
+  <select name="parentesco" id="parentesco">
+    {% for parentesco in parentescos %}
+      <option value="{{ parentesco.tipo }}">{{ parentesco.tipo }}</option>
+    {% endfor %}
+  </select>
+  <br>
+  <label for="">Documento</label>
+  <br>
+  <input type="text" name="documento" size="100" value="{{ visitante.documento }}"> -->
+  {% for visitante in visitantes %}
+    <p>{{ visitante.nome }} - {{ visitante.parentesco }} - {{ visitante.documento }}</p>
+  {% endfor %}
 </body>
 </html>
