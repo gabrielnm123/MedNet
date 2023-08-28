@@ -30,6 +30,7 @@ urlpatterns = [
     path('internacao/', views.internacao, name='internacao'),
     path('internacao/paciente/', views.paciente, name='paciente'),
     path('internacao/paciente/visitante/', views.visitante, name='visitante'),
+    path('internacao/paciente/visitante/submit', views.submit_visitante, name='submit_visitante'),
     path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a internação
     # path('', RedirectView.as_view(url='/admin/')),
     path('login/', views.login_user, name='login'), # criando a parte de login

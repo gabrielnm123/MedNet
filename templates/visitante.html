@@ -6,29 +6,34 @@
   <title>Visitante</title>
 </head>
 <body>
-  <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
   <h1>Registro de Visitante</h1>
   <p>Paciente: {{ paciente.nome }}</p>
   <p>Clínica: {{ paciente.clinica }}</p>
   <p>Leito: {{ paciente.leito }}</p>
-  <input type="number" name="visitante_prontuario" value="{{ visitante.paciente.prontuario }}" hidden>
-  <input type="text" name="paciente" value="{{ paciente }}" hidden>
-  <!-- <br>
-  <label for="">Visitante</label>
-  <br>
-  <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
-  <label for="">Parentesco</label>
-  <select name="parentesco" id="parentesco">
-    {% for parentesco in parentescos %}
-      <option value="{{ parentesco.tipo }}">{{ parentesco.tipo }}</option>
-    {% endfor %}
-  </select>
-  <br>
-  <label for="">Documento</label>
-  <br>
-  <input type="text" name="documento" size="100" value="{{ visitante.documento }}"> -->
+  <form action="submit" method="POST">{% csrf_token %}
+    <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
+    <input type="text" name="paciente" value="{{ paciente }}" hidden>
+    <br>
+    <label for="">Visitante</label>
+    <br>
+    <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
+    <label for="">Parentesco</label>
+    <select name="parentesco" id="parentesco">
+      {% for parentesco in parentescos %}
+        <option value="{{ parentesco.tipo }}" {% if parentesco.tipo == visitante.parentesco.tipo %}selected{% endif %}>{{ parentesco.tipo }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <label for="">Documento</label>
+    <br>
+    <input type="text" name="documento" size="100" value="{{ visitante.documento }}">
+    <br>
+    <button type="submit">Salvar</button>
+  </form>
   {% for visitante in visitantes %}
-    <p>{{ visitante.nome }} - {{ visitante.parentesco }} - {{ visitante.documento }}</p>
+    <br>
+    <a href="{% url 'visitante' %}?prontuario={{ paciente.prontuario }}&id={{ visitante.id }}">{{ visitante.nome }} - {{ visitante.parentesco }} - {{ visitante.documento }}</a>
+    <br>
   {% endfor %}
 </body>
 </html>

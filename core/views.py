@@ -55,6 +55,7 @@ def paciente(request):
 @login_required(login_url='/login/')
 def visitante(request):
     prontuario = request.GET.get('prontuario')
+    id_visitante = request.GET.get('id')
     dados = {}
     if prontuario:
         try:
@@ -62,8 +63,33 @@ def visitante(request):
             dados['visitantes'] = Visitante.objects.filter(paciente__prontuario=prontuario)
         except Exception:
             raise Http404()
+    if id_visitante:
+        try:
+            dados['visitante'] = Visitante.objects.get(id=id_visitante)
+        except Exception:
+            raise Http404()
     dados['parentescos'] = Parentesco.objects.all()
     return render(request, 'visitante.html', dados)
+
+@login_required
+def submit_visitante(request):
+    if request.POST:
+        paciente = request.POST.get('paciente')
+        nome = request.POST.get('nome')
+        parentesco = request.POST.get('parentesco')
+        documento = request.POST.get('documento')
+        prontuario = int(request.POST.get('prontuario'))
+        paciente = Paciente.objects.get(prontuario=prontuario)
+        parentesco = Parentesco.objects.get(tipo=parentesco)
+
+        Visitante.objects.create(
+            paciente=paciente,
+            nome=nome,
+            parentesco=parentesco,
+            documento=documento,
+            operador=request.user
+        )
+    return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
