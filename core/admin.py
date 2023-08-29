@@ -32,6 +32,7 @@ def exportar_visitantes_para_excel(modeladmin, request, queryset):
         data['OPERADOR'].append(visitante.operador.username)
 
     df = pd.DataFrame(data)
+    df['DATA DE REGISTRO DO VISITANTE'] = df['DATA DE REGISTRO DO VISITANTE'].dt.strftime('%d/%m/%Y %H:%M:%S')
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=visitantes.xlsx'
     df.to_excel(response, index=False)
