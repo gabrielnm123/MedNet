@@ -74,14 +74,11 @@ def visitante(request):
 @login_required
 def submit_visitante(request):
     if request.POST:
-        paciente = request.POST.get('paciente')
-        nome = request.POST.get('nome')
-        parentesco = request.POST.get('parentesco')
-        documento = request.POST.get('documento')
         prontuario = int(request.POST.get('prontuario'))
         paciente = Paciente.objects.get(prontuario=prontuario)
-        parentesco = Parentesco.objects.get(tipo=parentesco)
-
+        nome = request.POST.get('nome')
+        parentesco = Parentesco.objects.get(tipo=request.POST.get('parentesco'))
+        documento = request.POST.get('documento')
         Visitante.objects.create(
             paciente=paciente,
             nome=nome,
