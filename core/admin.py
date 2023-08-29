@@ -12,7 +12,7 @@ from django.utils.timezone import make_naive
 def exportar_visitantes_para_excel(modeladmin, request, queryset):
     data = {
         'DATA DE REGISTRO DO VISITANTE': [],
-        'CLINICA': [],
+        'CLÍNICA': [],
         'LEITO': [],
         'PACIENTE': [],
         'VISITANTE': [],
