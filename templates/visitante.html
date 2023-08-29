@@ -30,10 +30,13 @@
     <br>
     <button type="submit">Salvar</button>
   </form>
-  {% for visitante in visitantes %}
+  <!-- {% for visitante in visitantes %}
     <br>
     <a href="{% url 'visitante' %}?prontuario={{ paciente.prontuario }}&id={{ visitante.id }}">{{ visitante.nome }} - {{ visitante.parentesco }} - {{ visitante.documento }}</a>
     <br>
-  {% endfor %}
+  {% endfor %} -->
+  {% if visitantes_df %}
+    {{ visitantes_df|safe }}
+  {% endif %}
 </body>
 </html>

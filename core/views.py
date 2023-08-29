@@ -8,6 +8,7 @@ from core.models import *
 from django.http.response import Http404
 from rest_framework import viewsets # fornece uma maneira conveniente de criar views que lidam com ações comuns em um modelo.
 from .serializers import PacienteSerializer
+import pandas as pd
 
 # Create your views here.
 
@@ -54,13 +55,22 @@ def paciente(request):
 
 @login_required(login_url='/login/')
 def visitante(request):
+
+    def create_link(row):
+        url = r'<a href="/internacao/paciente/visitante?prontuario='+f'{row["paciente_id"]}'+'&id='+f'{row["id"]}"'+r'>'+f'{row["nome"]}'+r'</a>'
+        return url # pra o html não escapar
+
     prontuario = request.GET.get('prontuario')
     id_visitante = request.GET.get('id')
     dados = {}
     if prontuario:
         try:
             dados['paciente'] = Paciente.objects.get(prontuario=prontuario)
-            dados['visitantes'] = Visitante.objects.filter(paciente__prontuario=prontuario)
+            visitantes_df = pd.DataFrame(list(
+                Visitante.objects.filter(paciente__prontuario=prontuario).values()
+            ))
+            visitantes_df['nome'] = visitantes_df.apply(create_link, axis=1)
+            dados['visitantes_df'] = visitantes_df.to_html(classes='table table-bordered', escape=False)
         except Exception:
             raise Http404()
     if id_visitante:
