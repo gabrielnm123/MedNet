@@ -119,13 +119,16 @@ def submit_visitante(request):
         nome = request.POST.get('nome')
         parentesco = Parentesco.objects.get(tipo=request.POST.get('parentesco'))
         documento = request.POST.get('documento')
-        Visitante.objects.create(
-            paciente=paciente,
-            nome=nome,
-            parentesco=parentesco,
-            documento=documento,
-            operador=request.user
-        )
+        try:
+            Visitante.objects.create(
+                paciente=paciente,
+                nome=nome,
+                parentesco=parentesco,
+                documento=documento,
+                operador=request.user
+            )
+        except:
+            messages.error(request, 'Preencha o formulário')
     return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):

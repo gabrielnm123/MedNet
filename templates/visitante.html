@@ -46,6 +46,11 @@
     <br>
     <button type="submit">Salvar</button>
   </form>
+  {% for message in messages %}
+    <div align="center">
+      <strong>Erro: </strong>{{ message }}
+    </div>    
+  {% endfor %}
   {% if visitantes_df %}
     <div class="table-container">
       {{ visitantes_df|safe }}
