@@ -58,7 +58,7 @@ def visitante(request):
 
     def create_link(row):
         url = r'<a href="/internacao/paciente/visitante?prontuario='+f'{row["paciente_id"]}'+'&id='+f'{row["id"]}"'+r'>'+f'{row["nome"]}'+r'</a>'
-        return url # pra o html não escapar
+        return url
 
     prontuario = request.GET.get('prontuario')
     id_visitante = request.GET.get('id')
@@ -68,9 +68,13 @@ def visitante(request):
             dados['paciente'] = Paciente.objects.get(prontuario=prontuario)
             visitantes_df = pd.DataFrame(list(
                 Visitante.objects.filter(paciente__prontuario=prontuario).values()
-            ))
+            ), index=None)
             visitantes_df['nome'] = visitantes_df.apply(create_link, axis=1)
-            dados['visitantes_df'] = visitantes_df.to_html(classes='table table-bordered', escape=False)
+            visitantes_df = visitantes_df.drop(columns=['id', 'paciente_id'])
+            visitantes_df['data_registro'] = visitantes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
+            dados['visitantes_df'] = visitantes_df.to_html(
+                classes='table table-bordered', escape=False, index=False
+            )
         except Exception:
             raise Http404()
     if id_visitante:

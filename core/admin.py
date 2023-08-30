@@ -11,7 +11,7 @@ from django.utils.timezone import make_naive
 
 def exportar_visitantes_para_excel(modeladmin, request, queryset):
     data = {
-        'DATA DE REGISTRO DO VISITANTE': [],
+        'DATA DE REGISTRO': [],
         'CLÍNICA': [],
         'LEITO': [],
         'PACIENTE': [],
@@ -22,7 +22,7 @@ def exportar_visitantes_para_excel(modeladmin, request, queryset):
     }
 
     for visitante in queryset:
-        data['DATA DE REGISTRO DO VISITANTE'].append(make_naive(visitante.data_registro_visitante))
+        data['DATA DE REGISTRO'].append(make_naive(visitante.data_registro_visitante))
         data['CLÍNICA'].append(visitante.paciente.clinica)
         data['LEITO'].append(visitante.paciente.leito)
         data['PACIENTE'].append(visitante.paciente.nome)
@@ -32,7 +32,7 @@ def exportar_visitantes_para_excel(modeladmin, request, queryset):
         data['OPERADOR'].append(visitante.operador.username)
 
     df = pd.DataFrame(data)
-    df['DATA DE REGISTRO DO VISITANTE'] = df['DATA DE REGISTRO DO VISITANTE'].dt.strftime('%d/%m/%Y %H:%M:%S')
+    df['DATA DE REGISTRO'] = df['DATA DE REGISTRO'].dt.strftime('%d/%m/%Y %H:%M:%S')
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=visitantes.xlsx'
     df.to_excel(response, index=False)
@@ -42,7 +42,7 @@ exportar_visitantes_para_excel.short_description = "Exportar para Excel"
 
 class PacienteAdmin(admin.ModelAdmin):
     search_fields = ['paciente']
-    list_display = ('prontuario', 'nome', 'clinica', 'leito', 'data_registro_paciente') # pra aparecer no resgistro do paciente logo de cara
+    list_display = ('prontuario', 'nome', 'clinica', 'leito', 'data_registro') # pra aparecer no resgistro do paciente logo de cara
     list_filter = ('clinica',)
 
 class VisitanteAdminForm(forms.ModelForm):
@@ -56,8 +56,8 @@ class VisitanteAdminForm(forms.ModelForm):
 class VisitanteAdmin(admin.ModelAdmin):
     form = VisitanteAdminForm
     search_fields = ['paciente__nome', 'visitante', 'paciente__prontuario']
-    list_display = ('get_prontuario', 'paciente', 'nome', 'get_clinica', 'get_leito', 'data_registro_visitante', 'parentesco', 'documento', 'operador')
-    list_filter = ('data_registro_visitante', 'operador', 'paciente__clinica')
+    list_display = ('get_prontuario', 'paciente', 'nome', 'get_clinica', 'get_leito', 'data_registro', 'parentesco', 'documento', 'operador')
+    list_filter = ('data_registro', 'operador', 'paciente__clinica')
 
     def get_prontuario(self, obj):
         return obj.paciente.prontuario

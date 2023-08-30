@@ -4,6 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visitante</title>
+  <style>
+    /* Define a largura máxima da tabela e permite rolagem horizontal */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    /* Faz com que o texto nas células se ajuste verticalmente */
+    td {
+      word-wrap: break-word;
+    }
+  </style>
 </head>
 <body>
   <h1>Registro de Visitante</h1>
@@ -36,7 +52,9 @@
     <br>
   {% endfor %} -->
   {% if visitantes_df %}
-    {{ visitantes_df|safe }}
+    <div class="table-container">
+      {{ visitantes_df|safe }}
+    </div>
   {% endif %}
 </body>
 </html>

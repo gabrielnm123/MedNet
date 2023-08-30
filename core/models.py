@@ -25,9 +25,9 @@ class Paciente(models.Model):
     clinica = models.CharField(max_length=100, verbose_name='Clínica')
     leito = models.CharField(max_length=100, verbose_name='Leito')
     comunicado_interno = models.TextField(blank=True, null=True, verbose_name='C.I')
-    data_registro_paciente = models.DateTimeField(
+    data_registro = models.DateTimeField(
         auto_now=True, # auto_now=True, sempre coloca a hora atual
-        verbose_name='Data de Registro do Paciente'
+        verbose_name='Data de Registro'
     )
 
     class Meta: # pra mudar o nome da tabale pra paciente, se não ia ser core_paciente -- cuidado caso faça migrate tem que desfazer, por conta do nome dele que muda
@@ -50,8 +50,8 @@ class Visitante(models.Model):
     nome = models.CharField(max_length=100, verbose_name='Visitante')
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
     documento = models.CharField(max_length=100, blank=True, null=True, verbose_name='Documento')
-    data_registro_visitante = models.DateTimeField(
-        auto_now=True, verbose_name='Data de Registro do Visitante')
+    data_registro = models.DateTimeField(
+        auto_now=True, verbose_name='Data de Registro')
     operador = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Operador')
 
     class Meta:
