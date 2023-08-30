@@ -11,7 +11,6 @@ from .serializers import PacienteSerializer
 import pandas as pd
 from django.utils.timezone import make_naive
 
-
 # Create your views here.
 
 def login_user(request):
@@ -34,9 +33,10 @@ def logout_user(request):
     return redirect('/')
 
 @login_required(login_url='/login/')
-def delete_visitante(request, visitante_id):
-    operador = request.user
+def delete_visitante(request, prontuario, visitante_id):
     visitante = Visitante.objects.get(id=visitante_id)
+    visitante.delete()
+    return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
 
 @login_required(login_url='/login/')
 def internacao(request):

@@ -49,7 +49,7 @@ class Visitante(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
     nome = models.CharField(max_length=100, verbose_name='Visitante')
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
-    documento = models.CharField(max_length=100, blank=True, null=True, verbose_name='Documento')
+    documento = models.CharField(max_length=100, verbose_name='Documento')
     data_registro = models.DateTimeField(
         auto_now=True, verbose_name='Data de Registro')
     operador = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Operador')
@@ -58,8 +58,13 @@ class Visitante(models.Model):
         db_table = 'visitante'
 
     def save(self, *args, **kwargs):
-        self.nome = self.nome.upper().strip()
-        if self.documento != None:
+        if self.nome.strip() == '' or self.nome == None:
+            self.nome = None
+        else:
+            self.nome = self.nome.upper().strip()
+        if self.documento.strip() == '' or self.documento == None:
+            self.documento = None
+        else:
             self.documento = self.documento.upper().strip()
         super(Visitante, self).save(*args, **kwargs)
 
