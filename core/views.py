@@ -9,6 +9,8 @@ from django.http.response import Http404
 from rest_framework import viewsets # fornece uma maneira conveniente de criar views que lidam com ações comuns em um modelo.
 from .serializers import PacienteSerializer
 import pandas as pd
+from django.utils.timezone import make_naive
+
 
 # Create your views here.
 
@@ -32,6 +34,11 @@ def logout_user(request):
     return redirect('/')
 
 @login_required(login_url='/login/')
+def delete_visitante(request, visitante_id):
+    operador = request.user
+    visitante = Visitante.objects.get(id=visitante_id)
+
+@login_required(login_url='/login/')
 def internacao(request):
     search_term = request.GET.get('search')
 
@@ -53,39 +60,58 @@ def paciente(request):
             raise Http404()
     return render(request, 'paciente.html', dados)
 
+def create_link_autocomplete_visitante(row):
+    url = r'<a href="/internacao/paciente/visitante?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["nome"]}'+r'</a>'
+    return url
+
+def create_link_delete_visitante(row):
+    url = r'<a href="/internacao/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["Excluir"]}'+r'</a>'
+    return url
+
+@login_required(login_url='/login/')
+def delete_visitante(request):
+    prontuario = request.GET.get('prontuario')
+    visitante_id = request.GET.get('visitante_id')
+    try:
+        visitante = Visitante.objects.get(id=visitante_id)
+        visitante.delete()
+    except Exception:
+        raise Http404()
+    return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
+
 @login_required(login_url='/login/')
 def visitante(request):
-
-    def create_link(row):
-        url = r'<a href="/internacao/paciente/visitante?prontuario='+f'{row["paciente_id"]}'+'&id='+f'{row["id"]}"'+r'>'+f'{row["nome"]}'+r'</a>'
-        return url
-
     prontuario = request.GET.get('prontuario')
-    id_visitante = request.GET.get('id')
+    visitante_id = request.GET.get('visitante_id')
     dados = {}
     if prontuario:
         try:
             dados['paciente'] = Paciente.objects.get(prontuario=prontuario)
-            visitantes_df = pd.DataFrame(list(
-                Visitante.objects.filter(paciente__prontuario=prontuario).values()
-            ), index=None)
-            visitantes_df['nome'] = visitantes_df.apply(create_link, axis=1)
-            visitantes_df = visitantes_df.drop(columns=['id', 'paciente_id'])
-            visitantes_df['data_registro'] = visitantes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
-            dados['visitantes_df'] = visitantes_df.to_html(
-                classes='table table-bordered', escape=False, index=False
-            )
+            if Visitante.objects.filter(paciente__prontuario=prontuario).values():
+                visitantes_df = pd.DataFrame(list(
+                    Visitante.objects.filter(paciente__prontuario=prontuario).values()
+                ))
+                visitantes_df['nome'] = visitantes_df.apply(create_link_autocomplete_visitante, axis=1)
+                visitantes_df['data_registro'] = visitantes_df['data_registro'].apply(make_naive)
+                visitantes_df['data_registro'] = visitantes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
+                visitantes_df = visitantes_df[::-1]
+                visitantes_df['Excluir'] = 'Excluir'
+                visitantes_df['Excluir'] = visitantes_df.apply(create_link_delete_visitante, axis=1)
+                visitantes_df = visitantes_df.drop(columns=['id', 'paciente_id'])
+                dados['visitantes_df'] = visitantes_df.to_html(
+                    classes='table table-bordered', escape=False, index=False
+                )
         except Exception:
             raise Http404()
-    if id_visitante:
+    if visitante_id:
         try:
-            dados['visitante'] = Visitante.objects.get(id=id_visitante)
+            dados['visitante'] = Visitante.objects.get(id=visitante_id)
         except Exception:
             raise Http404()
     dados['parentescos'] = Parentesco.objects.all()
     return render(request, 'visitante.html', dados)
 
-@login_required
+@login_required(login_url='/login/')
 def submit_visitante(request):
     if request.POST:
         prontuario = int(request.POST.get('prontuario'))

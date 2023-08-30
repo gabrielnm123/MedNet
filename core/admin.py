@@ -22,7 +22,7 @@ def exportar_visitantes_para_excel(modeladmin, request, queryset):
     }
 
     for visitante in queryset:
-        data['DATA DE REGISTRO'].append(make_naive(visitante.data_registro_visitante))
+        data['DATA DE REGISTRO'].append(make_naive(visitante.data_registro))
         data['CLÍNICA'].append(visitante.paciente.clinica)
         data['LEITO'].append(visitante.paciente.leito)
         data['PACIENTE'].append(visitante.paciente.nome)
