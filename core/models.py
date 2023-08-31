@@ -46,12 +46,12 @@ class Paciente(models.Model):
         return self.nome
 
 class Visitante(models.Model):
+    data_registro = models.DateTimeField(
+        auto_now=True, verbose_name='Data de Registro')
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
     nome = models.CharField(max_length=100, verbose_name='Visitante')
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
     documento = models.CharField(max_length=100, verbose_name='Documento')
-    data_registro = models.DateTimeField(
-        auto_now=True, verbose_name='Data de Registro')
     operador = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Operador')
 
     class Meta:
