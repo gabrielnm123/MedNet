@@ -8,29 +8,36 @@
     /* Define a largura máxima da tabela e permite rolagem horizontal */
     .table-container {
       overflow-x: auto;
+      text-align: center
     }
-
+    
     table {
       width: 100%;
       table-layout: fixed;
     }
-
+    
     /* Faz com que o texto nas células se ajuste verticalmente */
     td {
       word-wrap: break-word;
     }
+    
+    th {
+      text-align: center
+    }
   </style>
 </head>
 <body>
-  <h1>Registro de Visitante</h1>
-  <p>Paciente: {{ paciente.nome }}</p>
+  <h1>Detalhes do Paciente</h1>
+  <p>Nome: {{ paciente.nome }}</p>
+  <p>Prontuario: {{ paciente.prontuario }}</p>
   <p>Clínica: {{ paciente.clinica }}</p>
   <p>Leito: {{ paciente.leito }}</p>
-  <form action="submit" method="POST">{% csrf_token %}
+  <h2>Visitante</h2>
+  <form action="submit" method="POST" id="visitante-form">{% csrf_token %}
     <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
     <input type="text" name="paciente" value="{{ paciente }}" hidden>
     <br>
-    <label for="">Visitante</label>
+    <label for="">Nome do Visitante</label>
     <br>
     <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
     <label for="">Parentesco</label>
@@ -44,7 +51,7 @@
     <br>
     <input type="text" name="documento" size="100" value="{{ visitante.documento }}">
     <br>
-    <button type="submit">Salvar</button>
+    <button type="submit" id="button">Salvar</button>
   </form>
   {% for message in messages %}
     <div align="center">
@@ -56,5 +63,15 @@
       {{ visitantes_df|safe }}
     </div>
   {% endif %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('visitante-form');
+      const button = document.getElementById('button');
+
+      form.addEventListener('submit', function () {
+        button.disabled = true;
+      });
+    });
+  </script>
 </body>
 </html>

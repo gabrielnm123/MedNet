@@ -65,7 +65,7 @@ def create_link_autocomplete_visitante(row):
     return url
 
 def create_link_delete_visitante(row):
-    url = r'<a href="/internacao/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["Excluir"]}'+r'</a>'
+    url = r'<a href="/internacao/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["Excluir Visitante"]}'+r'</a>'
     return url
 
 @login_required(login_url='/login/')
@@ -95,8 +95,8 @@ def visitante(request):
                 visitantes_df['data_registro'] = visitantes_df['data_registro'].apply(make_naive)
                 visitantes_df['data_registro'] = visitantes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
                 visitantes_df = visitantes_df[::-1]
-                visitantes_df['Excluir'] = 'Excluir'
-                visitantes_df['Excluir'] = visitantes_df.apply(create_link_delete_visitante, axis=1)
+                visitantes_df['Excluir Visitante'] = 'Excluir'
+                visitantes_df['Excluir Visitante'] = visitantes_df.apply(create_link_delete_visitante, axis=1)
                 visitantes_df = visitantes_df.drop(columns=['id', 'paciente_id'])
                 dados['visitantes_df'] = visitantes_df.to_html(
                     classes='table table-bordered', escape=False, index=False
@@ -128,7 +128,7 @@ def submit_visitante(request):
                 operador=request.user
             )
         except:
-            messages.error(request, 'Preencha o formulário')
+            messages.error(request, 'Preencha o Formulário do Visitante')
     return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):
