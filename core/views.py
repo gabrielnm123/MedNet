@@ -47,8 +47,12 @@ def internacao(request):
         pacientes = Paciente.objects.filter(nome__icontains=search_term)
     else:
         pacientes = Paciente.objects.all()
-
-    return render(request, 'internacao.html', {'pacientes': pacientes})
+    pacientes_df = pd.DataFrame(
+        list(pacientes.values())
+    )
+    pacientes_df['data_registro'] = pacientes_df['data_registro'].apply(make_naive)
+    pacientes_df['data_registro'] = pacientes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
+    return render(request, 'internacao.html', {'pacientes_df': pacientes_df.to_html()})
 
 @login_required(login_url='/login/')
 def paciente(request):

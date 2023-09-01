@@ -1,8 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% include 'model_link.html' %}
   <title>Internação</title>
 </head>
 <body>
@@ -12,12 +14,11 @@
     <input type="text" name="search" placeholder="Buscar Paciente...">
     <button type="submit">Buscar</button>
   </form>
-  <ul>
-    {% for paciente in pacientes %}
-    <li>
-      <a href="{% url 'paciente' %}?prontuario={{ paciente.prontuario }}">{{ paciente.nome }}</a> - {{ paciente.clinica }} - {{ paciente.leito }}
-    </li>
-    {% endfor %}
-  </ul>
+  {% if pacientes_df %}
+    <div class="table-container">
+      {{ pacientes_df|safe }}
+    </div>
+  {% endif %}
+  {% include 'model_script.html' %}
 </body>
 </html>
