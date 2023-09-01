@@ -1,35 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'visitante/css/class.css' %}">
+  <link rel="stylesheet" href="{% static 'visitante/css/table.css' %}">
+  <link rel="stylesheet" href="{% static 'visitante/css/td.css' %}">
+  <link rel="stylesheet" href="{% static 'visitante/css/th.css' %}">
   <title>Visitante</title>
-  <style>
-    .desativado {
-      color: gray;
-      pointer-events: none;
-      text-decoration: none;
-    }
-    /* Define a largura máxima da tabela e permite rolagem horizontal */
-    .table-container {
-      overflow-x: auto;
-      text-align: center
-    }
-    
-    table {
-      width: 100%;
-      table-layout: fixed;
-    }
-    
-    /* Faz com que o texto nas células se ajuste verticalmente */
-    td {
-      word-wrap: break-word;
-    }
-    
-    th {
-      text-align: center
-    }
-  </style>
 </head>
 <body>
   <a class="ativado" onclick="desativarLink(this)" href="/">Internacao</a>
@@ -39,7 +18,7 @@
   <p>Clínica: {{ paciente.clinica }}</p>
   <p>Leito: {{ paciente.leito }}</p>
   <h2>Visitante</h2>
-  <form action="submit" method="POST" id="visitante-form">{% csrf_token %}
+  <form action="submit" method="POST" id="form">{% csrf_token %}
     <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
     <input type="text" name="paciente" value="{{ paciente }}" hidden>
     <label for="">Nome do Visitante</label>
@@ -69,21 +48,7 @@
       {{ visitantes_df|safe }}
     </div>
   {% endif %}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const form = document.getElementById('visitante-form');
-      const button = document.getElementById('button');
-
-      form.addEventListener('submit', function () {
-        button.disabled = true;
-      });
-    });
-  </script>
-  <script>
-    function desativarLink(link) {
-      link.classList.add("desativado");
-      link.removeEventListener("click", desativarLink);
-    }
-  </script>
+<script src="{% static 'visitante/js/form_button.js' %}"></script>
+<script src="{% static 'visitante/js/desativado.js' %}"></script>
 </body>
 </html>

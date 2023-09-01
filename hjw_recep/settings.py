@@ -140,7 +140,12 @@ DATETIME_FORMAT = 'd/m/Y H:i:s'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    '/home/gabriel/workspace/hjw_recep/static'
+]
 
 # Configurar o local onde os arquivos estáticos serão coletados para produção
 if not DEBUG:
