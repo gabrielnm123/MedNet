@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visitante</title>
   <style>
+    .desativado {
+      color: gray;
+      pointer-events: none;
+      text-decoration: none;
+    }
     /* Define a largura máxima da tabela e permite rolagem horizontal */
     .table-container {
       overflow-x: auto;
@@ -41,6 +46,7 @@
     <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
     <label for="">Parentesco</label>
     <select name="parentesco" id="parentesco">
+      <option value="" selected>Selecione Parentesco...</option>
       {% for parentesco in parentescos %}
         <option value="{{ parentesco.tipo }}" {% if parentesco.tipo == visitante.parentesco.tipo %}selected{% endif %}>{{ parentesco.tipo }}</option>
       {% endfor %}
@@ -53,9 +59,9 @@
     <button type="submit" id="button">Salvar</button>
   </form>
   {% for message in messages %}
-    <div align="center">
+    <div align="center" style="color: red;">
       <strong>Erro: </strong>{{ message }}
-    </div>    
+    </div>
   {% endfor %}
   {% if visitantes_df %}
     <div class="table-container">
@@ -71,6 +77,12 @@
         button.disabled = true;
       });
     });
+  </script>
+  <script>
+    function desativarLink(link) {
+      link.classList.add("desativado");
+      link.removeEventListener("click", desativarLink);
+    }
   </script>
 </body>
 </html>

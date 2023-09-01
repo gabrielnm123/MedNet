@@ -10,6 +10,7 @@ from rest_framework import viewsets # fornece uma maneira conveniente de criar v
 from .serializers import PacienteSerializer
 import pandas as pd
 from django.utils.timezone import make_naive
+from django import forms
 
 # Create your views here.
 
@@ -65,7 +66,7 @@ def create_link_autocomplete_visitante(row):
     return url
 
 def create_link_delete_visitante(row):
-    url = r'<a href="/internacao/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["Excluir Visitante"]}'+r'</a>'
+    url = r'<a class="ativado" onclick="desativarLink(this)" href="/internacao/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["Excluir Visitante"]}'+r'</a>'
     return url
 
 def create_visualization_parentesco_visitante(row):
@@ -132,13 +133,13 @@ def visitante(request):
 
 @login_required(login_url='/login/')
 def submit_visitante(request):
-    if request.POST:
-        prontuario = int(request.POST.get('prontuario'))
-        paciente = Paciente.objects.get(prontuario=prontuario)
-        nome = request.POST.get('nome')
-        parentesco = Parentesco.objects.get(tipo=request.POST.get('parentesco'))
-        documento = request.POST.get('documento')
-        try:
+    try:
+        if request.POST:
+            prontuario = int(request.POST.get('prontuario'))
+            paciente = Paciente.objects.get(prontuario=prontuario)
+            nome = request.POST.get('nome')
+            parentesco = Parentesco.objects.get(tipo=request.POST.get('parentesco'))
+            documento = request.POST.get('documento')
             Visitante.objects.create(
                 paciente=paciente,
                 nome=nome,
@@ -146,8 +147,8 @@ def submit_visitante(request):
                 documento=documento,
                 operador=request.user
             )
-        except:
-            messages.error(request, 'Preencha o Formulário do Visitante')
+    except:
+        messages.error(request, 'Preencha o Formulário do Visitante')
     return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):
