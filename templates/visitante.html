@@ -8,12 +8,7 @@
   <title>Visitante</title>
 </head>
 <body>
-  <a class="ativado" onclick="desativarLink(this)" href="/">Internacao</a>
-  <h1>Detalhes do Paciente</h1>
-  <p>Nome: {{ paciente.nome }}</p>
-  <p>Prontuario: {{ paciente.prontuario }}</p>
-  <p>Clínica: {{ paciente.clinica }}</p>
-  <p>Leito: {{ paciente.leito }}</p>
+  {% include 'model_paciente.html' %}
   <h2>Visitante</h2>
   <form action="submit" method="POST" id="form">{% csrf_token %}
     <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>

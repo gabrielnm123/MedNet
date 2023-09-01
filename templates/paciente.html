@@ -1,19 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Paciente</title>
+  {% include 'model_link.html' %}
 </head>
 <body>
   <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden> <!-- dessa forma capitura o id do evento e hidden é pra ocultar -->
-  <h1>Detalhes do Paciente</h1>
-  <p>Nome: {{ paciente.nome }}</p>
-  <p>Clínica: {{ paciente.clinica }}</p>
-  <p>Leito: {{ paciente.leito }}</p>
-  {% if paciente.comunicado_interno != None %}
-  <p>C.I: {{ paciente.comunicado_interno }}</p>
-  {% endif %}
-  </a><a href="{% url 'visitante' %}?prontuario={{ paciente.prontuario }}"><button>Visitante</button></a>
+  {% include 'model_paciente.html' %}
+  <a class="ativado" onclick="desativarLink(this)" href="{% url 'visitante' %}?prontuario={{ paciente.prontuario }}"><button>Visitante</button></a>
+  {% include 'model_script.html' %}
 </body>
 </html>

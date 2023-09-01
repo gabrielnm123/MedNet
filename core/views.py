@@ -66,7 +66,7 @@ def create_link_autocomplete_visitante(row):
     return url
 
 def create_link_delete_visitante(row):
-    url = r'<a class="ativado" onclick="desativarLink(this)" href="/internacao/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["Excluir Visitante"]}'+r'</a>'
+    url = r'<a class="ativado" onclick="desativarLink(this)" href="/internacao/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'<button>{row["Excluir Visitante"]}</button>'+r'</a>'
     return url
 
 def create_visualization_parentesco_visitante(row):
