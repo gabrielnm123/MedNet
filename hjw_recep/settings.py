@@ -144,7 +144,6 @@ STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    '/home/gabriel/workspace/hjw_recep/static'
 ]
 
 # Configurar o local onde os arquivos estáticos serão coletados para produção
