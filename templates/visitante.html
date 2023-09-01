@@ -4,10 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{% static 'visitante/css/class.css' %}">
-  <link rel="stylesheet" href="{% static 'visitante/css/table.css' %}">
-  <link rel="stylesheet" href="{% static 'visitante/css/td.css' %}">
-  <link rel="stylesheet" href="{% static 'visitante/css/th.css' %}">
+  {% include 'model_link.html' %}
   <title>Visitante</title>
 </head>
 <body>
@@ -48,7 +45,6 @@
       {{ visitantes_df|safe }}
     </div>
   {% endif %}
-<script src="{% static 'visitante/js/form_button.js' %}"></script>
-<script src="{% static 'visitante/js/desativado.js' %}"></script>
+  {% include 'model_script.html' %}
 </body>
 </html>
