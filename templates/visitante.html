@@ -36,7 +36,6 @@
   <form action="submit" method="POST" id="visitante-form">{% csrf_token %}
     <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
     <input type="text" name="paciente" value="{{ paciente }}" hidden>
-    <br>
     <label for="">Nome do Visitante</label>
     <br>
     <input type="text" name="nome" size="100" value="{{ visitante.nome }}">

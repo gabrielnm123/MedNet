@@ -68,6 +68,14 @@ def create_link_delete_visitante(row):
     url = r'<a href="/internacao/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["Excluir Visitante"]}'+r'</a>'
     return url
 
+def create_visualization_parentesco_visitante(row):
+    parentesco = Parentesco.objects.get(id=row['parentesco_id'])
+    return parentesco
+
+def create_visualization_operador(row):
+    operador = User.objects.get(id=row['operador_id'])
+    return operador.first_name
+
 @login_required(login_url='/login/')
 def delete_visitante(request):
     prontuario = request.GET.get('prontuario')
@@ -91,13 +99,24 @@ def visitante(request):
                 visitantes_df = pd.DataFrame(list(
                     Visitante.objects.filter(paciente__prontuario=prontuario).values()
                 ))
-                visitantes_df['nome'] = visitantes_df.apply(create_link_autocomplete_visitante, axis=1)
                 visitantes_df['data_registro'] = visitantes_df['data_registro'].apply(make_naive)
                 visitantes_df['data_registro'] = visitantes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
                 visitantes_df = visitantes_df[::-1]
                 visitantes_df['Excluir Visitante'] = 'Excluir'
                 visitantes_df['Excluir Visitante'] = visitantes_df.apply(create_link_delete_visitante, axis=1)
-                visitantes_df = visitantes_df.drop(columns=['id', 'paciente_id'])
+                visitantes_df['nome'] = visitantes_df.apply(create_link_autocomplete_visitante, axis=1)
+                visitantes_df['parentesco_id'] = visitantes_df.apply(create_visualization_parentesco_visitante, axis=1)
+                visitantes_df['operador_id'] = visitantes_df.apply(create_visualization_operador, axis=1)
+                visitantes_df.rename(
+                    columns={
+                        'data_registro': 'Data de Registro',
+                        'nome': 'Nome',
+                        'parentesco_id': 'Parentesco',
+                        'documento': 'Documento',
+                        'operador_id': 'Operador',
+                    }, inplace=True
+                )
+                visitantes_df.drop(columns=['id', 'paciente_id'], inplace=True)
                 dados['visitantes_df'] = visitantes_df.to_html(
                     classes='table table-bordered', escape=False, index=False
                 )
