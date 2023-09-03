@@ -1,13 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% include 'model_link.html' %}
-  <title>Internação</title>
-</head>
-<body>
+{% block content %}
   <h1>Internação</h1>
   <!-- Formulário de pesquisa -->
   <form method="GET" action="{% url 'internacao' %}">
@@ -19,6 +10,4 @@
       {{ pacientes_df|safe }}
     </div>
   {% endif %}
-  {% include 'model_script.html' %}
-</body>
-</html>
+{% endblock %}
