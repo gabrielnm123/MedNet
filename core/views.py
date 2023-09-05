@@ -38,6 +38,10 @@ def delete_visitante(request, prontuario, visitante_id):
     visitante.delete()
     return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
 
+def create_link_paciente(row):
+    url = r'<a href="/internacao/paciente/?prontuario='+f'{row["prontuario"]}">'+f'{row["nome"]}</a>'
+    return url
+
 @login_required(login_url='/login/')
 def internacao(request):
     search_term = request.GET.get('search')
@@ -51,7 +55,20 @@ def internacao(request):
     )
     pacientes_df['data_registro'] = pacientes_df['data_registro'].apply(make_naive)
     pacientes_df['data_registro'] = pacientes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
-    return render(request, 'internacao.html', {'pacientes_df': pacientes_df.to_html()})
+    pacientes_df['nome'] = pacientes_df.apply(create_link_paciente, axis=1)
+    pacientes_df.drop(columns=['comunicado_interno', 'prontuario'], inplace=True)
+    pacientes_df.rename(
+        columns={
+            'nome': 'Paciente',
+            'clinica': 'Clínica',
+            'leito': 'Leito',
+            'data_registro': 'Data de Registro'
+        }, inplace=True
+    )
+    pacientes_df = pacientes_df.to_html(
+        classes='table table-bordered', escape=False, index=False
+    )
+    return render(request, 'internacao.html', {'pacientes_df': pacientes_df})
 
 @login_required(login_url='/login/')
 def paciente(request):
