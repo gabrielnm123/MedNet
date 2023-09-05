@@ -1,9 +1,10 @@
+{% extends 'model_page.html' %}
 {% block content %}
   <h1>Internação</h1>
   <!-- Formulário de pesquisa -->
-  <form method="GET" action="{% url 'internacao' %}">
+  <form method="GET" action="{% url 'internacao' %}" id="form">
     <input type="text" name="search" placeholder="Buscar Paciente...">
-    <button type="submit">Buscar</button>
+    <button type="submit" id="button">Buscar</button>
   </form>
   {% if pacientes_df %}
     <div class="table-container">

@@ -38,14 +38,12 @@ class Paciente(models.Model):
         self.nome = self.nome.upper().strip()
         self.clinica = self.clinica.upper().strip()
         self.leito = self.leito.upper().strip()
-        try:
-            if self.comunicado_interno.strip == '':
-                self.comunicado_interno = None
-            else:
-                self.comunicado_interno = self.comunicado_interno.upper().strip()
-        except:
-            if self.comunicado_interno != None:
-                self.comunicado_interno = self.comunicado_interno.upper().strip()
+        if self.comunicado_interno == None:
+            self.comunicado_interno = ''
+        elif self.comunicado_interno.strip() == '':
+            self.comunicado_interno = ''
+        else:
+            self.comunicado_interno = self.comunicado_interno.upper().strip()
         super(Paciente, self).save(*args, **kwargs)    
     
     def __str__(self) -> str: # aparece o nome do paciente em vez de Internacao object(1)

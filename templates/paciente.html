@@ -1,5 +1,7 @@
+{% extends 'model_page.html' %}
 {% block content %}
   <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden> <!-- dessa forma capitura o id do evento e hidden é pra ocultar -->
   {% include 'model_paciente.html' %}
   <a class="ativado" onclick="desativarLink(this)" href="{% url 'visitante' %}?prontuario={{ paciente.prontuario }}"><button>Visitante</button></a>
+  <a class="ativado" onclick="desativarLink(this)" href="{% url 'comunicado_interno' %}?prontuario={{ paciente.prontuario }}"><button>Editar C.I.</button></a>
 {% endblock %}

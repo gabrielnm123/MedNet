@@ -10,7 +10,6 @@ from rest_framework import viewsets # fornece uma maneira conveniente de criar v
 from .serializers import PacienteSerializer
 import pandas as pd
 from django.utils.timezone import make_naive
-from django import forms
 
 # Create your views here.
 
@@ -141,6 +140,9 @@ def submit_visitante(request):
         if request.POST:
             prontuario = int(request.POST.get('prontuario'))
             paciente = Paciente.objects.get(prontuario=prontuario)
+            comunicado_interno = request.POST.get('comunicado_interno')
+            if paciente.comunicado_interno != comunicado_interno:
+                paciente.comunicado_interno = comunicado_interno
             nome = request.POST.get('nome')
             parentesco = Parentesco.objects.get(tipo=request.POST.get('parentesco'))
             documento = request.POST.get('documento')
@@ -153,7 +155,32 @@ def submit_visitante(request):
             )
     except:
         messages.error(request, 'Preencha o Formulário do Visitante')
-    return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
+    return redirect(f'/internacao/paciente/visitante/?prontuario={prontuario}')
+
+@login_required(login_url='/login/')
+def comunicado_interno(request):
+    prontuario = request.GET.get('prontuario')
+    dados = {}
+    if prontuario:
+        try:
+            dados['paciente'] = Paciente.objects.get(prontuario=prontuario)
+        except Exception:
+            raise Http404()
+    return render(request, 'comunicado_interno.html', dados)
+
+@login_required(login_url='/login/')
+def submit_ci(request):
+    try:
+        if request.POST:
+            prontuario = int(request.POST.get('prontuario'))
+            comunicado_interno = request.POST.get('comunicado_interno')
+            paciente = Paciente.objects.get(prontuario=prontuario)
+            if paciente.comunicado_interno != comunicado_interno:
+                paciente.comunicado_interno = comunicado_interno
+                paciente.save()
+    except:
+        messages.error(request, 'Preencha o Formulário do Visitante')
+    return redirect(f'/internacao/paciente/?prontuario={prontuario}')
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):

@@ -1,9 +1,11 @@
+{% extends 'model_page.html' %}
 {% block content %}
   {% include 'model_paciente.html' %}
+  {% if paciente.comunicado_interno != '' %}
+  {% endif %}
   <h2>Visitante</h2>
   <form action="submit" method="POST" id="form">{% csrf_token %}
     <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
-    <input type="text" name="paciente" value="{{ paciente }}" hidden>
     <label for="">Nome do Visitante</label>
     <br>
     <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
