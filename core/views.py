@@ -45,18 +45,39 @@ def create_link_paciente(row):
 
 @login_required(login_url='/login/')
 def internacao(request):
-    search_term = request.GET.get('search')
-
-    if search_term:
+    paciente = request.GET.get('paciente')
+    prontuario = request.GET.get('prontuario')
+    visitante = request.GET.get('visitante')
+    if paciente:
         try:
-            pacientes = Paciente.objects.filter(nome__icontains=search_term)
+            pacientes = Paciente.objects.filter(nome__icontains=paciente)
         except:
             pacientes = Paciente.objects.all()
     else:
         pacientes = Paciente.objects.all()
-    pacientes_df = pd.DataFrame(
-        list(pacientes.values())
-    )
+    if prontuario:
+        try:
+            pacientes = Paciente.objects.get(prontuario=prontuario)
+        except:
+            pass
+    if visitante:
+        try:
+            visitantes = list(Visitante.objects.filter(nome__icontains=visitante).values())
+            prontuarios = list()
+            for objetos in visitantes:
+                for key, value in objetos.items():
+                    if key == 'paciente_id':
+                        prontuarios.append(value)
+            prontuarios = list(set(prontuarios))
+            pacientes = Paciente.objects.filter(prontuario__in=prontuarios)
+        except:
+            pass
+    try:
+        pacientes_df = pd.DataFrame(
+            list(pacientes.values())
+        )
+    except:
+        pacientes_df = pd.DataFrame(pacientes.to_dict()) # erro aqui
     pacientes_df['data_registro'] = pacientes_df['data_registro'].apply(make_naive)
     pacientes_df['data_registro'] = pacientes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
     pacientes_df['nome'] = pacientes_df.apply(create_link_paciente, axis=1)

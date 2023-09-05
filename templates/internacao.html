@@ -3,7 +3,12 @@
   <h1>Internação</h1>
   <!-- Formulário de pesquisa -->
   <form method="GET" action="{% url 'internacao' %}" id="form">
-    <input type="text" name="search" placeholder="Buscar Paciente...">
+    <label for="">Paciente</label>
+    <input type="text" name="paciente">
+    <label for="">Prontuário</label>
+    <input type="number" name="prontuario">
+    <label for="">Visitante</label>
+    <input type="text" name="visitante">
     <button type="submit" id="button">Buscar</button>
   </form>
   {% if pacientes_df %}
