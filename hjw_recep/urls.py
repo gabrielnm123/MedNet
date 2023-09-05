@@ -28,6 +28,7 @@ router.register(r'pacientes', views.PacienteViewSet) # Registra um ViewSet chama
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('internacao/', views.internacao, name='internacao'),
+    path('internacao/censo_visitante/', views.censo_visitante, name='censo_visitante'),
     path('internacao/paciente/', views.paciente, name='paciente'),
     path('internacao/paciente/comunicado_interno/', views.comunicado_interno, name='comunicado_interno'),
     path('internacao/paciente/comunicado_interno/submit', views.submit_ci, name='submit_ci'),

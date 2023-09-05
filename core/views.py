@@ -10,6 +10,7 @@ from rest_framework import viewsets # fornece uma maneira conveniente de criar v
 from .serializers import PacienteSerializer
 import pandas as pd
 from django.utils.timezone import make_naive
+from datetime import datetime
 
 # Create your views here.
 
@@ -47,7 +48,10 @@ def internacao(request):
     search_term = request.GET.get('search')
 
     if search_term:
-        pacientes = Paciente.objects.filter(nome__icontains=search_term)
+        try:
+            pacientes = Paciente.objects.filter(nome__icontains=search_term)
+        except:
+            pacientes = Paciente.objects.all()
     else:
         pacientes = Paciente.objects.all()
     pacientes_df = pd.DataFrame(
@@ -131,7 +135,7 @@ def visitante(request):
                 visitantes_df.rename(
                     columns={
                         'data_registro': 'Data de Registro',
-                        'nome': 'Nome',
+                        'nome': 'Visitante',
                         'parentesco_id': 'Parentesco',
                         'documento': 'Documento',
                         'operador_id': 'Operador',
@@ -198,6 +202,53 @@ def submit_ci(request):
     except:
         messages.error(request, 'Preencha o Formulário do Visitante')
     return redirect(f'/internacao/paciente/?prontuario={prontuario}')
+
+def create_visualization_prontuario(row):
+    prontuario = row['paciente_id']
+    return prontuario
+
+def create_visualization_paciente(row):
+    paciente = Paciente.objects.get(prontuario=row['paciente_id'])
+    return paciente
+
+@login_required(login_url='/login/')
+def censo_visitante(request):
+    search_term = request.GET.get('search')
+    if search_term:
+        try:
+            search_date = datetime.strptime(search_term, r'%Y-%m-%d').date()
+            visitantes = Visitante.objects.filter(data_registro__date=search_date)
+            visitantes_df = pd.DataFrame(
+                list(visitantes.values())
+            )
+            visitantes_df['data_registro'] = visitantes_df['data_registro'].apply(make_naive)
+            visitantes_df['data_registro'] = visitantes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
+            visitantes_df = visitantes_df[::-1]
+            visitantes_df['parentesco_id'] = visitantes_df.apply(create_visualization_parentesco_visitante, axis=1)
+            visitantes_df['operador_id'] = visitantes_df.apply(create_visualization_operador, axis=1)
+            visitantes_df['Prontuário'] = visitantes_df.apply(create_visualization_prontuario, axis=1)
+            visitantes_df['paciente_id'] = visitantes_df.apply(create_visualization_paciente, axis=1)
+            visitantes_df.rename(
+                columns={
+                    'data_registro': 'Data de Registro',
+                    'paciente_id': 'Paciente',
+                    'nome': 'Visitante',
+                    'parentesco_id': 'Parentesco',
+                    'documento': 'Documento',
+                    'operador_id': 'Operador',
+                }, inplace=True
+            )
+            visitantes_df.drop(columns='id', inplace=True)
+            visitantes_df = visitantes_df.to_html(
+                classes='table table-bordered', escape=False, index=False
+            )
+        except:
+            visitantes_df = None
+            search_term = None
+    else:
+        visitantes_df = None
+        search_term = None
+    return render(request, 'censo_visitante.html', {'visitantes_df': visitantes_df, 'data_registro': search_term})
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):

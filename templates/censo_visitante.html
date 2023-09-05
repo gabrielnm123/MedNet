@@ -1,0 +1,16 @@
+{% extends 'model_page.html' %}
+{% block content %}
+  <div align="center">
+    <h1>Censo dos Visitantes</h1>
+    <form action="{% url 'censo_visitante' %}" method="GET" id="form">
+      <label for="">Selecione a Data Relacionada:</label>
+      <input type="date" name="search" value="{{ data_registro }}">
+      <button id="button" type="submit">Buscar</button>
+    </form>
+  </div>
+  {% if visitantes_df %}
+    <div class="table-container">
+      {{ visitantes_df|safe }}
+    </div>
+  {% endif %}
+{% endblock %}
