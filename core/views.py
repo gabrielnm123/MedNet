@@ -9,7 +9,7 @@ from django.http.response import Http404
 from rest_framework import viewsets # fornece uma maneira conveniente de criar views que lidam com ações comuns em um modelo.
 from .serializers import PacienteSerializer
 import pandas as pd
-from django.utils.timezone import make_naive
+from django.utils.timezone import make_naive, localtime, now
 from datetime import datetime
 
 # Create your views here.
@@ -255,10 +255,11 @@ def create_visualization_paciente(row):
 
 @login_required(login_url='/login/')
 def censo_visitante(request):
-    search_term = request.GET.get('search')
-    if search_term:
+    data_registro = request.GET.get('data_registro')
+    hoje = localtime(now()).date().isoformat()
+    if data_registro:
         try:
-            search_date = datetime.strptime(search_term, r'%Y-%m-%d').date()
+            search_date = datetime.strptime(data_registro, r'%Y-%m-%d').date()
             visitantes = Visitante.objects.filter(data_registro__date=search_date)
             visitantes_df = pd.DataFrame(
                 list(visitantes.values())
@@ -286,11 +287,11 @@ def censo_visitante(request):
             )
         except:
             visitantes_df = None
-            search_term = None
+            data_registro = hoje
     else:
         visitantes_df = None
-        search_term = None
-    return render(request, 'censo_visitante.html', {'visitantes_df': visitantes_df, 'data_registro': search_term})
+        data_registro = hoje
+    return render(request, 'censo_visitante.html', {'visitantes_df': visitantes_df, 'data_registro': data_registro})
 
 class PacienteAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
