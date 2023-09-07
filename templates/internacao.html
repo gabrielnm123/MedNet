@@ -11,6 +11,11 @@
     <input type="text" name="visitante">
     <button type="submit" id="button">Buscar</button>
   </form>
+  {% for message in messages %}
+    <div align="center" style="color: red;">
+      <strong>Erro: </strong>{{ message }}
+    </div>
+  {% endfor %}
   {% if pacientes_df %}
     <div class="table-container">
       {{ pacientes_df|safe }}

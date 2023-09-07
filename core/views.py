@@ -48,36 +48,57 @@ def internacao(request):
     paciente = request.GET.get('paciente')
     prontuario = request.GET.get('prontuario')
     visitante = request.GET.get('visitante')
-    if paciente:
-        try:
-            pacientes = Paciente.objects.filter(nome__icontains=paciente)
-        except:
+    contador = 0
+    for valor in (paciente, prontuario, visitante):
+        if not valor:
+            contador += 1
+    if contador == 2:
+        if paciente:
+            try:
+                pacientes = Paciente.objects.filter(nome__icontains=paciente)
+            except:
+                pacientes = Paciente.objects.all()
+        else:
             pacientes = Paciente.objects.all()
+        if prontuario:
+            try:
+                pacientes = Paciente.objects.get(prontuario=prontuario)
+            except:
+                pass
+        if visitante:
+            try:
+                visitantes = list(Visitante.objects.filter(nome__icontains=visitante).values())
+                prontuarios = list()
+                for objetos in visitantes:
+                    for key, value in objetos.items():
+                        if key == 'paciente_id':
+                            prontuarios.append(value)
+                prontuarios = list(set(prontuarios))
+                pacientes = Paciente.objects.filter(prontuario__in=prontuarios)
+            except:
+                pass
+        try:
+            pacientes_df = pd.DataFrame(
+                list(pacientes.values())
+            )
+        except:
+            pacientes_df = pd.DataFrame(
+                {
+                    'prontuario': [pacientes.prontuario],
+                    'nome': [pacientes.nome],
+                    'clinica': [pacientes.clinica],
+                    'leito': [pacientes.leito],
+                    'comunicado_interno': [pacientes.comunicado_interno],
+                    'data_registro': [pacientes.data_registro]
+                }
+            )
     else:
         pacientes = Paciente.objects.all()
-    if prontuario:
-        try:
-            pacientes = Paciente.objects.get(prontuario=prontuario)
-        except:
-            pass
-    if visitante:
-        try:
-            visitantes = list(Visitante.objects.filter(nome__icontains=visitante).values())
-            prontuarios = list()
-            for objetos in visitantes:
-                for key, value in objetos.items():
-                    if key == 'paciente_id':
-                        prontuarios.append(value)
-            prontuarios = list(set(prontuarios))
-            pacientes = Paciente.objects.filter(prontuario__in=prontuarios)
-        except:
-            pass
-    try:
         pacientes_df = pd.DataFrame(
             list(pacientes.values())
         )
-    except:
-        pacientes_df = pd.DataFrame(pacientes.to_dict()) # erro aqui
+        if contador <= 1:
+            messages.error(request, 'Preencha Somente um Valor no Formulário')
     pacientes_df['data_registro'] = pacientes_df['data_registro'].apply(make_naive)
     pacientes_df['data_registro'] = pacientes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
     pacientes_df['nome'] = pacientes_df.apply(create_link_paciente, axis=1)
