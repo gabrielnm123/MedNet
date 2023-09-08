@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponse
 from core.models import *
-from django.utils.translation import gettext_lazy as _
 from dal import autocomplete
 from django import forms
 import pandas as pd
@@ -41,9 +40,9 @@ def exportar_visitantes_para_excel(modeladmin, request, queryset):
 exportar_visitantes_para_excel.short_description = "Exportar para Excel"
 
 class PacienteAdmin(admin.ModelAdmin):
-    search_fields = ['paciente']
-    list_display = ('prontuario', 'nome', 'clinica', 'leito', 'data_registro') # pra aparecer no resgistro do paciente logo de cara
-    list_filter = ('clinica',)
+    search_fields = ['nome', 'prontuario']
+    list_display = ('prontuario', 'nome', 'clinica', 'leito', 'internado', 'data_registro') # pra aparecer no resgistro do paciente logo de cara
+    list_filter = ('internado', 'clinica', 'data_registro')
 
 class VisitanteAdminForm(forms.ModelForm):
     class Meta:
@@ -55,7 +54,7 @@ class VisitanteAdminForm(forms.ModelForm):
 
 class VisitanteAdmin(admin.ModelAdmin):
     form = VisitanteAdminForm
-    search_fields = ['paciente__nome', 'visitante', 'paciente__prontuario']
+    search_fields = ['paciente__nome', 'nome', 'paciente__prontuario']
     list_display = ('get_prontuario', 'paciente', 'nome', 'get_clinica', 'get_leito', 'data_registro', 'parentesco', 'documento', 'operador')
     list_filter = ('data_registro', 'operador', 'paciente__clinica')
 
