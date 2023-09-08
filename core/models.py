@@ -25,6 +25,7 @@ class Paciente(models.Model):
     clinica = models.CharField(max_length=100, verbose_name='Clínica')
     leito = models.CharField(max_length=100, verbose_name='Leito')
     comunicado_interno = models.TextField(blank=True, null=True, verbose_name='C.I')
+    internado = models.BooleanField(default=True)
     data_registro = models.DateTimeField(
         auto_now=True, # auto_now=True, sempre coloca a hora atual
         verbose_name='Data de Registro'
