@@ -89,6 +89,7 @@ def internacao(request):
                     'clinica': [pacientes.clinica],
                     'leito': [pacientes.leito],
                     'comunicado_interno': [pacientes.comunicado_interno],
+                    'internado': [pacientes.internado],
                     'data_registro': [pacientes.data_registro]
                 }
             )
@@ -102,6 +103,9 @@ def internacao(request):
     pacientes_df['data_registro'] = pacientes_df['data_registro'].apply(make_naive)
     pacientes_df['data_registro'] = pacientes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
     pacientes_df['nome'] = pacientes_df.apply(create_link_paciente, axis=1)
+    pacientes_df = pacientes_df[
+        pacientes_df.internado == True
+    ]
     pacientes_df.drop(columns=['comunicado_interno', 'prontuario', 'internado'], inplace=True)
     pacientes_df.rename(
         columns={
@@ -114,7 +118,13 @@ def internacao(request):
     pacientes_df = pacientes_df.to_html(
         escape=False, index=False
     )
-    return render(request, 'internacao.html', {'pacientes_df': pacientes_df})
+    data = {
+        'pacientes_df': pacientes_df,
+        'paciente': paciente,
+        'prontuario': prontuario,
+        'visitante': visitante
+    }
+    return render(request, 'internacao.html', data)
 
 @login_required(login_url='/login/')
 def paciente(request):
