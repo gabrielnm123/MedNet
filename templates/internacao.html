@@ -4,11 +4,23 @@
   <!-- Formulário de pesquisa -->
   <form method="GET" action="{% url 'internacao' %}" id="form">
     <label for="">Paciente</label>
-    <input type="text" name="paciente">
+    {% if paciente %}
+      <input type="text" name="paciente" value="{{ paciente }}">
+    {% else %}
+      <input type="text" name="paciente">
+    {% endif %}
     <label for="">Prontuário</label>
-    <input type="number" name="prontuario">
+    {% if prontuario %}
+      <input type="number" name="prontuario" value="{{ prontuario }}">
+    {% else %}
+      <input type="number" name="prontuario">
+    {% endif %}
     <label for="">Visitante</label>
-    <input type="text" name="visitante">
+    {% if visitante %}
+      <input type="text" name="visitante" value="{{ visitante }}">
+    {% else %}
+      <input type="text" name="visitante">
+    {% endif %}
     <button type="submit" id="button">Buscar</button>
   </form>
   <a class="ativado" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button>Censo de Visitante</button></a>
