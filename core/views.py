@@ -102,7 +102,7 @@ def internacao(request):
     pacientes_df['data_registro'] = pacientes_df['data_registro'].apply(make_naive)
     pacientes_df['data_registro'] = pacientes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
     pacientes_df['nome'] = pacientes_df.apply(create_link_paciente, axis=1)
-    pacientes_df.drop(columns=['comunicado_interno', 'prontuario'], inplace=True)
+    pacientes_df.drop(columns=['comunicado_interno', 'prontuario', 'internado'], inplace=True)
     pacientes_df.rename(
         columns={
             'nome': 'Paciente',
@@ -112,7 +112,7 @@ def internacao(request):
         }, inplace=True
     )
     pacientes_df = pacientes_df.to_html(
-        classes='table table-bordered', escape=False, index=False
+        escape=False, index=False
     )
     return render(request, 'internacao.html', {'pacientes_df': pacientes_df})
 
@@ -185,7 +185,7 @@ def visitante(request):
                 )
                 visitantes_df.drop(columns=['id', 'paciente_id'], inplace=True)
                 dados['visitantes_df'] = visitantes_df.to_html(
-                    classes='table table-bordered', escape=False, index=False
+                    escape=False, index=False
                 )
         except Exception:
             raise Http404()
@@ -283,7 +283,7 @@ def censo_visitante(request):
             )
             visitantes_df.drop(columns='id', inplace=True)
             visitantes_df = visitantes_df.to_html(
-                classes='table table-bordered', escape=False, index=False
+                escape=False, index=False
             )
         except:
             visitantes_df = None

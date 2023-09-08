@@ -5,7 +5,7 @@
 }
 
 /* Define a largura máxima da tabela e permite rolagem horizontal */
-.table-container {
+.dataframe {
   overflow-x: auto;
   text-align: center
 }

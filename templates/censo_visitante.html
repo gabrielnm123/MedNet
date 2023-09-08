@@ -9,8 +9,6 @@
     </form>
   </div>
   {% if visitantes_df %}
-    <div class="table-container">
-      {{ visitantes_df|safe }}
-    </div>
+    {{ visitantes_df|safe }}
   {% endif %}
 {% endblock %}

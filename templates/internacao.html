@@ -18,8 +18,6 @@
     </div>
   {% endfor %}
   {% if pacientes_df %}
-    <div class="table-container">
-      {{ pacientes_df|safe }}
-    </div>
+    {{ pacientes_df|safe }}
   {% endif %}
 {% endblock %}
