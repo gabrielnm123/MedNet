@@ -56,6 +56,9 @@ def internacao(request):
         if paciente:
             try:
                 pacientes = Paciente.objects.filter(nome__icontains=paciente)
+                if not pacientes:
+                    pacientes = Paciente.objects.all()
+                    messages.error(request, 'Paciente não Encontrado')
             except:
                 pacientes = Paciente.objects.all()
         else:
@@ -64,6 +67,7 @@ def internacao(request):
             try:
                 pacientes = Paciente.objects.get(prontuario=prontuario)
             except:
+                messages.error(request, 'Prontuário não Encontrado')
                 pass
         if visitante:
             try:
@@ -75,6 +79,9 @@ def internacao(request):
                             prontuarios.append(value)
                 prontuarios = list(set(prontuarios))
                 pacientes = Paciente.objects.filter(prontuario__in=prontuarios)
+                if not pacientes:
+                    pacientes = Paciente.objects.all()
+                    messages.error(request, 'Visitante não Encontrado')
             except:
                 pass
         try:
