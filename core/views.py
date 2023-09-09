@@ -129,7 +129,8 @@ def internacao(request):
         'pacientes_df': pacientes_df,
         'paciente': paciente,
         'prontuario': prontuario,
-        'visitante': visitante
+        'visitante': visitante,
+        'usuario': request.user
     }
     return render(request, 'internacao.html', data)
 
