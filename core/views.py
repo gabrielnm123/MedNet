@@ -107,21 +107,27 @@ def internacao(request):
         )
         if contador <= 1:
             messages.error(request, 'Preencha Somente um Valor no Formulário')
-    pacientes_df['data_registro'] = pacientes_df['data_registro'].apply(make_naive)
-    pacientes_df['data_registro'] = pacientes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
-    pacientes_df['nome'] = pacientes_df.apply(create_link_paciente, axis=1)
-    pacientes_df = pacientes_df[
-        pacientes_df.internado == True
-    ]
-    pacientes_df.drop(columns=['comunicado_interno', 'prontuario', 'internado'], inplace=True)
-    pacientes_df.rename(
-        columns={
-            'nome': 'Paciente',
-            'clinica': 'Clínica',
-            'leito': 'Leito',
-            'data_registro': 'Data de Registro'
-        }, inplace=True
-    )
+    try:
+        pacientes_df['data_registro'] = pacientes_df['data_registro'].apply(make_naive)
+        pacientes_df['data_registro'] = pacientes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
+        pacientes_df['nome'] = pacientes_df.apply(create_link_paciente, axis=1)
+        pacientes_df = pacientes_df[
+            pacientes_df.internado == True
+        ]
+        pacientes_df.drop(columns=['comunicado_interno', 'prontuario', 'internado'], inplace=True)
+        pacientes_df.rename(
+            columns={
+                'nome': 'Paciente',
+                'clinica': 'Clínica',
+                'leito': 'Leito',
+                'data_registro': 'Data de Registro'
+            }, inplace=True
+        )
+    except:
+        pacientes_df['Paciente'] = list()
+        pacientes_df['Clínica'] = list()
+        pacientes_df['Leito'] = list()
+        pacientes_df['Data de Registro'] = list()
     pacientes_df = pacientes_df.to_html(
         escape=False, index=False
     )
