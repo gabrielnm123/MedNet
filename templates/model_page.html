@@ -11,7 +11,7 @@
     <a class="ativado" onclick="desativarLink(this)" href="/"><button>Internação</button></a>
   </div>
   <div align="right">
-    <p>Operador: {{ usuario }}</p>
+    <p>Operador: {{ user.first_name }}</p>
     <a class="ativado" onclick="desativarLink(this)" href="/logout"><button>Sair</button></a>
   </div>
   {% block content %} {% endblock %}
