@@ -23,7 +23,6 @@
     {% endif %}
     <button type="submit" id="button">Buscar</button>
   </form>
-  <a class="ativado" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button>Censo de Visitante</button></a>
   {% for message in messages %}
     <div align="center" style="color: red;">
       <strong>Erro: </strong>{{ message }}

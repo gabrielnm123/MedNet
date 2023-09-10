@@ -7,13 +7,18 @@
   <title>Hjw Recep</title>
 </head>
 <body>
-  <div align="left">
+<div style="display: flex; justify-content: space-between;">
+  <div>
     <a class="ativado" onclick="desativarLink(this)" href="/"><button>Internação</button></a>
   </div>
-  <div align="right">
-    <p>Operador: {{ user.first_name }}</p>
+  <div>
+    <a class="ativado" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button>Censo de Visitante</button></a>
+  </div>
+  <div>
+    <label>Operador: {{ user.first_name }}</label>
     <a class="ativado" onclick="desativarLink(this)" href="/logout"><button>Sair</button></a>
   </div>
+</div>
   {% block content %} {% endblock %}
   {% include 'model_script.html' %}
 </body>
