@@ -164,3 +164,6 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=365),  # Define o tempo de expiração do token para 1 ano
 }
+
+# Tempo de expiração de sessão do usuário em segundos
+SESSION_COKIE_AGE = 1800  
