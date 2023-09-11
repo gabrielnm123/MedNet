@@ -9,3 +9,8 @@
   overflow-x: auto;
   text-align: center
 }
+
+.horizontal {
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,27 +1,22 @@
-<!-- vai ter uma tela unica pra o login, por isso não usa os modelos -->
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-</head>
+{% extends 'model_page.html' %}
+{% block content %}
 <body>
-  <h1>Login</h1>
-  <form action="submit" method="POST">{% csrf_token %} <!-- action submit leva pra pagina submit, que é concatenado a login, ou seja ...login/submit, quando preencher o form e clicar no button --> <!-- quando utilizar um form que faz um post colocar o {% csrf_token %} pra gerar um token de segurança, se não da erro, por segurança -->
+  <form action="submit" method="POST" id="form">{% csrf_token %} <!-- action submit leva pra pagina submit, que é concatenado a login, ou seja ...login/submit, quando preencher o form e clicar no button --> <!-- quando utilizar um form que faz um post colocar o {% csrf_token %} pra gerar um token de segurança, se não da erro, por segurança -->
     <div align="center">
+      <h1>Faça Login</h1>
       <label for="">Usuário:</label>
       <input type="username" name="username"> <!-- o name server pra recuperar os dados depois por ele, isso acontece no views -->
+      <br>
       <label for="">Senha:</label>
       <input type="password" name="password">
-      <button type="submit">Entrar</button>
+      <br>
+      <button type="submit" id="button">Entrar</button>
     </div>
   </form>
 
   {% for message in messages %}
-    <div align="center">
+    <div align="center" style="color: red;">
       <strong>Erro: </strong>{{ message }}
-    </div>    
+    </div>
   {% endfor %}
-</body>
-</html>
+{% endblock %}

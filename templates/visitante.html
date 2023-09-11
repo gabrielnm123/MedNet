@@ -1,8 +1,6 @@
 {% extends 'model_page.html' %}
 {% block content %}
   {% include 'model_paciente.html' %}
-  {% if paciente.comunicado_interno != '' %}
-  {% endif %}
   <h2>Visitante</h2>
   <form action="submit" method="POST" id="form">{% csrf_token %}
     <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
@@ -21,7 +19,11 @@
     <br>
     <input type="text" name="documento" size="100" value="{{ visitante.documento }}">
     <br>
-    <button type="submit" id="button">Salvar</button>
+    <br>
+    <div align="center">
+      <button type="submit" id="button">Salvar</button>
+    </div>
+    <br>
   </form>
   {% for message in messages %}
     <div align="center" style="color: red;">
