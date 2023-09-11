@@ -282,6 +282,10 @@ def create_visualization_paciente(row):
     paciente = Paciente.objects.get(prontuario=row['paciente_id'])
     return paciente
 
+def create_visualization_clinica(row):
+    paciente = Paciente.objects.get(prontuario=row['paciente_id'])
+    return paciente.clinica
+
 def create_visualization_leito(row):
     paciente = Paciente.objects.get(prontuario=row['paciente_id'])
     return paciente.leito
@@ -299,7 +303,8 @@ def censo_visitante(request):
             )
             visitantes_df['data_registro'] = visitantes_df['data_registro'].apply(make_naive)
             visitantes_df['data_registro'] = visitantes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
-            visitantes_df.insert(2, 'Leito', visitantes_df.apply(create_visualization_leito, axis=1))
+            visitantes_df.insert(2, 'Clínica', visitantes_df.apply(create_visualization_clinica, axis=1))
+            visitantes_df.insert(3, 'Leito', visitantes_df.apply(create_visualization_leito, axis=1))
             visitantes_df = visitantes_df[::-1]
             visitantes_df['parentesco_id'] = visitantes_df.apply(create_visualization_parentesco_visitante, axis=1)
             visitantes_df['operador_id'] = visitantes_df.apply(create_visualization_operador, axis=1)
