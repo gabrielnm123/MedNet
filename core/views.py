@@ -278,13 +278,13 @@ def submit_ci(request):
         messages.error(request, 'Preencha o Formulário do Visitante')
     return redirect(f'/internacao/paciente/?prontuario={prontuario}')
 
-def create_visualization_prontuario(row):
-    prontuario = row['paciente_id']
-    return prontuario
-
 def create_visualization_paciente(row):
     paciente = Paciente.objects.get(prontuario=row['paciente_id'])
     return paciente
+
+def create_visualization_leito(row):
+    paciente = Paciente.objects.get(prontuario=row['paciente_id'])
+    return paciente.leito
 
 @login_required(login_url='/login/')
 def censo_visitante(request):
@@ -299,10 +299,10 @@ def censo_visitante(request):
             )
             visitantes_df['data_registro'] = visitantes_df['data_registro'].apply(make_naive)
             visitantes_df['data_registro'] = visitantes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
+            visitantes_df.insert(2, 'Leito', visitantes_df.apply(create_visualization_leito, axis=1))
             visitantes_df = visitantes_df[::-1]
             visitantes_df['parentesco_id'] = visitantes_df.apply(create_visualization_parentesco_visitante, axis=1)
             visitantes_df['operador_id'] = visitantes_df.apply(create_visualization_operador, axis=1)
-            visitantes_df['Prontuário'] = visitantes_df.apply(create_visualization_prontuario, axis=1)
             visitantes_df['paciente_id'] = visitantes_df.apply(create_visualization_paciente, axis=1)
             visitantes_df.rename(
                 columns={

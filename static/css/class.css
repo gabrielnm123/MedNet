@@ -4,7 +4,6 @@
   text-decoration: none;
 }
 
-/* Define a largura máxima da tabela e permite rolagem horizontal */
 .dataframe {
   overflow-x: auto;
   text-align: center
