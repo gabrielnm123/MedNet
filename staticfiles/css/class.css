@@ -1,0 +1,15 @@
+.desativado {
+  color: gray;
+  pointer-events: none;
+  text-decoration: none;
+}
+
+.dataframe {
+  overflow-x: auto;
+  text-align: center
+}
+
+.horizontal {
+  display: flex;
+  justify-content: space-between;
+}

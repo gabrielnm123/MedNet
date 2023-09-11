@@ -1,0 +1,4 @@
+/* Faz com que o texto nas células se ajuste verticalmente */
+td {
+  word-wrap: break-word;
+}
