@@ -27,7 +27,7 @@ class Paciente(models.Model):
     comunicado_interno = models.TextField(blank=True, null=True, verbose_name='C.I')
     internado = models.BooleanField(default=True)
     data_registro = models.DateTimeField(
-        auto_now=True, # auto_now=True, sempre coloca a hora atual
+        auto_now_add=True, # auto_now=True, sempre coloca a hora atual
         verbose_name='Data de Registro'
     )
 
@@ -52,7 +52,7 @@ class Paciente(models.Model):
 
 class Visitante(models.Model):
     data_registro = models.DateTimeField(
-        auto_now=True, verbose_name='Data de Registro')
+        auto_now_add=True, verbose_name='Data de Registro')
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
     nome = models.CharField(max_length=100, verbose_name='Visitante')
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
