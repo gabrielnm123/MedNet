@@ -53,6 +53,8 @@ class Paciente(models.Model):
 class Visitante(models.Model):
     data_registro = models.DateTimeField(
         auto_now_add=True, verbose_name='Data de Registro')
+    clinica = models.CharField(max_length=100, verbose_name='Clínica')
+    leito = models.CharField(max_length=100, verbose_name='Leito')
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name='Paciente')
     nome = models.CharField(max_length=100, verbose_name='Visitante')
     parentesco = models.ForeignKey(Parentesco, on_delete=models.CASCADE, verbose_name='Parentesco')
@@ -65,6 +67,12 @@ class Visitante(models.Model):
     def save(self, *args, **kwargs):
         self.nome = self.nome.upper().strip()
         self.documento = self.documento.upper().strip()
+        if self.pk is None:
+            self.clinica = self.paciente.clinica
+            self.leito = self.paciente.leito
+        elif self.clinica == '1' and self.leito =='1':
+            self.clinica = self.paciente.clinica
+            self.leito = self.paciente.leito
         super(Visitante, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
