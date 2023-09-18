@@ -208,7 +208,7 @@ def visitante(request):
                         'operador_id': 'Operador',
                     }, inplace=True
                 )
-                visitantes_df.drop(columns=['id', 'paciente_id'], inplace=True)
+                visitantes_df.drop(columns=['id', 'paciente_id', 'clinica', 'leito'], inplace=True)
                 dados['visitantes_df'] = visitantes_df.to_html(
                     escape=False, index=False
                 )
@@ -282,14 +282,6 @@ def create_visualization_paciente(row):
     paciente = Paciente.objects.get(prontuario=row['paciente_id'])
     return paciente
 
-def create_visualization_clinica(row):
-    paciente = Paciente.objects.get(prontuario=row['paciente_id'])
-    return paciente.clinica
-
-def create_visualization_leito(row):
-    paciente = Paciente.objects.get(prontuario=row['paciente_id'])
-    return paciente.leito
-
 @login_required(login_url='/login/')
 def censo_visitante(request):
     data_registro = request.GET.get('data_registro')
@@ -303,8 +295,6 @@ def censo_visitante(request):
             )
             visitantes_df['data_registro'] = visitantes_df['data_registro'].apply(make_naive)
             visitantes_df['data_registro'] = visitantes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
-            visitantes_df.insert(2, 'Clínica', visitantes_df.apply(create_visualization_clinica, axis=1))
-            visitantes_df.insert(3, 'Leito', visitantes_df.apply(create_visualization_leito, axis=1))
             visitantes_df = visitantes_df[::-1]
             visitantes_df['parentesco_id'] = visitantes_df.apply(create_visualization_parentesco_visitante, axis=1)
             visitantes_df['operador_id'] = visitantes_df.apply(create_visualization_operador, axis=1)
@@ -313,6 +303,8 @@ def censo_visitante(request):
                 columns={
                     'data_registro': 'Data de Registro',
                     'paciente_id': 'Paciente',
+                    'clinica': 'Clínica',
+                    'leito': 'Leito',
                     'nome': 'Visitante',
                     'parentesco_id': 'Parentesco',
                     'documento': 'Documento',
