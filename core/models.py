@@ -70,10 +70,6 @@ class Visitante(models.Model):
         if self.pk is None:
             self.clinica = self.paciente.clinica
             self.leito = self.paciente.leito
-        elif self.clinica == '1' and self.leito =='1':
-            self.clinica = self.paciente.clinica
-            self.leito = self.paciente.leito
-        super(Visitante, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.nome
