@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-s3@^1rn&cwt+%(%r!)a*6*28v9x3jk@ieyc7f*f$abz=300s*e
 DEBUG = 'RENDER' not in os.environ
 
 # https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
