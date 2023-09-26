@@ -6,5 +6,5 @@
 <p>Clínica: {{ paciente.clinica }}</p>
 <p>Leito: {{ paciente.leito }}</p>
 {% if paciente.comunicado_interno != '' %}
-  <p>C.I.: {{ paciente.comunicado_interno }}</p>
+  <p>C.I.: <strong>{{ paciente.comunicado_interno }}</strong></p>
 {% endif %}
