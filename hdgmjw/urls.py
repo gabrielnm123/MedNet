@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from core import views
+from atendimento import views
 from django.views.generic import RedirectView
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # configurando o rotiador
 router = routers.DefaultRouter()
-router.register(r'pacientes', views.PacienteViewSet
+router.register(r'pacientes', views.PacienteViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
