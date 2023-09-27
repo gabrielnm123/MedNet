@@ -1,5 +1,5 @@
 """
-URL configuration for hjw_recep project.
+URL configuration for hdgmjw project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -23,10 +23,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # configurando o rotiador
 router = routers.DefaultRouter()
-router.register(r'pacientes', views.PacienteViewSet) # Registra um ViewSet chamado PacienteViewSet para o endpoint 'pacientes' usando o método .register(). Isso cria automaticamente as URLs RESTful para as operações CRUD (Create, Read, Update, Delete) relacionadas aos pacientes
+router.register(r'pacientes', views.PacienteViewSet
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls),
     path('internacao/', views.internacao, name='internacao'),
     path('internacao/censo_visitante/', views.censo_visitante, name='censo_visitante'),
     path('internacao/paciente/', views.paciente, name='paciente'),
