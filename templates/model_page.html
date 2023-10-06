@@ -8,21 +8,23 @@
   <title>Hjw Recep</title>
 </head>
 <body>
-  <div class="horizontal">
-    <div>
-      <a class="ativado" onclick="desativarLink(this)" href="/"><button>Internação</button></a>
+  {% if user.is_authenticated %}
+    <div class="horizontal">
+      <div>
+        <a class="ativado" onclick="desativarLink(this)" href="/"><button>Internação</button></a>
+      </div>
+      <div>
+        <a class="ativado" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button>Censo de Visitante</button></a>
+      </div>
+      <div>
+        <label>Operador: {{ user.first_name }}</label>
+        {% if user.is_staff %}
+          <a class="ativado" onclick="desativarLink(this)" href="/admin"><button>Admin</button></a>
+        {% endif %}
+        <a class="ativado" onclick="desativarLink(this)" href="/logout"><button>Sair</button></a>
+      </div>
     </div>
-    <div>
-      <a class="ativado" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button>Censo de Visitante</button></a>
-    </div>
-    <div>
-      <label>Operador: {{ user.first_name }}</label>
-      {% if user.is_staff %}
-        <a class="ativado" onclick="desativarLink(this)" href="/admin"><button>Admin</button></a>
-      {% endif %}
-      <a class="ativado" onclick="desativarLink(this)" href="/logout"><button>Sair</button></a>
-    </div>
-  </div>
+  {% endif %}
   {% block content %} {% endblock %}
   {% include 'model_script.html' %}
 </body>
