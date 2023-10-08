@@ -9,19 +9,19 @@
 </head>
 <body>
   {% if user.is_authenticated %}
-    <div class="horizontal">
+    <div class="menu">
       <div>
-        <a class="ativado" onclick="desativarLink(this)" href="/"><button>Internação</button></a>
+        <a onclick="desativarLink(this)" href="/">Internação</a>
       </div>
       <div>
-        <a class="ativado" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button>Censo de Visitante</button></a>
+        <a onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a>
       </div>
       <div>
         <label>Operador: {{ user.first_name }}</label>
         {% if user.is_staff %}
-          <a class="ativado" onclick="desativarLink(this)" href="/admin"><button>Admin</button></a>
+          <a onclick="desativarLink(this)" href="/admin">Admin</a>
         {% endif %}
-        <a class="ativado" onclick="desativarLink(this)" href="/logout"><button>Sair</button></a>
+        <a onclick="desativarLink(this)" href="/logout">Sair</a>
       </div>
     </div>
   {% endif %}

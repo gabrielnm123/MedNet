@@ -9,7 +9,19 @@
   text-align: center
 }
 
-.horizontal {
+.menu {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  background-color: #74baa0;
+  height: 100px;
+}
+
+.menu a {
+  padding: 
+  justify-content: center;
+  align-items: center;
+  background-color: #122a57;
+  color: white;
+  border-radius: 30px;
 }

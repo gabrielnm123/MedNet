@@ -1,5 +1,5 @@
 <br>
-<a align="" class="ativado" onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}"><button>Paciente</button></a>
+<a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}"><button>Paciente</button></a>
 <h1>Detalhes do Paciente</h1>
 <p>Nome: {{ paciente.nome }}</p>
 <p>Prontuário: {{ paciente.prontuario }}</p>
