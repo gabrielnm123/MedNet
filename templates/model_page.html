@@ -11,17 +11,17 @@
   {% if user.is_authenticated %}
     <div class="menu">
       <div>
-        <a onclick="desativarLink(this)" href="/">Internação</a>
+        <a class="a-button" onclick="desativarLink(this)" href="/">Internação</a>
       </div>
       <div>
-        <a onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a>
+        <a class="a-button" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a>
       </div>
-      <div>
+      <div class="user">
         <label>Operador: {{ user.first_name }}</label>
         {% if user.is_staff %}
-          <a onclick="desativarLink(this)" href="/admin">Admin</a>
+          <a class="a-button" onclick="desativarLink(this)" href="/admin">Admin</a>
         {% endif %}
-        <a onclick="desativarLink(this)" href="/logout">Sair</a>
+        <a class="a-button" onclick="desativarLink(this)" href="/logout">Sair</a>
       </div>
     </div>
   {% endif %}
