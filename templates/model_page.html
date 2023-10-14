@@ -9,7 +9,7 @@
 </head>
 <body>
   {% if user.is_authenticated %}
-    <nav>
+  <nav>
       <ul class="menu">
         <li class="menu-side">
           <a class="button" onclick="desativarLink(this)" href="/">Recepção Principal</a>
@@ -17,7 +17,12 @@
             <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}" class="button">Paciente</a>
           {% endif %}
         </li>
-        <li><a class="button a-center" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a></li>
+        <li class="menu-center">
+          <figure class="brasao">
+            <img src="{% static 'images/brasao.png' %}" alt="">
+          </figure>
+          <a class="button a-center" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a>
+        </li>
         <li class="menu-side">
           <label><img src="{% static 'images/user.webp' %}" alt="imagem que representa um usuário"> {{ user.first_name }}</label>
           {% if user.is_staff %}
