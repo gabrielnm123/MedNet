@@ -21,10 +21,15 @@
   align-items: center;
   background-color: #74baa0;
   height: 100px;
+  padding: 0;
 }
 
-.a-button {
-  margin: 10px;
+.menu li {
+  list-style-type: none;
+}
+
+.button {
+  margin: 1px;
   display: flex;
   width: 150px;
   height: 30px;
@@ -33,25 +38,66 @@
   background-color: #122a57;
   color: white;
   border-radius: 30px;
+  user-select: none;
+  /* Adiciona uma sombra para dar uma aparência 3D */
+  box-shadow: 4px 4px 6px rgba(0,0,0,0.3);
+  
+  /* Transição para suavizar o efeito de clique */
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Modifica a sombra quando o botão é clicado */
+.button:active {
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 .user {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 1px;
 }
 
-table {
-  width: 100%;
+.user img {
+  width: 20px;
+  height: 20px;
+  margin: 0 2px;
+}
+
+.user label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: small;
+}
+
+.table {
+  display: flex;
+  justify-content: center;
+}
+
+.table table {
+  max-width: 100%;
   table-layout: fixed;
 }
 
-/* Faz com que o texto nas células se ajuste verticalmente */
-td {
-  word-wrap: break-word;
+.table th, .table td {
+  white-space: normal; /* Permite que o texto seja quebrado e passe para a próxima linha */
+  word-break: break-word; /* Quebra palavras muito grandes para a próxima linha */
+  text-align: center; /* Centraliza o texto nas células da tabela */
 }
 
-th {
-  text-align: center
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 150px;
+}
+
+.form div {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
 }

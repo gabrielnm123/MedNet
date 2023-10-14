@@ -30,7 +30,9 @@
       <strong>Erro: </strong>{{ message }}
     </div>
   {% endfor %}
-  {% if visitantes_df %}
-    {{ visitantes_df|safe }}
-  {% endif %}
+  <nav class="table">
+    {% if visitantes_df %}
+      {{ visitantes_df|safe }}
+    {% endif %}
+  </nav>
 {% endblock %}

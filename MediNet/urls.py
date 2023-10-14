@@ -27,15 +27,15 @@ router.register(r'pacientes', views.PacienteViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('internacao/', views.internacao, name='internacao'),
-    path('internacao/censo_visitante/', views.censo_visitante, name='censo_visitante'),
-    path('internacao/paciente/', views.paciente, name='paciente'),
-    path('internacao/paciente/comunicado_interno/', views.comunicado_interno, name='comunicado_interno'),
-    path('internacao/paciente/comunicado_interno/submit', views.submit_ci, name='submit_ci'),
-    path('internacao/paciente/visitante/', views.visitante, name='visitante'),
-    path('internacao/paciente/visitante/submit', views.submit_visitante, name='submit_visitante'),
-    path('internacao/paciente/visitante/delete', views.delete_visitante, name='delete_visitante'),
-    path('', RedirectView.as_view(url='/internacao/')), # pra sempre abrir a internação
+    path('recepcao_principal/', views.recepcao_principal, name='recepcao_principal'),
+    path('recepcao_principal/censo_visitante/', views.censo_visitante, name='censo_visitante'),
+    path('recepcao_principal/paciente/', views.paciente, name='paciente'),
+    path('recepcao_principal/paciente/comunicado_interno/', views.comunicado_interno, name='comunicado_interno'),
+    path('recepcao_principal/paciente/comunicado_interno/submit', views.submit_ci, name='submit_ci'),
+    path('recepcao_principal/paciente/visitante/', views.visitante, name='visitante'),
+    path('recepcao_principal/paciente/visitante/submit', views.submit_visitante, name='submit_visitante'),
+    path('recepcao_principal/paciente/visitante/delete', views.delete_visitante, name='delete_visitante'),
+    path('', RedirectView.as_view(url='/recepcao_principal/')), # pra sempre abrir a internação
     # path('', RedirectView.as_view(url='/admin/')),
     path('login/', views.login_user, name='login'), # criando a parte de login
     path('login/submit', views.submit_login, name='submit_login'), # tem que tirar a barra do final se não da erro quando for fazer o post e get

@@ -1,0 +1,44 @@
+{% extends 'model_page.html' %}
+{% block content %}
+<!-- Formulário de pesquisa -->
+<form method="GET" action="{% url 'recepcao_principal' %}" id="form" class="form">
+    <h1>Recepção Principal</h1>
+    <div>
+      <section>
+        <label for="">Paciente</label>
+        {% if paciente %}
+          <input type="text" name="paciente" value="{{ paciente }}">
+        {% else %}
+          <input type="text" name="paciente">
+        {% endif %}
+      </section>
+      <section>
+        <label for="">Prontuário</label>
+        {% if prontuario %}
+          <input type="number" name="prontuario" value="{{ prontuario }}">
+        {% else %}
+          <input type="number" name="prontuario">
+        {% endif %}
+      </section>
+      <section>
+        <label for="">Visitante</label>
+        {% if visitante %}
+          <input type="text" name="visitante" value="{{ visitante }}">
+        {% else %}
+          <input type="text" name="visitante">
+        {% endif %}
+      </section>
+    </div>
+    <button type="submit" id="button" class="button">Buscar</button>
+  </form>
+  {% for message in messages %}
+    <div align="center" style="color: red;">
+      <strong>Erro: </strong>{{ message }}
+    </div>
+  {% endfor %}
+  <nav class="table">
+    {% if pacientes_df %}
+      {{ pacientes_df|safe }}
+    {% endif %}
+  </nav>
+{% endblock %}

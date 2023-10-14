@@ -8,7 +8,9 @@
       <button id="button" type="submit">Buscar</button>
     </form>
   </div>
-  {% if visitantes_df %}
-    {{ visitantes_df|safe }}
-  {% endif %}
+  <nav class="table">
+    {% if visitantes_df %}
+      {{ visitantes_df|safe }}
+    {% endif %}
+  </nav>
 {% endblock %}

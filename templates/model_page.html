@@ -9,21 +9,19 @@
 </head>
 <body>
   {% if user.is_authenticated %}
-    <div class="menu">
-      <div>
-        <a class="a-button" onclick="desativarLink(this)" href="/">Internação</a>
-      </div>
-      <div>
-        <a class="a-button" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a>
-      </div>
-      <div class="user">
-        <label>Operador: {{ user.first_name }}</label>
-        {% if user.is_staff %}
-          <a class="a-button" onclick="desativarLink(this)" href="/admin">Admin</a>
-        {% endif %}
-        <a class="a-button" onclick="desativarLink(this)" href="/logout">Sair</a>
-      </div>
-    </div>
+    <nav>
+      <ul class="menu">
+        <li><a class="button" onclick="desativarLink(this)" href="/">Recepção Principal</a></li>
+        <li><a class="button a-center" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a></li>
+        <li class="user">
+          <label><img src="{% static 'images/user.webp' %}" alt="imagem que representa um usuário"> {{ user.first_name }}</label>
+          {% if user.is_staff %}
+            <a class="button" onclick="desativarLink(this)" href="/admin">Admin</a>
+          {% endif %}
+          <a class="button" onclick="desativarLink(this)" href="/logout">Sair</a>
+        </li>
+      </ul>
+    </nav>
   {% endif %}
   {% block content %} {% endblock %}
   {% include 'model_script.html' %}

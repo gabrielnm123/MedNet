@@ -37,14 +37,14 @@ def logout_user(request):
 def delete_visitante(request, prontuario, visitante_id):
     visitante = Visitante.objects.get(id=visitante_id)
     visitante.delete()
-    return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
+    return redirect(f'/recepcao_principal/paciente/visitante?prontuario={prontuario}')
 
 def create_link_paciente(row):
-    url = r'<a class="ativado" onclick="desativarLink(this)" href="/internacao/paciente/?prontuario='+f'{row["prontuario"]}">'+f'{row["nome"]}</a>'
+    url = r'<a class="ativado" onclick="desativarLink(this)" href="/recepcao_principal/paciente/?prontuario='+f'{row["prontuario"]}">'+f'{row["nome"]}</a>'
     return url
 
 @login_required(login_url='/login/')
-def internacao(request):
+def recepcao_principal(request):
     paciente = request.GET.get('paciente')
     prontuario = request.GET.get('prontuario')
     visitante = request.GET.get('visitante')
@@ -137,7 +137,7 @@ def internacao(request):
         'prontuario': prontuario,
         'visitante': visitante
     }
-    return render(request, 'internacao.html', data)
+    return render(request, 'recepcao_principal.html', data)
 
 @login_required(login_url='/login/')
 def paciente(request):
@@ -152,11 +152,11 @@ def paciente(request):
     return render(request, 'paciente.html', dados)
 
 def create_link_autocomplete_visitante(row):
-    url = r'<a href="/internacao/paciente/visitante?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["nome"]}'+r'</a>'
+    url = r'<a href="/recepcao_principal/paciente/visitante?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["nome"]}'+r'</a>'
     return url
 
 def create_link_delete_visitante(row):
-    url = r'<a class="ativado" onclick="desativarLink(this)" href="/internacao/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'<button>{row["Excluir Visitante"]}</button>'+r'</a>'
+    url = r'<a class="ativado" onclick="desativarLink(this)" href="/recepcao_principal/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'<button>{row["Excluir Visitante"]}</button>'+r'</a>'
     return url
 
 def create_visualization_parentesco_visitante(row):
@@ -176,7 +176,7 @@ def delete_visitante(request):
         visitante.delete()
     except Exception:
         raise Http404()
-    return redirect(f'/internacao/paciente/visitante?prontuario={prontuario}')
+    return redirect(f'/recepcao_principal/paciente/visitante?prontuario={prontuario}')
 
 @login_required(login_url='/login/')
 def visitante(request):
@@ -250,7 +250,7 @@ def submit_visitante(request):
             )
     except Exception as error:
         messages.error(request, 'Preencha Corretamente o Formulário')
-    return redirect(f'/internacao/paciente/visitante/?prontuario={prontuario}')
+    return redirect(f'/recepcao_principal/paciente/visitante/?prontuario={prontuario}')
 
 @login_required(login_url='/login/')
 def comunicado_interno(request):
@@ -276,7 +276,7 @@ def submit_ci(request):
                 paciente.save()
     except:
         messages.error(request, 'Preencha o Formulário do Visitante')
-    return redirect(f'/internacao/paciente/?prontuario={prontuario}')
+    return redirect(f'/recepcao_principal/paciente/?prontuario={prontuario}')
 
 def create_visualization_paciente(row):
     paciente = Paciente.objects.get(prontuario=row['paciente_id'])
