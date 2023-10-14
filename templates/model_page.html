@@ -11,9 +11,14 @@
   {% if user.is_authenticated %}
     <nav>
       <ul class="menu">
-        <li><a class="button" onclick="desativarLink(this)" href="/">Recepção Principal</a></li>
+        <li class="menu-side">
+          <a class="button" onclick="desativarLink(this)" href="/">Recepção Principal</a>
+          {% if comunicado_interno or visitante %}
+            <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}" class="button">Paciente</a>
+          {% endif %}
+        </li>
         <li><a class="button a-center" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a></li>
-        <li class="user">
+        <li class="menu-side">
           <label><img src="{% static 'images/user.webp' %}" alt="imagem que representa um usuário"> {{ user.first_name }}</label>
           {% if user.is_staff %}
             <a class="button" onclick="desativarLink(this)" href="/admin">Admin</a>

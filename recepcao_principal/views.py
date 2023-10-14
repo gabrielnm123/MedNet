@@ -220,6 +220,7 @@ def visitante(request):
         except Exception:
             raise Http404()
     dados['parentescos'] = Parentesco.objects.all()
+    dados['visitante'] = True
     return render(request, 'visitante.html', dados)
 
 @login_required(login_url='/login/')
@@ -260,6 +261,7 @@ def comunicado_interno(request):
     if prontuario:
         try:
             dados['paciente'] = Paciente.objects.get(prontuario=prontuario)
+            dados['comunicado_interno'] = True
         except Exception:
             raise Http404()
     return render(request, 'comunicado_interno.html', dados)
