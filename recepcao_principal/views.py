@@ -152,11 +152,11 @@ def paciente(request):
     return render(request, 'paciente.html', dados)
 
 def create_link_autocomplete_visitante(row):
-    url = r'<a href="/recepcao_principal/paciente/visitante?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["nome"]}'+r'</a>'
+    url = r'<a class="ativado" onclick="desativarLink(this)" href="/recepcao_principal/paciente/visitante?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["nome"]}'+r'</a>'
     return url
 
 def create_link_delete_visitante(row):
-    url = r'<a class="ativado" onclick="desativarLink(this)" href="/recepcao_principal/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'<button>{row["Excluir Visitante"]}</button>'+r'</a>'
+    url = r'<a class="ativado" onclick="desativarLink(this)" href="/recepcao_principal/paciente/visitante/delete?prontuario='+f'{row["paciente_id"]}'+'&visitante_id='+f'{row["id"]}"'+r'>'+f'{row["Excluir Visitante"]}'+r'</a>'
     return url
 
 def create_visualization_parentesco_visitante(row):
@@ -220,7 +220,7 @@ def visitante(request):
         except Exception:
             raise Http404()
     dados['parentescos'] = Parentesco.objects.all()
-    dados['visitante'] = True
+    dados['boolean_visitante'] = True
     return render(request, 'visitante.html', dados)
 
 @login_required(login_url='/login/')
@@ -261,7 +261,7 @@ def comunicado_interno(request):
     if prontuario:
         try:
             dados['paciente'] = Paciente.objects.get(prontuario=prontuario)
-            dados['comunicado_interno'] = True
+            dados['boolean_comunicado_interno'] = True
         except Exception:
             raise Http404()
     return render(request, 'comunicado_interno.html', dados)
@@ -315,7 +315,7 @@ def censo_visitante(request):
             )
             visitantes_df.drop(columns='id', inplace=True)
             visitantes_df = visitantes_df.to_html(
-                escape=False, index=False
+                escape=False, index=False, classes='censo_visitante_dataframe'
             )
         except:
             visitantes_df = None

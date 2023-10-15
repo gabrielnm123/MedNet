@@ -1,35 +1,37 @@
 {% extends 'model_page.html' %}
 {% block content %}
   {% include 'model_paciente.html' %}
-  <h2>Visitante</h2>
-  <form action="submit" method="POST" id="form">{% csrf_token %}
+  <form action="submit" method="POST" id="form" class="visitante">{% csrf_token %}
+    <h2>Visitante</h2>
     <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
-    <label for="">Nome do Visitante</label>
-    <br>
-    <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
-    <label for="">Parentesco</label>
-    <select name="parentesco" id="parentesco">
-      <option value="" selected>Selecione Parentesco...</option>
-      {% for parentesco in parentescos %}
-        <option value="{{ parentesco.tipo }}" {% if parentesco.tipo == visitante.parentesco.tipo %}selected{% endif %}>{{ parentesco.tipo }}</option>
-      {% endfor %}
-    </select>
-    <br>
-    <label for="">Documento</label>
-    <br>
-    <input type="text" name="documento" size="100" value="{{ visitante.documento }}">
-    <br>
-    <br>
-    <div align="center">
-      <button type="submit" id="button" class="button">Salvar</button>
-    </div>
-    <br>
+    <section>
+      <section class="nome-documento">
+        <section class="sections">
+          <label for="">Nome do Visitante</label>
+          <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
+        </section>
+        <section class="sections">
+          <label for="">Documento</label>
+          <input type="text" name="documento" size="100" value="{{ visitante.documento }}">
+        </section>
+      </section>
+      <section class="sections">
+        <label for="">Parentesco</label>
+        <select name="parentesco" id="parentesco">
+          <option value="" selected>Selecione Parentesco...</option>
+          {% for parentesco in parentescos %}
+            <option value="{{ parentesco.tipo }}" {% if parentesco.tipo == visitante.parentesco.tipo %}selected{% endif %}>{{ parentesco.tipo }}</option>
+          {% endfor %}
+        </select>
+      </section>
+    </section>
+    <button type="submit" id="button" class="button">Salvar</button>
+    {% for message in messages %}
+      <section class="error">
+        <strong>Erro: </strong>{{ message }}
+      </section>
+    {% endfor %}
   </form>
-  {% for message in messages %}
-    <div align="center" style="color: red;">
-      <strong>Erro: </strong>{{ message }}
-    </div>
-  {% endfor %}
   <nav class="table">
     {% if visitantes_df %}
       {{ visitantes_df|safe }}

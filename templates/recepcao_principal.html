@@ -3,7 +3,7 @@
 <!-- Formulário de pesquisa -->
 <form method="GET" action="{% url 'recepcao_principal' %}" id="form" class="form">
     <h1>Recepção Principal</h1>
-    <div>
+    <header>
       <section>
         <label for="">Paciente</label>
         {% if paciente %}
@@ -28,14 +28,14 @@
           <input type="text" name="visitante">
         {% endif %}
       </section>
-    </div>
+    </header>
     <button type="submit" id="button" class="button">Buscar</button>
+    {% for message in messages %}
+      <section class="error">
+        <strong>Erro: </strong>{{ message }}
+      </section>
+    {% endfor %}
   </form>
-  {% for message in messages %}
-    <div align="center" style="color: red;">
-      <strong>Erro: </strong>{{ message }}
-    </div>
-  {% endfor %}
   <nav class="table">
     {% if pacientes_df %}
       {{ pacientes_df|safe }}

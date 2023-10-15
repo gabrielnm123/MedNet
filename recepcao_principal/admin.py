@@ -55,7 +55,7 @@ class VisitanteAdminForm(forms.ModelForm):
 class VisitanteAdmin(admin.ModelAdmin):
     form = VisitanteAdminForm
     search_fields = ['paciente__nome', 'nome', 'paciente__prontuario']
-    list_display = ('get_prontuario', 'paciente', 'nome', 'get_clinica', 'get_leito', 'data_registro', 'parentesco', 'documento', 'operador')
+    list_display = ('get_prontuario', 'id', 'paciente', 'nome', 'get_clinica', 'get_leito', 'data_registro', 'parentesco', 'documento', 'operador')
     list_filter = ('data_registro', 'operador', 'paciente__clinica')
 
     def get_prontuario(self, obj):
