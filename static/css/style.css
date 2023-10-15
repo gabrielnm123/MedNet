@@ -136,9 +136,10 @@ a:active {
   width: 100%;
 }
 
-.visitante-editar-ci {
+.visitante-buttons {
   display: flex;
   justify-content: space-evenly;
+  margin: 15px;
 }
 
 .visitante {
@@ -181,8 +182,7 @@ a:active {
   background: linear-gradient(to bottom, #fdfeba, #feec40);
   justify-content: center;
   padding: 10px;
-  margin-top: 5px;
-  margin-bottom: 10px;
+  margin-top: 10px;
   border-radius: 30px;
 }
 
