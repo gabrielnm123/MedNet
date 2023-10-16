@@ -130,7 +130,7 @@ a:active {
   margin: 5px;
 }
 
-.form header {
+.header-recepcao-principal {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
@@ -160,7 +160,7 @@ a:active {
   margin: 2px;
 }
 
-.visitante .nome-documento {
+.nome-documento {
   display: flex;
   flex-direction: column;
 }
@@ -202,4 +202,15 @@ textarea[name='comunicado_interno'] {
 
 .error {
   color: red;
+}
+
+.label-login, .input-login {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 1px;
+}
+
+.login {
+  display: flex;
 }

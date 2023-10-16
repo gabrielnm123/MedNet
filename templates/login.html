@@ -2,21 +2,24 @@
 {% block content %}
 <body>
   <form action="submit" method="POST" id="form">{% csrf_token %} <!-- action submit leva pra pagina submit, que é concatenado a login, ou seja ...login/submit, quando preencher o form e clicar no button --> <!-- quando utilizar um form que faz um post colocar o {% csrf_token %} pra gerar um token de segurança, se não da erro, por segurança -->
-    <div align="center">
+    <header class="form">
       <h1>Faça Login</h1>
-      <label for="">Usuário:</label>
-      <input type="username" name="username"> <!-- o name server pra recuperar os dados depois por ele, isso acontece no views -->
-      <br>
-      <label for="">Senha:</label>
-      <input type="password" name="password">
-      <br>
-      <button type="submit" id="button">Entrar</button>
-    </div>
+      <section class="login">
+        <section class="label-login">
+          <label for="">Usuário:</label>
+          <label for="">Senha:</label>
+        </section>
+        <section class="input-login">
+          <input type="username" name="username"> <!-- o name server pra recuperar os dados depois por ele, isso acontece no views -->
+          <input type="password" name="password">
+        </section>
+      </section>
+      <button type="submit" id="button" class="button">Entrar</button>
+      {% for message in messages %}
+        <section class="error"">
+          <strong>Erro: </strong>{{ message }}
+        </section>
+      {% endfor %}
+    </header>
   </form>
-
-  {% for message in messages %}
-    <div align="center" style="color: red;">
-      <strong>Erro: </strong>{{ message }}
-    </div>
-  {% endfor %}
 {% endblock %}
