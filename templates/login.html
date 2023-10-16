@@ -1,25 +1,23 @@
 {% extends 'model_page.html' %}
 {% block content %}
 <body>
-  <form action="submit" method="POST" id="form">{% csrf_token %} <!-- action submit leva pra pagina submit, que é concatenado a login, ou seja ...login/submit, quando preencher o form e clicar no button --> <!-- quando utilizar um form que faz um post colocar o {% csrf_token %} pra gerar um token de segurança, se não da erro, por segurança -->
-    <header class="form">
-      <h1>Faça Login</h1>
-      <section class="login">
-        <section class="label-login">
-          <label for="">Usuário:</label>
-          <label for="">Senha:</label>
-        </section>
-        <section class="input-login">
-          <input type="username" name="username"> <!-- o name server pra recuperar os dados depois por ele, isso acontece no views -->
-          <input type="password" name="password">
-        </section>
+  <form action="submit" method="POST" id="form" class="form">{% csrf_token %} <!-- action submit leva pra pagina submit, que é concatenado a login, ou seja ...login/submit, quando preencher o form e clicar no button --> <!-- quando utilizar um form que faz um post colocar o {% csrf_token %} pra gerar um token de segurança, se não da erro, por segurança -->
+    <h1>Faça Login</h1>
+    <section class="login">
+      <section class="label-login">
+        <label for="">Usuário:</label>
+        <label for="">Senha:</label>
       </section>
-      <button type="submit" id="button" class="button">Entrar</button>
-      {% for message in messages %}
-        <section class="error"">
-          <strong>Erro: </strong>{{ message }}
-        </section>
-      {% endfor %}
-    </header>
+      <section class="input-login">
+        <input type="username" name="username"> <!-- o name server pra recuperar os dados depois por ele, isso acontece no views -->
+        <input type="password" name="password">
+      </section>
+    </section>
+    <button type="submit" id="button" class="button">Entrar</button>
+    {% for message in messages %}
+      <section class="error"">
+        <strong>Erro: </strong>{{ message }}
+      </section>
+    {% endfor %}
   </form>
 {% endblock %}

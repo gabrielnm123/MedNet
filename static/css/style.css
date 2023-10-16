@@ -211,6 +211,11 @@ textarea[name='comunicado_interno'] {
   margin: 1px;
 }
 
+.label-login *, .input-login * {
+  margin: 1px;
+}
+
 .login {
   display: flex;
+  justify-content: center;
 }

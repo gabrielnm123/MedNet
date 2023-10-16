@@ -15,6 +15,8 @@ from datetime import datetime
 # Create your views here.
 
 def login_user(request):
+    if request.user.is_authenticated:
+        return redirect('/recepcao_principal')
     return render(request, 'login.html') # abrir a pagina login.html
 
 def submit_login(request):
@@ -34,7 +36,7 @@ def logout_user(request):
     return redirect('/')
 
 @login_required(login_url='/login/')
-def delete_visitante(request, prontuario, visitante_id):
+def delete_visitante(prontuario, visitante_id):
     visitante = Visitante.objects.get(id=visitante_id)
     visitante.delete()
     return redirect(f'/recepcao_principal/paciente/visitante?prontuario={prontuario}')
