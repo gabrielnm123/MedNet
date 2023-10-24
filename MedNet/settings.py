@@ -91,7 +91,7 @@ if is_server:
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('MYSQL_DATABASE'),
-        'HOST': '172.17.0.5',
+        'HOST': '172.17.0.2',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': os.environ.get('MYSQL_ROOT_PASSWORD'),

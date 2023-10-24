@@ -5,3 +5,4 @@ backup_hjw_recep.sql
 .vscode
 backup_hjw_recep_dev.sql
 backup_hjw_recep_main.sql
+docker-entrypoint-initdb.d
