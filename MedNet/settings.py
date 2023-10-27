@@ -31,7 +31,7 @@ if is_server:
     SECRET_KEY = 'django-insecure-nikl!)0eq5-#4lx1d+qh^0vz@qyp41*#xugk+bf0^vim^8smpr'
 
     # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = True
+    DEBUG = False
 
     ALLOWED_HOSTS = ['*']
 
@@ -91,7 +91,7 @@ if is_server:
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('MYSQL_DATABASE'),
-        'HOST': '172.17.0.2',
+        'HOST': '172.18.0.2',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': os.environ.get('MYSQL_ROOT_PASSWORD'),
