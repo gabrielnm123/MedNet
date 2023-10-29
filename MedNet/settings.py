@@ -15,78 +15,27 @@ from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
 
-is_server = True
 
-if is_server:
-    load_dotenv()
+load_dotenv()
 
-    # Build paths inside the project like this: BASE_DIR / 'subdir'.
-    BASE_DIR = Path(__file__).resolve().parent.parent
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-    # Quick-start development settings - unsuitable for production
-    # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-    # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = 'django-insecure-nikl!)0eq5-#4lx1d+qh^0vz@qyp41*#xugk+bf0^vim^8smpr'
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-nikl!)0eq5-#4lx1d+qh^0vz@qyp41*#xugk+bf0^vim^8smpr'
 
+# Define qual banco de dados vai usar, container docker ou da plataforma planetscale, se True é do container
+DATABASES_IS_DOCKER = False
+
+# Database
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+if DATABASES_IS_DOCKER:
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = False
-
-    ALLOWED_HOSTS = ['*']
-
-
-    # Application definition
-
-    INSTALLED_APPS = [
-        'django.contrib.admin',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-        'recepcao_principal',
-        'dal',
-        'dal_select2',
-        'rest_framework',
-        'rest_framework_simplejwt',
-    ]
-
-    MIDDLEWARE = [
-        'django.middleware.security.SecurityMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.common.CommonMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        'whitenoise.middleware.WhiteNoiseMiddleware',
-    ]
-
-    ROOT_URLCONF = "MedNet.urls"
-
-    TEMPLATES = [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [os.path.join(BASE_DIR, 'templates')],
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.debug',
-                    'django.template.context_processors.request',
-                    'django.contrib.auth.context_processors.auth',
-                    'django.contrib.messages.context_processors.messages',
-                ],
-            },
-        },
-    ]
-
-    WSGI_APPLICATION = "MedNet.wsgi.application"
-
-
-    # Database
-    # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -97,136 +46,9 @@ if is_server:
         'PASSWORD': os.environ.get('MYSQL_ROOT_PASSWORD'),
     }
     }
-
-
-    # Password validation
-    # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
-    AUTH_PASSWORD_VALIDATORS = []
-
-
-    # Internationalization
-    # https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-    LANGUAGE_CODE = 'en-us'
-
-    TIME_ZONE = 'America/Fortaleza'
-
-    USE_I18N = True
-
-    USE_TZ = True
-
-    USE_L10N = False
-
-    DATETIME_FORMAT = 'd/m/Y H:i:s'
-
-
-    # Static files (CSS, JavaScript, Images)
-    # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-    STATIC_URL = "/static/"
-
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-    ]
-
-    # Configurar o local onde os arquivos estáticos serão coletados para produção
-    if not DEBUG:
-        STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-        STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-    # Default primary key field type
-    # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
-    DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-    REST_FRAMEWORK = {
-        'DEFAULT_AUTHENTICATION_CLASSES': [
-            'rest_framework_simplejwt.authentication.JWTAuthentication',
-        ],
-    }
-
-    SIMPLE_JWT = {
-        'ACCESS_TOKEN_LIFETIME': timedelta(days=365),  # Define o tempo de expiração do token para 1 ano
-    }
-
-    # Tempo de expiração de sessão do usuário em segundos
-    SESSION_COKIE_AGE = 1800
-
 else:
-    load_dotenv()
-
-    # Build paths inside the project like this: BASE_DIR / 'subdir'.
-    BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-    # Quick-start development settings - unsuitable for production
-    # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
-    # SECURITY WARNING: keep the secret key used in production secret!
-    SECRET_KEY = 'django-insecure-nikl!)0eq5-#4lx1d+qh^0vz@qyp41*#xugk+bf0^vim^8smpr'
-
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = 'RENDER' not in os.environ
-
-    ALLOWED_HOSTS = ['*']
-
-    RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-
-    if RENDER_EXTERNAL_HOSTNAME:
-        ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
-    # Application definition
-
-    INSTALLED_APPS = [
-        'django.contrib.admin',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-        'recepcao_principal',
-        'dal',
-        'dal_select2',
-        'rest_framework',
-        'rest_framework_simplejwt',
-    ]
-
-    MIDDLEWARE = [
-        'django.middleware.security.SecurityMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.common.CommonMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        'whitenoise.middleware.WhiteNoiseMiddleware',
-    ]
-
-    ROOT_URLCONF = "MedNet.urls"
-
-    TEMPLATES = [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': [os.path.join(BASE_DIR, 'templates')],
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.debug',
-                    'django.template.context_processors.request',
-                    'django.contrib.auth.context_processors.auth',
-                    'django.contrib.messages.context_processors.messages',
-                ],
-            },
-        },
-    ]
-
-    WSGI_APPLICATION = "MedNet.wsgi.application"
-
-
-    # Database
-    # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
     DATABASES = {
     'default': {
         'ENGINE': 'django_psdb_engine',
@@ -239,58 +61,106 @@ else:
     }
     }
 
-
-    # Password validation
-    # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
-    AUTH_PASSWORD_VALIDATORS = []
+ALLOWED_HOSTS = ['*']
 
 
-    # Internationalization
-    # https://docs.djangoproject.com/en/4.2/topics/i18n/
+# Application definition
 
-    LANGUAGE_CODE = 'en-us'
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'recepcao_principal',
+    'dal',
+    'dal_select2',
+    'rest_framework',
+    'rest_framework_simplejwt',
+]
 
-    TIME_ZONE = 'America/Fortaleza'
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+]
 
-    USE_I18N = True
+ROOT_URLCONF = "MedNet.urls"
 
-    USE_TZ = True
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
-    USE_L10N = False
+WSGI_APPLICATION = "MedNet.wsgi.application"
 
-    DATETIME_FORMAT = 'd/m/Y H:i:s'
+# Password validation
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = []
 
 
-    # Static files (CSS, JavaScript, Images)
-    # https://docs.djangoproject.com/en/4.2/howto/static-files/
+# Internationalization
+# https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-    STATIC_URL = "/static/"
+LANGUAGE_CODE = 'en-us'
 
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static'),
-    ]
+TIME_ZONE = 'America/Fortaleza'
 
-    # Configurar o local onde os arquivos estáticos serão coletados para produção
-    if not DEBUG:
-        STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-        STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+USE_I18N = True
 
-    # Default primary key field type
-    # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+USE_TZ = True
 
-    DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+USE_L10N = False
 
-    REST_FRAMEWORK = {
-        'DEFAULT_AUTHENTICATION_CLASSES': [
-            'rest_framework_simplejwt.authentication.JWTAuthentication',
-        ],
-    }
+DATETIME_FORMAT = 'd/m/Y H:i:s'
 
-    SIMPLE_JWT = {
-        'ACCESS_TOKEN_LIFETIME': timedelta(days=365),  # Define o tempo de expiração do token para 1 ano
-    }
 
-    # Tempo de expiração de sessão do usuário em segundos
-    SESSION_COKIE_AGE = 1800
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Configurar o local onde os arquivos estáticos serão coletados para produção
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=365),  # Define o tempo de expiração do token para 1 ano
+}
+
+# Tempo de expiração de sessão do usuário em segundos
+SESSION_COKIE_AGE = 1800
