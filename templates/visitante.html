@@ -26,12 +26,12 @@
       </section>
     </section>
     <button type="submit" id="button" class="button">Salvar</button>
-    {% for message in messages %}
-      <section class="error">
-        <strong>Erro: </strong>{{ message }}
-      </section>
-    {% endfor %}
   </form>
+  {% for message in messages %}
+    <section class="error">
+      <strong>Erro: </strong>{{ message }}
+    </section>
+  {% endfor %}
   <nav class="table">
     {% if visitantes_df %}
       {{ visitantes_df|safe }}

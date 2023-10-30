@@ -14,10 +14,10 @@
       </section>
     </section>
     <button type="submit" id="button" class="button">Entrar</button>
-    {% for message in messages %}
-      <section class="error"">
-        <strong>Erro: </strong>{{ message }}
-      </section>
-    {% endfor %}
   </form>
+  {% for message in messages %}
+    <section class="error"">
+      <strong>Erro: </strong>{{ message }}
+    </section>
+  {% endfor %}
 {% endblock %}
