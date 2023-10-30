@@ -8,12 +8,14 @@
   <title>MedNet</title>
 </head>
 <body>
-  {% if user.is_authenticated %}
   <header class="menu">
     <figure class="brasao_user">
       <img class="brasao" src="{% static 'images/brasao.png' %}" alt="">
+      {% if user.is_authenticated %}
       <p class="user"><img src="{% static 'images/user.webp' %}" alt="imagem que representa um usuário"> {{ user.first_name }}</p>
+      {% endif %}
     </figure>
+    {% if user.is_authenticated %}
     <nav class="buttons-menu-box">
       <ul class="buttons-menu">
         <li>
@@ -33,8 +35,8 @@
         </li>
       </ul>
     </nav>
+    {% endif %}
   </header>
-  {% endif %}
   {% block content %} {% endblock %}
   {% include 'model_script.html' %}
 </body>

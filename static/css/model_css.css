@@ -11,6 +11,19 @@ body {
   min-height: 100vh;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  min-height: 150px;
+  margin: 5px;
+}
+
+.error {
+  color: red;
+}
+
 .dataframe {
   overflow-x: auto;
   text-align: center
@@ -33,101 +46,45 @@ body {
   text-align: center; /* Centraliza o texto nas células da tabela */
 }
 
-.form {
+.button {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  min-height: 150px;
   margin: 5px;
-}
-
-.header-recepcao-principal {
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
-}
-
-.visitante-buttons {
-  display: flex;
-  justify-content: space-evenly;
-  margin: 15px;
-}
-
-.visitante {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px;
-}
-
-.visitante section {
-  display: flex;
-}
-
-.visitante .sections {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin: 2px;
-}
-
-.nome-documento {
-  display: flex;
-  flex-direction: column;
-}
-
-.visitante .button {
-  margin: 5px;
-}
-
-.paciente {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* align-content: flex-end; */
-}
-
-.ci {
-  display: flex;
-  max-width: 400px;
-  background: linear-gradient(to bottom, #fdfeba, #feec40);
+  width: 150px;
+  height: 30px;
   justify-content: center;
-  padding: 10px;
-  margin-top: 10px;
+  align-items: center;
+  background-color: #122a57;
+  color: white;
   border-radius: 30px;
+  user-select: none;
+
+  /* Adiciona uma sombra para dar uma aparência 3D */
+  box-shadow: 4px 4px 6px rgba(0,0,0,0.3);
+  
+  /* Transição para suavizar o efeito de clique */
+  transition: box-shadow 0.3s ease-in-out;
 }
 
-.ci strong {
-  font-size: larger;
-  margin-left: 5px;
+/* Modifica a sombra quando o botão é clicado */
+.button:active {
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  color: white;
 }
 
-.censo_visitante_dataframe {
-  font-size: small;
+.button:visited {
+  color: white;
 }
 
-textarea[name='comunicado_interno'] {
-  margin: 5px;
-  height: 100px;
+a:visited {
+  color: blue;
 }
 
-.error {
-  color: red;
+a:active {
+  color: grey;
 }
 
-.label-login, .input-login {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin: 1px;
-}
-
-.label-login *, .input-login * {
-  margin: 1px;
-}
-
-.login {
-  display: flex;
-  justify-content: center;
+.desativado {
+  color: gray;
+  pointer-events: none;
+  text-decoration: none;
 }

@@ -3,7 +3,7 @@
   <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden> <!-- dessa forma capitura o id do evento e hidden é pra ocultar -->
   {% include 'model_paciente.html' %}
   <nav>
-    <ul class="visitante-buttons">
+    <ul class="paciente-buttons">
       <li>
         <a onclick="desativarLink(this)" href="{% url 'visitante' %}?prontuario={{ paciente.prontuario }}" class="button">Visitante</a>
       </li>

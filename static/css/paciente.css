@@ -1,0 +1,5 @@
+.paciente-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 15px;
+}
