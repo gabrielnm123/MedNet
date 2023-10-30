@@ -15,7 +15,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
 
-
+# Ler variáves de ambiante sensíveis que não podem ser expostas, essas variáves estão num arquivo .env
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,13 +29,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-nikl!)0eq5-#4lx1d+qh^0vz@qyp41*#xugk+bf0^vim^8smpr'
 
 # Define qual banco de dados vai usar, container docker ou da plataforma planetscale, se True é do container
-DATABASES_IS_DOCKER = False
+DATABASES_IS_DOCKER = True
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 if DATABASES_IS_DOCKER:
     # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = False
+    DEBUG = True
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

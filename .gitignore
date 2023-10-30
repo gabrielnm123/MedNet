@@ -1,8 +1,8 @@
 __pycache__
 private_key.asc
 .env
-backup_hjw_recep.sql
+backup_hjw_recep*
 .vscode
-backup_hjw_recep_dev.sql
-backup_hjw_recep_main.sql
-docker-entrypoint-initdb.d
+backup_hjw_recep*
+backup_hjw_recep*
+docker-entrypoint-initdb.d*
