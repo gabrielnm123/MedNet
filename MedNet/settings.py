@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nikl!)0eq5-#4lx1d+qh^0vz@qyp41*#xugk+bf0^vim^8smpr'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Define qual banco de dados vai usar, container docker ou da plataforma planetscale, se True é do container
 DATABASES_IS_DOCKER = True
@@ -40,10 +40,10 @@ if DATABASES_IS_DOCKER:
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('MYSQL_DATABASE'),
-        'HOST': '172.18.0.2',
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': os.environ.get('MYSQL_ROOT_PASSWORD'),
+        'HOST': os.environ.get('MYSQL_HOST'),
+        'PORT': os.environ.get('MYSQL_PORT'),
+        'USER': os.environ.get('MYSQL_USER'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD')
     }
     }
 else:
