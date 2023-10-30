@@ -1,0 +1,42 @@
+.button {
+  display: flex;
+  margin: 5px;
+  width: 150px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  background-color: #122a57;
+  color: white;
+  border-radius: 30px;
+  user-select: none;
+
+  /* Adiciona uma sombra para dar uma aparência 3D */
+  box-shadow: 4px 4px 6px rgba(0,0,0,0.3);
+  
+  /* Transição para suavizar o efeito de clique */
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Modifica a sombra quando o botão é clicado */
+.button:active {
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  color: white;
+}
+
+.button:visited {
+  color: white;
+}
+
+a:visited {
+  color: blue;
+}
+
+a:active {
+  color: grey;
+}
+
+.desativado {
+  color: gray;
+  pointer-events: none;
+  text-decoration: none;
+}
