@@ -1,0 +1,48 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #74baa0;
+  height: 160px;
+  padding: 0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin: 5px;
+  user-select: none;
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.3);
+}
+
+.buttons-menu-box {
+  align-self: stretch;
+}
+
+.buttons-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.user img {
+  height: 20px;
+  margin: 0 2px;
+}
+
+.user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: small;
+  align-self: flex-end;
+}
+
+.brasao {
+  height: 70px;
+}
+
+.brasao_user {
+  margin: 5px;
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-self: stretch;
+}

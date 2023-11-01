@@ -1,0 +1,16 @@
+
+.label-login, .input-login {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 1px;
+}
+
+.label-login *, .input-login * {
+  margin: 1px;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+}
