@@ -16,31 +16,33 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from recepcao_principal import views
+from recepcao_principal.views import *
+from perfil.views import *
 from django.views.generic import RedirectView
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # configurando o rotiador
 router = routers.DefaultRouter()
-router.register(r'pacientes', views.PacienteViewSet)
+router.register(r'pacientes', PacienteViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('recepcao_principal/', views.recepcao_principal, name='recepcao_principal'),
-    path('recepcao_principal/censo_visitante/', views.censo_visitante, name='censo_visitante'),
-    path('recepcao_principal/paciente/', views.paciente, name='paciente'),
-    path('recepcao_principal/paciente/comunicado_interno/', views.comunicado_interno, name='comunicado_interno'),
-    path('recepcao_principal/paciente/comunicado_interno/submit', views.submit_ci, name='submit_ci'),
-    path('recepcao_principal/paciente/visitante/', views.visitante, name='visitante'),
-    path('recepcao_principal/paciente/visitante/submit', views.submit_visitante, name='submit_visitante'),
-    path('recepcao_principal/paciente/visitante/delete', views.delete_visitante, name='delete_visitante'),
-    path('', RedirectView.as_view(url='/recepcao_principal/')), # pra sempre abrir a internação
+    path('login/', login_user, name='login'), # criando a parte de login
+    path('perfil', perfil, name='perfil'),
+    path('recepcao_principal/', recepcao_principal, name='recepcao_principal'),
+    path('recepcao_principal/censo_visitante/', censo_visitante, name='censo_visitante'),
+    path('recepcao_principal/paciente/', paciente, name='paciente'),
+    path('recepcao_principal/paciente/comunicado_interno/', comunicado_interno, name='comunicado_interno'),
+    path('recepcao_principal/paciente/comunicado_interno/submit', submit_ci, name='submit_ci'),
+    path('recepcao_principal/paciente/visitante/', visitante, name='visitante'),
+    path('recepcao_principal/paciente/visitante/submit', submit_visitante, name='submit_visitante'),
+    path('recepcao_principal/paciente/visitante/delete', delete_visitante, name='delete_visitante'),
+    path('', RedirectView.as_view(url='/perfil')), # pra sempre abrir a internação
     # path('', RedirectView.as_view(url='/admin/')),
-    path('login/', views.login_user, name='login'), # criando a parte de login
-    path('login/submit', views.submit_login, name='submit_login'), # tem que tirar a barra do final se não da erro quando for fazer o post e get
-    path('logout/', views.logout_user, name='logout'),
-    path('paciente-autocomplete/', views.PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
+    path('login/submit', submit_login, name='submit_login'), # tem que tirar a barra do final se não da erro quando for fazer o post e get
+    path('logout/', logout_user, name='logout'),
+    path('paciente-autocomplete/', PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
     path('api/', include(router.urls), name='api'), # visualizar a api
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

@@ -1,6 +1,6 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/model_css.css' %}">
-<link rel="stylesheet" href="{% static 'css/model_page.css' %}">
+<link rel="stylesheet" href="{% static 'css/model_page.css' %}?v={% now 'U' %}">
 <link rel="stylesheet" href="{% static 'css/model_paciente.css' %}">
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 <link rel="stylesheet" href="{% static 'css/recepcao_principal.css' %}">
@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{% static 'css/visitante.css' %}">
 <link rel="stylesheet" href="{% static 'css/comunicado_interno.css' %}">
 <link rel="stylesheet" href="{% static 'css/censo_visitante.css' %}">
+<link rel="stylesheet" href="{% static 'css/perfil.css' %}">
 <link rel="icon" type="image/png" sizes="16x16"  href="{% static 'images/favicon-16x16.png' %}">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="theme-color" content="#ffffff">

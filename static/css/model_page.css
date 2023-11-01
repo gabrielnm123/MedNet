@@ -31,7 +31,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: small;
+  font-size: 10px;
   align-self: flex-end;
 }
 
@@ -45,4 +45,8 @@
   display: flex;
   justify-content: space-between;
   align-self: stretch;
+}
+
+.menu-perfil {
+  flex-direction: row-reverse;
 }

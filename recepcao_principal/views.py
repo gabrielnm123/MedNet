@@ -12,16 +12,11 @@ import pandas as pd
 from django.utils.timezone import make_naive, localtime, now
 from datetime import datetime
 
-# Create your views here.
+def is_member(operador, perfil_name):
+    return operador.groups.filter(name=perfil_name).exists()
 
-# def group_required(*group_names):
-#     """Requer que o usuário pertença a um dos grupos especificados."""
-#     def in_groups(user):
-#         if user.is_authenticated:
-#             if bool(user.groups.filter(name__in=group_names)) | user.is_superuser:
-#                 return True
-#             return False
-#     return user_passes_test(in_groups)
+def is_member_of(perfil_name):
+    return lambda operador: is_member(operador, perfil_name)
 
 def login_user(request):
     if request.user.is_authenticated:
@@ -44,7 +39,7 @@ def logout_user(request):
     logout(request)
     return redirect('/')
 
-# @group_required('/login/')
+@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')
 def delete_visitante(prontuario, visitante_id):
     visitante = Visitante.objects.get(id=visitante_id)
@@ -55,7 +50,7 @@ def create_link_paciente(row):
     url = r'<a class="ativado" onclick="desativarLink(this)" href="/recepcao_principal/paciente/?prontuario='+f'{row["prontuario"]}">'+f'{row["nome"]}</a>'
     return url
 
-# @group_required('/login/')
+@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')
 def recepcao_principal(request):
     paciente = request.GET.get('paciente')
@@ -152,7 +147,7 @@ def recepcao_principal(request):
     }
     return render(request, 'recepcao_principal.html', data)
 
-# @group_required('/login/')
+@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')
 def paciente(request):
     prontuario = request.GET.get('prontuario')
@@ -181,7 +176,7 @@ def create_visualization_operador(row):
     operador = User.objects.get(id=row['operador_id'])
     return operador.first_name
 
-# @group_required('/login/')
+@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')
 def delete_visitante(request):
     prontuario = request.GET.get('prontuario')
@@ -193,7 +188,7 @@ def delete_visitante(request):
         raise Http404()
     return redirect(f'/recepcao_principal/paciente/visitante?prontuario={prontuario}')
 
-# @group_required('/login/')
+@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')
 def visitante(request):
     prontuario = request.GET.get('prontuario')
@@ -239,7 +234,7 @@ def visitante(request):
     dados['boolean_visitante'] = True
     return render(request, 'visitante.html', dados)
 
-# @group_required('/login/')
+@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')
 def submit_visitante(request):
     try:
@@ -270,7 +265,7 @@ def submit_visitante(request):
         messages.error(request, 'Preencha Corretamente o Formulário')
     return redirect(f'/recepcao_principal/paciente/visitante/?prontuario={prontuario}')
 
-# @group_required('/login/')
+@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')
 def comunicado_interno(request):
     prontuario = request.GET.get('prontuario')
@@ -284,7 +279,7 @@ def comunicado_interno(request):
             raise Http404()
     return render(request, 'comunicado_interno.html', dados)
 
-# @group_required('/login/')
+@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')
 def submit_ci(request):
     try:
@@ -303,7 +298,7 @@ def create_visualization_paciente(row):
     paciente = Paciente.objects.get(prontuario=row['paciente_id'])
     return paciente
 
-# @group_required('/login/')
+@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')
 def censo_visitante(request):
     data_registro = request.GET.get('data_registro')

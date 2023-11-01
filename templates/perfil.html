@@ -1,4 +1,12 @@
 {% extends 'model_page.html' %}
 {% block content %}
-  
+  <header class="perfil">
+    <h1>Perfil</h1>
+    {% for perfil in perfis %}
+      {% if perfil == 'RECEPÇÃO PRINCIPAL' %}
+        <a href="{% url 'recepcao_principal' %}" onclick="desativarLink(this)">{{ perfil }}</a>
+      {% endif %}
+      <!-- <h1>{{perfil}}</h1> -->
+    {% endfor %}
+  </header>
 {% endblock %}

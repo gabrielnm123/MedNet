@@ -10,7 +10,7 @@
 <body>
   <header class="menu">
     <figure class="brasao_user">
-      <img class="brasao" src="{% static 'images/brasao.png' %}" alt="">
+      <img class="brasao" src="{% static 'images/brasao.png' %}" alt="imagem do brasão da prefeitura de Fortaleza">
       {% if user.is_authenticated %}
       <p class="user"><img src="{% static 'images/user.webp' %}" alt="imagem que representa um usuário"> {{ user.first_name }}</p>
       {% endif %}
@@ -18,21 +18,30 @@
     {% if user.is_authenticated %}
     <nav class="buttons-menu-box">
       <ul class="buttons-menu">
-        <li>
-          <a class="button" onclick="desativarLink(this)" href="/">Recepção Principal</a>
-          {% if boolean_comunicado_interno or boolean_visitante %}
-            <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}" class="button">Paciente</a>
-          {% endif %}
-        </li>
-        <li>
-          <a class="button" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a>
-        </li>
-        <li>
-          {% if user.is_staff %}
+        {% if request.path != '/perfil' %}
+          <li>
+            <a class="button" onclick="desativarLink(this)" href="/">Recepção Principal</a>
+            {% if boolean_comunicado_interno or boolean_visitante %}
+              <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}" class="button">Paciente</a>
+            {% endif %}
+          </li>
+          <li>
+            <a class="button" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a>
+          </li>
+          <li>
+            {% if user.is_staff %}
             <a class="button" onclick="desativarLink(this)" href="/admin">Admin</a>
-          {% endif %}
-          <a class="button" onclick="desativarLink(this)" href="/logout">Sair</a>
-        </li>
+            {% endif %}
+            <a class="button" onclick="desativarLink(this)" href="/logout">Sair</a>
+          </li>
+        {% else %}
+          <li class="menu-perfil">
+            {% if user.is_staff %}
+            <a class="button" onclick="desativarLink(this)" href="/admin">Admin</a>
+            {% endif %}
+            <a class="button" onclick="desativarLink(this)" href="/logout">Sair</a>
+          </li>
+        {% endif %}
       </ul>
     </nav>
     {% endif %}

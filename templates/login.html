@@ -2,7 +2,7 @@
 {% block content %}
 <body>
   <form action="submit" method="POST" id="form" class="form">{% csrf_token %} <!-- action submit leva pra pagina submit, que é concatenado a login, ou seja ...login/submit, quando preencher o form e clicar no button --> <!-- quando utilizar um form que faz um post colocar o {% csrf_token %} pra gerar um token de segurança, se não da erro, por segurança -->
-    <h1>Faça Login</h1>
+    <h1>Autenticação</h1>
     <section class="login">
       <section class="label-login">
         <label for="">Usuário:</label>
@@ -16,7 +16,7 @@
     <button type="submit" id="button" class="button">Entrar</button>
   </form>
   {% for message in messages %}
-    <section class="error"">
+    <section class="error">
       <strong>Erro: </strong>{{ message }}
     </section>
   {% endfor %}
