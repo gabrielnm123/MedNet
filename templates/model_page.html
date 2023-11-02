@@ -17,29 +17,29 @@
     </figure>
     {% if user.is_authenticated %}
     <nav class="buttons-menu-box">
-      <ul class="buttons-menu">
+      <ul class="buttons-menu {% if request.path == '/perfil' %} menu-perfil {% endif %}">
         {% if request.path != '/perfil' %}
           <li>
-            <a class="button" onclick="desativarLink(this)" href="/">Recepção Principal</a>
+            <a onclick="desativarLink(this)" href="/recepcao_principal/"><button class="button">Recepção Principal</button></a>
             {% if boolean_comunicado_interno or boolean_visitante %}
-              <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}" class="button">Paciente</a>
+              <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}"><button class="button">Paciente</button></a>
             {% endif %}
           </li>
           <li>
-            <a class="button" onclick="desativarLink(this)" href="{% url 'censo_visitante' %}">Censo de Visitante</a>
+            <a onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button class="button">Censo de Visitante</button></a>
           </li>
           <li>
             {% if user.is_staff %}
-            <a class="button" onclick="desativarLink(this)" href="/admin">Admin</a>
+            <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
             {% endif %}
-            <a class="button" onclick="desativarLink(this)" href="/logout">Sair</a>
+            <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
           </li>
         {% else %}
           <li class="menu-perfil">
             {% if user.is_staff %}
-            <a class="button" onclick="desativarLink(this)" href="/admin">Admin</a>
+            <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
             {% endif %}
-            <a class="button" onclick="desativarLink(this)" href="/logout">Sair</a>
+            <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
           </li>
         {% endif %}
       </ul>
