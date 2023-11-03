@@ -39,11 +39,6 @@ def exportar_visitantes_para_excel(modeladmin, request, queryset):
 
 exportar_visitantes_para_excel.short_description = "Exportar para Excel"
 
-class PacienteAdmin(admin.ModelAdmin):
-    search_fields = ['nome', 'prontuario']
-    list_display = ('prontuario', 'nome', 'clinica', 'leito', 'internado', 'data_registro') # pra aparecer no resgistro do paciente logo de cara
-    list_filter = ('internado', 'clinica', 'data_registro')
-
 class VisitanteAdminForm(forms.ModelForm):
     class Meta:
         model = Visitante
@@ -78,6 +73,5 @@ class VisitanteAdmin(admin.ModelAdmin):
     
     actions = [exportar_visitantes_para_excel]
 
-admin.site.register(Paciente, PacienteAdmin)
 admin.site.register(Visitante, VisitanteAdmin)
 admin.site.register(Parentesco)
