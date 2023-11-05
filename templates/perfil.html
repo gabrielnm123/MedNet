@@ -4,9 +4,11 @@
     <h1>Perfil</h1>
     {% for perfil in perfis %}
       {% if perfil == 'RECEPÇÃO PRINCIPAL' %}
-        <a href="{% url 'recepcao_principal' %}" onclick="desativarLink(this)">{{ perfil }}</a>
+        <a href="{% url 'recepcao_principal' %}" onclick="desativarLink(this)" class="a-perfil">{{ perfil }}</a>
       {% endif %}
-      <!-- <h1>{{perfil}}</h1> -->
+      {% if perfil == 'GERENCIAR OPERADOR' %}
+        <a href="{% url 'gerenciar_operador' %}" onclick="desativarLink(this)" class="a-perfil">{{ perfil }}</a>
+      {% endif %}
     {% endfor %}
   </header>
 {% endblock %}

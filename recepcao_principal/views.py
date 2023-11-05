@@ -9,6 +9,16 @@ from django.http.response import Http404
 import pandas as pd
 from django.utils.timezone import make_naive, localtime, now
 from datetime import datetime
+from dal import autocomplete
+
+# Create your views here.
+
+class PacienteAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Paciente.objects.all()
+        if self.q:
+            qs = qs.filter(nome__icontains=self.q)  # Corrigindo o filtro para o campo 'paciente'
+        return qs
 
 @user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
 @login_required(login_url='/login/')

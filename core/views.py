@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from dal import autocomplete
 from .serializers import PacienteSerializer
 from .models import *
 from rest_framework import viewsets # fornece uma maneira conveniente de criar views que lidam com ações comuns em um modelo.
@@ -8,13 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 # Create your views here.
-
-class PacienteAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = Paciente.objects.all()
-        if self.q:
-            qs = qs.filter(nome__icontains=self.q)  # Corrigindo o filtro para o campo 'paciente'
-        return qs
 
 class PacienteViewSet(viewsets.ModelViewSet): # classe será uma subclasse de ModelViewSet, que já possui funcionalidades predefinidas para lidar com operações CRUD (Create, Retrieve, Update, Delete) em um modelo.
     queryset = Paciente.objects.all() # Define o queryset (conjunto de objetos do banco de dados) que será usado para a visualização. Neste caso, todos os objetos do modelo Paciente são recuperados.
@@ -54,3 +46,6 @@ def list_perfil(operador):
 def perfil(request):
     perfis = list_perfil(request.user)
     return render(request, 'perfil.html', {'perfis': perfis})
+
+def gerenciar_operador(request):
+    return render(request, 'gerenciar_operador.html')
