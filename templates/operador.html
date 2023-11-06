@@ -1,3 +1,36 @@
 {% extends 'model_page.html' %}
 {% block content %}
+  <form action="submit" method="POST" id="form" class="data-new-line">{% csrf_token %}
+    <h2>Operador</h2>
+    <input type="number" name="usuario" value="{{ usuario }}" hidden>
+    <section>
+      <section class="data-new-line-input-bottom">
+        <section class="data-new-line-sections">
+          <label for="">Nome Completo do Operador</label>
+          <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
+        </section>
+        <section class="data-new-line-sections">
+          <label for="">Email</label>
+          <input type="text" name="documento" size="100" value="{{ visitante.documento }}">
+        </section>
+      </section>
+      <section class="data-new-line-sections">
+        <label for="">Perfil</label>
+        {% for perfil_ in perfis %}
+          <input name="perfil" type="checkbox" value="{{ perfil_ }}" {% if perfil_.name == perfil %}checked{% endif %}>
+        {% endfor %}
+      </section>
+    </section>
+    <button type="submit" id="button" class="button">Salvar</button>
+  </form>
+  {% for message in messages %}
+    <section class="error">
+      <strong>Erro: </strong>{{ message }}
+    </section>
+  {% endfor %}
+  <nav class="table">
+    {% if visitantes_df %}
+      {{ visitantes_df|safe }}
+    {% endif %}
+  </nav>
 {% endblock %}

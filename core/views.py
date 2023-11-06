@@ -179,4 +179,15 @@ def submit_operador(request):
 @user_passes_test(is_member_of('GERENCIAR OPERADOR'), login_url='/perfil')
 @login_required(login_url='/login/')
 def operador(request):
+    usuario = request.GET.get('usuario')
+    if usuario:
+        try:
+            if request.POST:
+                
+            pass
+        except:
+            messages.error(request, '')
+    data = {
+
+    }
     return render(request, 'operador.html')

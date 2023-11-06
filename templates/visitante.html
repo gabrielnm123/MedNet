@@ -1,21 +1,21 @@
 {% extends 'model_page.html' %}
 {% block content %}
   {% include 'model_paciente.html' %}
-  <form action="submit" method="POST" id="form" class="visitante">{% csrf_token %}
+  <form action="submit" method="POST" id="form" class="data-new-line">{% csrf_token %}
     <h2>Visitante</h2>
     <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
     <section>
-      <section class="nome-documento">
-        <section class="visitante-sections">
+      <section class="data-new-line-input-bottom">
+        <section class="data-new-line-sections">
           <label for="">Nome do Visitante</label>
           <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
         </section>
-        <section class="visitante-sections">
+        <section class="data-new-line-sections">
           <label for="">Documento</label>
           <input type="text" name="documento" size="100" value="{{ visitante.documento }}">
         </section>
       </section>
-      <section class="visitante-sections">
+      <section class="data-new-line-sections">
         <label for="">Parentesco</label>
         <select name="parentesco">
           <option value="" selected>Selecione Parentesco...</option>

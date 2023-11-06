@@ -98,3 +98,31 @@ a:active {
   justify-content: space-evenly;
   width: 100%;
 }
+
+.data-new-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+.data-new-line section {
+  display: flex;
+}
+
+.data-new-line-sections {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 2px;
+}
+
+.data-new-line .button {
+  margin: 5px;
+}
+
+.data-new-line-input-bottom {
+  display: flex;
+  flex-direction: column;
+}
+
