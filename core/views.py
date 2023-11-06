@@ -84,26 +84,37 @@ def gerenciar_operador(request):
             try:
                 operadores = User.objects.filter(username__icontains=usuario)
                 if not operadores:
-                    operadores = User.objects.all()
-                    messages.error(request, 'Usuário não Encontrado')
+                    del(operadores)
+                    raise ValueError()
             except:
-                operadores = User.objects.all()
+                messages.error(request, 'Usuário não Encontrado')
         if perfil:
             try:
                 operadores = User.objects.filter(groups__name=perfil)
-                if not operadores:
-                    operadores = User.objects.all()
-                    messages.error(request, 'Perfil não Encontrado')
             except:
-                operadores = User.objects.all()
+                messages.error(request, 'Perfil não Encontrado')
         try:
             operadores_df = pd.DataFrame(
                 list(operadores.values())
             )
         except:
-            operadores_df = pd.DataFrame(
-                list(operadores.values())
-            ) # essa parte é que filtra
+            try:
+                operadores_df = pd.DataFrame(
+                    {
+                        'Usuário': [r'<a class="ativado" onclick="desativarLink(this)" href="/gerenciar_operador/operador/?usuario='+f'{operadores.username}">'+f'{operadores.username}</a>'],
+                        'Operador': [operadores.first_name],
+                        'Perfil': [' <hr> '.join([group.name for group in operadores.groups.all()])],
+                        'Email': [operadores.email],
+                        'Operador Ativo': [operadores.is_active],
+                        'Última Autenticação': [operadores.last_login],
+                        'Data de Registro': [operadores.date_joined]
+                    }
+                )
+            except:
+                operadores = User.objects.all()
+                operadores_df = pd.DataFrame(
+                    list(operadores.values())
+                )
     else:
         operadores = User.objects.all()
         operadores_df = pd.DataFrame(
@@ -141,12 +152,31 @@ def gerenciar_operador(request):
         operadores_df['Data de Registro'] = operadores_df['Data de Registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
         operadores_df['Usuário'] = operadores_df.apply(create_link_operador, axis=1)
     except:
-        pass
+        operadores_df['Usuário'] = list()
+        operadores_df['Operador'] = list()
+        operadores_df['Perfil'] = list()
+        operadores_df['Email'] = list()
+        operadores_df['Operador Ativo'] = list()
+        operadores_df['Última Autenticação'] = list()
+        operadores_df['Data de Registro'] = list()
     perfis = Group.objects.all()
     data = {
         'operadores_df': operadores_df.to_html(
             escape=False, index=False
         ),
-        'perfis': perfis
+        'perfis': perfis,
+        'operador': operador,
+        'usuario': usuario,
+        'perfil': perfil
     }
     return render(request, 'gerenciar_operador.html', data)
+
+@user_passes_test(is_member_of('GERENCIAR OPERADOR'), login_url='/perfil')
+@login_required(login_url='/login/')
+def submit_operador(request):
+    pass
+
+@user_passes_test(is_member_of('GERENCIAR OPERADOR'), login_url='/perfil')
+@login_required(login_url='/login/')
+def operador(request):
+    return render(request, 'operador.html')

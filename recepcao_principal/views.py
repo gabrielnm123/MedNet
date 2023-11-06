@@ -241,7 +241,7 @@ def submit_visitante(request):
                 documento=documento,
                 operador=request.user
             )
-    except Exception as error:
+    except Exception:
         messages.error(request, 'Preencha Corretamente o Formulário')
     return redirect(f'/recepcao_principal/paciente/visitante/?prontuario={prontuario}')
 

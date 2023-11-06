@@ -31,7 +31,6 @@ urlpatterns = [
     path('login/', login_user, name='login'), # criando a parte de login
     path('perfil', perfil, name='perfil'),
     path('', RedirectView.as_view(url='/perfil')), # pra sempre abrir a internação
-    # path('', RedirectView.as_view(url='/admin/')),
     path('login/submit', submit_login, name='submit_login'), # tem que tirar a barra do final se não da erro quando for fazer o post e get
     path('logout/', logout_user, name='logout'),
     path('paciente-autocomplete/', PacienteAutocomplete.as_view(), name='paciente-autocomplete'),
@@ -46,5 +45,6 @@ urlpatterns = [
     path('recepcao_principal/paciente/visitante/', visitante, name='visitante'),
     path('recepcao_principal/paciente/visitante/submit', submit_visitante, name='submit_visitante'),
     path('recepcao_principal/paciente/visitante/delete', delete_visitante, name='delete_visitante'),
-    path('gerenciar_operador/', gerenciar_operador, name='gerenciar_operador')
+    path('gerenciar_operador/', gerenciar_operador, name='gerenciar_operador'),
+    path('gerenciar_operador/operador/', operador, name='operador')
 ]

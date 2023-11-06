@@ -23,14 +23,19 @@
         <label for="">Perfil</label>
         <select name="perfil">
           <option value="" selected>Selecione Perfil...</option>
-          {% for perfil in perfis %}
-            <option value="{{ perfil }}">{{ perfil }}</option>
+          {% for perfil_ in perfis %}
+            <option value="{{ perfil_ }}" {% if perfil_.name == perfil %}selected{% endif %}>{{ perfil_ }}</option>
           {% endfor %}
         </select>
       </section>
     </header>
     <button type="submit" id="button" class="button">Buscar</button>
   </form>
+  {% for message in messages %}
+  <section class="error">
+    <strong>Erro: </strong>{{ message }}
+  </section>
+  {% endfor %}
   <nav class="table">
     {% if operadores_df %}
       {{ operadores_df|safe }}
