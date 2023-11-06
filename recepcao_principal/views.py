@@ -57,7 +57,6 @@ def recepcao_principal(request):
                 pacientes = Paciente.objects.get(prontuario=prontuario)
             except:
                 messages.error(request, 'Prontuário não Encontrado')
-                pass
         if visitante:
             try:
                 visitantes = list(Visitante.objects.filter(nome__icontains=visitante).values())

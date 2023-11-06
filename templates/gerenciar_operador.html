@@ -1,6 +1,6 @@
 {% extends 'model_page.html' %}
 {% block content %}
-  <form action="{% url 'gerenciar_operador' %}" id="form" class="form">
+  <form method="GET" action="{% url 'gerenciar_operador' %}" id="form" class="form">
     <h1>Gerenciar Operador</h1>
     <header class="header-form">
       <section>
@@ -12,11 +12,11 @@
         {% endif %}
       </section>
       <section>
-        <label for="">Email</label>
-        {% if email %}
-          <input type="text" name="email" value="{{ email }}">
+        <label for="">Usuário</label>
+        {% if usuario %}
+          <input type="text" name="usuario" value="{{ usuario }}">
         {% else %}
-          <input type="text" name="email">
+          <input type="text" name="usuario">
         {% endif %}
       </section>
       <section>
@@ -29,5 +29,11 @@
         </select>
       </section>
     </header>
+    <button type="submit" id="button" class="button">Buscar</button>
   </form>
+  <nav class="table">
+    {% if operadores_df %}
+      {{ operadores_df|safe }}
+    {% endif %}
+  </nav>  
 {% endblock %}

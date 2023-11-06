@@ -1,7 +1,7 @@
 {% extends 'model_page.html' %}
 {% block content %}
-<!-- Formulário de pesquisa -->
-<form method="GET" action="{% url 'recepcao_principal' %}" id="form" class="form">
+  <!-- Formulário de pesquisa -->
+  <form method="GET" action="{% url 'recepcao_principal' %}" id="form" class="form">
     <h1>Recepção Principal</h1>
     <header class="header-form">
       <section>
@@ -31,14 +31,14 @@
     </header>
     <button type="submit" id="button" class="button">Buscar</button>
   </form>
-  {% for message in messages %}
-    <section class="error">
-      <strong>Erro: </strong>{{ message }}
-    </section>
-  {% endfor %}
-  <nav class="table">
-    {% if pacientes_df %}
-      {{ pacientes_df|safe }}
-    {% endif %}
-  </nav>
+    {% for message in messages %}
+      <section class="error">
+        <strong>Erro: </strong>{{ message }}
+      </section>
+    {% endfor %}
+    <nav class="table">
+      {% if pacientes_df %}
+        {{ pacientes_df|safe }}
+      {% endif %}
+    </nav>
 {% endblock %}
