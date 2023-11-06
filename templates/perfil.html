@@ -5,8 +5,7 @@
     {% for perfil in perfis %}
       {% if perfil == 'RECEPÇÃO PRINCIPAL' %}
         <a href="{% url 'recepcao_principal' %}" onclick="desativarLink(this)" class="a-perfil">{{ perfil }}</a>
-      {% endif %}
-      {% if perfil == 'GERENCIAR OPERADOR' %}
+      {% elif perfil == 'GERENCIAR OPERADOR' %}
         <a href="{% url 'gerenciar_operador' %}" onclick="desativarLink(this)" class="a-perfil">{{ perfil }}</a>
       {% endif %}
     {% endfor %}

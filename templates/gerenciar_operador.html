@@ -1,6 +1,33 @@
 {% extends 'model_page.html' %}
 {% block content %}
-  <header>
+  <form action="{% url 'gerenciar_operador' %}" id="form" class="form">
     <h1>Gerenciar Operador</h1>
-  </header>
+    <header class="header-form">
+      <section>
+        <label for="">Operador</label>
+        {% if operador %}
+          <input type="text" name="operador" value="{{ operador }}">
+        {% else %}
+          <input type="text" name="operador">
+        {% endif %}
+      </section>
+      <section>
+        <label for="">Email</label>
+        {% if email %}
+          <input type="text" name="email" value="{{ email }}">
+        {% else %}
+          <input type="text" name="email">
+        {% endif %}
+      </section>
+      <section>
+        <label for="">Perfil</label>
+        <select name="perfil">
+          <option value="" selected>Selecione Perfil...</option>
+          {% for perfil in perfis %}
+            <option value="{{ perfil }}">{{ perfil }}</option>
+          {% endfor %}
+        </select>
+      </section>
+    </header>
+  </form>
 {% endblock %}

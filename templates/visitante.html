@@ -17,7 +17,7 @@
       </section>
       <section class="visitante-sections">
         <label for="">Parentesco</label>
-        <select name="parentesco" id="parentesco">
+        <select name="parentesco">
           <option value="" selected>Selecione Parentesco...</option>
           {% for parentesco in parentescos %}
             <option value="{{ parentesco.tipo }}" {% if parentesco.tipo == visitante.parentesco.tipo %}selected{% endif %}>{{ parentesco.tipo }}</option>

@@ -92,3 +92,9 @@ a:active {
   pointer-events: none;
   text-decoration: none;
 }
+
+.header-form {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}

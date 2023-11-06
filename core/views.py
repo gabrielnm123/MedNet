@@ -3,8 +3,11 @@ from .serializers import PacienteSerializer
 from .models import *
 from rest_framework import viewsets # fornece uma maneira conveniente de criar views que lidam com ações comuns em um modelo.
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
+from django.contrib.auth.models import Group, User
+from django.contrib import messages
+import pandas as pd
 
 # Create your views here.
 
@@ -47,5 +50,61 @@ def perfil(request):
     perfis = list_perfil(request.user)
     return render(request, 'perfil.html', {'perfis': perfis})
 
+@user_passes_test(is_member_of('GERENCIAR OPERADOR'), login_url='/perfil')
+@login_required(login_url='/login/')
 def gerenciar_operador(request):
-    return render(request, 'gerenciar_operador.html')
+    operador = request.GET.get('operador')
+    email = request.GET.get('email')
+    perfil = request.GET.get('perfil')
+    contador = 0
+    for valor in (operador, email, perfil):
+        if not valor:
+            contador += 1
+    if contador == 2:
+        if operador:
+            try:
+                operadores = User.objects.filter(first_name__icontains=operador)
+                if not operadores:
+                    operadores = User.objects.all()
+                    messages.error(request, 'Operador não Encontrado')
+            except:
+                operadores = User.objects.all()
+        else:
+            operadores = User.objects.all()
+        if email:
+            try:
+                operadores = User.objects.filter(email__icontains=email)
+                if not operadores:
+                    operadores = User.objects.all()
+                    messages.error(request, 'Email não Encontrado')
+            except:
+                operadores = User.objects.all()
+        if perfil:
+            try:
+                operadores = User.objects.filter(groups__name=operador)
+                if not operadores:
+                    operadores = User.objects.all()
+                    messages.error(request, 'Perfil não Encontrado')
+            except:
+                operadores = User.objects.all()
+        try:
+            operadores_df = pd.DataFrame(
+                list(operadores.values())
+            )
+        except:
+            operadores_df = pd.DataFrame(
+                list(operadores.values())
+            ) # essa parte é que filtra
+    else:
+        operadores = User.objects.all()
+        operadores_df = pd.DataFrame(
+            list(operadores.values())
+        )
+        if contador <= 1:
+            messages.error(request, 'Preencha Somente um Valor no Formulário')
+    perfis = Group.objects.all()
+    data = {
+        'operadores_df': operadores_df,
+        'perfis': perfis
+    }
+    return render(request, 'gerenciar_operador.html', data)

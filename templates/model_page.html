@@ -22,29 +22,40 @@
         {% if request.path == '/perfil' %}
           <li>
             {% if user.is_staff %}
-            <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
+              <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
             {% endif %}
-            <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
+              <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
           </li>
         {% elif request.path|match:'/recepcao_principal/.*' %}
-        <li>
-          <a onclick="desativarLink(this)" href="/recepcao_principal/"><button class="button">Recepção Principal</button></a>
-            {% if boolean_comunicado_interno or boolean_visitante %}
-              <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}"><button class="button">Paciente</button></a>
-            {% endif %}
-          </li>
           <li>
-            <a onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button class="button">Censo de Visitante</button></a>
-            <a onclick="desativarLink(this)" href="{% url 'perfil' %}"> <button class="button">Perfil</button></a>
-          </li>
+            <a onclick="desativarLink(this)" href="/recepcao_principal/"><button class="button">Recepção Principal</button></a>
+              {% if boolean_comunicado_interno or boolean_visitante %}
+                <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}"><button class="button">Paciente</button></a>
+              {% endif %}
+            </li>
+            <li>
+              <a onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button class="button">Censo de Visitante</button></a>
+              <a onclick="desativarLink(this)" href="{% url 'perfil' %}"> <button class="button">Perfil</button></a>
+            </li>
+            <li>
+              {% if user.is_staff %}
+              <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
+              {% endif %}
+              <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
+            </li>
+          {% elif request.path|match:'/gerenciar_operador/.*' %}
           <li>
-            {% if user.is_staff %}
-            <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
-            {% endif %}
-            <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
-          </li>
-        {% elif request.path|match:'/gerenciar_operador/.*' %}
-        <h1>teste</h1>
+            <a href="" onclick="desativarLink(this)"><button class="button">Adicionar Operador</button></a>
+            </li>
+            <li>
+              <a onclick="desativarLink(this)" href="{% url 'perfil' %}"> <button class="button">Perfil</button></a>
+            </li>
+            <li>
+              {% if user.is_staff %}
+                <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
+              {% endif %}
+                <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
+            </li>
         {% endif %}
       </ul>
     </nav>
