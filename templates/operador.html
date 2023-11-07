@@ -1,27 +1,32 @@
 {% extends 'model_page.html' %}
 {% block content %}
-  <form action="submit" method="POST" id="form" class="data-new-line">{% csrf_token %}
-    <h2>Operador</h2>
+  <form action="submit" method="POST" id="form" class="operador">{% csrf_token %}
+    <h1>Operador</h1>
     <input type="number" name="usuario" value="{{ usuario }}" hidden>
-    <section>
-      <section class="data-new-line-input-bottom">
-        <section class="data-new-line-sections">
-          <label for="">Nome Completo do Operador</label>
-          <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
-        </section>
-        <section class="data-new-line-sections">
-          <label for="">Email</label>
-          <input type="text" name="documento" size="100" value="{{ visitante.documento }}">
-        </section>
-      </section>
-      <section class="data-new-line-sections">
+    <section class="operador-label-input">
+      <section class="operador-label">
+        <label for="">Usuário (CPF)</label>
+        <label for="">Senha</label>
+        <label for="">Repita Senha</label>
+        <label for="">Nome Completo do Operador</label>
+        <label for="">Email</label>
         <label for="">Perfil</label>
-        {% for perfil_ in perfis %}
-          <input name="perfil" type="checkbox" value="{{ perfil_ }}" {% if perfil_.name == perfil %}checked{% endif %}>
+      </section>
+      <section class="operador-input">
+        <input type="text" name="operador" size="20" value="{{ operador.username }}">
+        <input type="password" name="senha" size="20">
+        <input type="password" name="senha" size="20">
+        <input type="text" name="nome" size="100" value="{{ operador.first_name }}">
+        <input type="text" name="email" size="100" value="{{ operador.email }}">
+        {% for perfil in perfis %}
+          <section>
+            <input name="perfil" type="checkbox" value="{{ perfil }}" {% if perfil in operador.groups.all %}checked{% endif %}>
+            <label for="">{{ perfil }}</label>
+          </section>
         {% endfor %}
       </section>
     </section>
-    <button type="submit" id="button" class="button">Salvar</button>
+      <button type="submit" id="button" class="button">Salvar</button>
   </form>
   {% for message in messages %}
     <section class="error">

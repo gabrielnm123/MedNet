@@ -182,12 +182,12 @@ def operador(request):
     usuario = request.GET.get('usuario')
     if usuario:
         try:
-            if request.POST:
-                
-            pass
+            operador = User.objects.get(username=usuario)
         except:
             messages.error(request, '')
+    perfis = Group.objects.all()
     data = {
-
+        'perfis': perfis,
+        'operador': operador
     }
-    return render(request, 'operador.html')
+    return render(request, 'operador.html', data)
