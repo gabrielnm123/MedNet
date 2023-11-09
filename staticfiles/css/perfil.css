@@ -1,0 +1,23 @@
+.perfil {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 30px;
+}
+
+.a-perfil:visited {
+  color: black;
+}
+
+.a-perfil:active {
+  color: gray;
+}
+
+.a-perfil {
+  margin: 20px;
+  color: black;
+}
+
+.a-perfil {
+  margin-bottom: 0;
+}
