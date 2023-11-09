@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group, User
 from django.contrib import messages
 import pandas as pd
 from django.utils.timezone import make_naive
-from django.contrib.auth.hashers import check_password
+from validate_email import validate_email
 
 # Create your views here.
 
@@ -66,11 +66,12 @@ def gerenciar_operador(request):
     operador = request.GET.get('operador')
     usuario = request.GET.get('usuario')
     perfil = request.GET.get('perfil')
+    operador_ativo = request.GET.get('operador_ativo')
     contador = 0
-    for valor in (operador, usuario, perfil):
-        if not valor:
+    for valor in (operador, usuario, perfil, operador_ativo):
+        if valor:
             contador += 1
-    if contador == 2:
+    if contador <= 1:
         if operador:
             try:
                 operadores = User.objects.filter(first_name__icontains=operador)
@@ -94,6 +95,17 @@ def gerenciar_operador(request):
                 operadores = User.objects.filter(groups__name=perfil)
             except:
                 messages.error(request, 'Perfil não Encontrado')
+        if operador_ativo:
+            try:
+                if operador_ativo == 'True':
+                    operadores = User.objects.filter(is_active=True)
+                else:
+                    operadores = User.objects.filter(is_active=False)
+            except:
+                if operador_ativo == 'True':
+                    messages.error(request, 'Não Encontrado Operadores Ativos')
+                else:
+                    messages.error(request, 'Não Encontrado Operadores Desativados')
         try:
             operadores_df = pd.DataFrame(
                 list(operadores.values())
@@ -121,8 +133,7 @@ def gerenciar_operador(request):
         operadores_df = pd.DataFrame(
             list(operadores.values())
         )
-        if contador <= 1:
-            messages.error(request, 'Preencha Somente um Valor no Formulário')
+        messages.error(request, 'Preencha Somente um Valor no Formulário')
     try:
         operadores_df = operadores_df[
             operadores_df.is_superuser == False
@@ -169,7 +180,8 @@ def gerenciar_operador(request):
         'perfis': perfis,
         'operador': operador,
         'usuario': usuario,
-        'perfil': perfil
+        'perfil': perfil,
+        'operador_ativo': operador_ativo
     }
     return render(request, 'gerenciar_operador.html', data)
 
@@ -179,20 +191,29 @@ def submit_operador(request):
     try:
         if request.POST:
             usuario = request.POST.get('usuario')
-            usuario_ = request.POST.get('usuario_')
+            usuario_novo = request.POST.get('usuario_novo')
             senha = request.POST.get('senha')
             repetir_senha = request.POST.get('repetir-senha')
             nome = request.POST.get('nome').strip().upper()
             email = request.POST.get('email')
             perfis = request.POST.getlist('perfil')
             ativo = request.POST.get('ativo')
+            if not validate_email(email):
+                messages.error(request, 'Email Invalido')
+                return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
+            if not usuario_novo.isnumeric() or len(usuario_novo) != 11:
+                messages.error(request, 'Usuário Deve ser o CPF')
+                return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
+            if len(senha) < 11:
+                messages.error(request, 'Senha Pequena, Minimo 11 Caractéres')
+                return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
             if senha != repetir_senha:
                 messages.error(request, 'Confirmação de Senha Incorreta')
                 return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
             if usuario:
                 operador = User.objects.get(username=usuario)
-                if operador.username != usuario_ != '':
-                    operador.username = usuario_
+                if operador.username != usuario_novo != '':
+                    operador.username = usuario_novo
                 if senha != '' and not operador.check_password(senha):
                     operador.set_password(senha)
                 if operador.first_name != nome != '':
@@ -212,19 +233,19 @@ def submit_operador(request):
                 operador.save()
             else:
                 operador = User.objects.create(
-                    username=usuario_,
+                    username=usuario_novo,
                     first_name=nome,
                     email=email,
                     is_active=True
                 )
                 operador.groups.add(*[Group.objects.get(name=perfil) for perfil in perfis])
-                operador = User.objects.get(username=usuario_)
+                operador = User.objects.get(username=usuario_novo)
                 operador.set_password(senha)
                 operador.save()
     except:
         messages.error(request, 'Preencha Corretamente o Formulário')
         return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
-    return redirect(f'/gerenciar_operador/operador/?usuario={usuario_}')
+    return redirect(f'/gerenciar_operador/operador/?usuario={usuario_novo}')
 
 @user_passes_test(is_member_of('GERENCIAR OPERADOR'), login_url='/perfil')
 @login_required(login_url='/login/')

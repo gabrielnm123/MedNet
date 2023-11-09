@@ -5,7 +5,7 @@
     <input type="text" name="usuario" value="{{ operador.username }}" hidden>
     <section class="operador-label-input">
       <section class="operador-label">
-        <label for="">Usuário</label>
+        <label for="">Usuário (CPF)</label>
         <label for="">Senha</label>
         <label for="">Repita Senha</label>
         <label for="">Nome Completo do Operador</label>
@@ -16,7 +16,7 @@
         {% endif %}
       </section>
       <section class="operador-input">
-        <input type="text" name="usuario_" size="20" value="{{ operador.username }}">
+        <input type="text" name="usuario_novo" size="20" value="{{ operador.username }}">
         <input type="password" name="senha" size="20">
         <input type="password" name="repetir-senha" size="20">
         <input type="text" name="nome" size="100" value="{{ operador.first_name }}">

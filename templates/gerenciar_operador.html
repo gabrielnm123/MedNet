@@ -28,6 +28,14 @@
           {% endfor %}
         </select>
       </section>
+      <section>
+        <label for="">Operador Ativo</label>
+        <select name="operador_ativo">
+          <option value="" selected>Selecione Sim ou Não...</option>
+          <option value="{{ 'True' }}" {% if operador_ativo == 'True' %}selected{% endif %}>Sim</option>
+          <option value="{{ 'False' }}" {% if operador_ativo == 'False' %}selected{% endif %}>Não</option>
+        </select>
+      </section>
     </header>
     <button type="submit" id="button" class="button">Buscar</button>
   </form>
