@@ -46,7 +46,3 @@
   justify-content: space-between;
   align-self: stretch;
 }
-
-.menu-perfil {
-  flex-direction: row-reverse;
-}
