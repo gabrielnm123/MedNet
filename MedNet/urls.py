@@ -46,5 +46,6 @@ urlpatterns = [
     path('recepcao_principal/paciente/visitante/submit', submit_visitante, name='submit_visitante'),
     path('recepcao_principal/paciente/visitante/delete', delete_visitante, name='delete_visitante'),
     path('gerenciar_operador/', gerenciar_operador, name='gerenciar_operador'),
-    path('gerenciar_operador/operador/', operador, name='operador')
+    path('gerenciar_operador/operador/', operador, name='operador'),
+    path('gerenciar_operador/operador/submit', submit_operador, name='submit_operador'),
 ]

@@ -165,3 +165,6 @@ SIMPLE_JWT = {
 
 # Tempo de expiração de sessão do usuário em segundos
 SESSION_COKIE_AGE = 1800
+
+# Não limita o envio de formulários
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None

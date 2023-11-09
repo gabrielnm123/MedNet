@@ -45,7 +45,7 @@
             </li>
           {% elif request.path|match:'/gerenciar_operador/.*' %}
           <li>
-            <a href="" onclick="desativarLink(this)"><button class="button">Adicionar Operador</button></a>
+            <a href="{% url 'operador' %}" onclick="desativarLink(this)"><button class="button">Adicionar Operador</button></a>
             <a href="{% url 'gerenciar_operador' %}" onclick="desativarLink(this)"><button class="button">Gerenciar Operador</button></a>
             </li>
             <li>

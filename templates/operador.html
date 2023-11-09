@@ -2,28 +2,34 @@
 {% block content %}
   <form action="submit" method="POST" id="form" class="operador">{% csrf_token %}
     <h1>Operador</h1>
-    <input type="number" name="usuario" value="{{ usuario }}" hidden>
+    <input type="text" name="usuario" value="{{ operador.username }}" hidden>
     <section class="operador-label-input">
       <section class="operador-label">
-        <label for="">Usuário (CPF)</label>
+        <label for="">Usuário</label>
         <label for="">Senha</label>
         <label for="">Repita Senha</label>
         <label for="">Nome Completo do Operador</label>
         <label for="">Email</label>
         <label for="">Perfil</label>
+        {% if not new %}
+          <label for="">Ativo</label>
+        {% endif %}
       </section>
       <section class="operador-input">
-        <input type="text" name="operador" size="20" value="{{ operador.username }}">
+        <input type="text" name="usuario_" size="20" value="{{ operador.username }}">
         <input type="password" name="senha" size="20">
-        <input type="password" name="senha" size="20">
+        <input type="password" name="repetir-senha" size="20">
         <input type="text" name="nome" size="100" value="{{ operador.first_name }}">
         <input type="text" name="email" size="100" value="{{ operador.email }}">
-        {% for perfil in perfis %}
-          <section>
+        <section>
+          {% for perfil in perfis %}
             <input name="perfil" type="checkbox" value="{{ perfil }}" {% if perfil in operador.groups.all %}checked{% endif %}>
             <label for="">{{ perfil }}</label>
+            {% endfor %}
           </section>
-        {% endfor %}
+          {% if not new %}
+            <input type="checkbox" name="ativo" value="{{ operador.is_active }}" {% if operador.is_active %}checked{% endif %}>
+          {% endif %}
       </section>
     </section>
       <button type="submit" id="button" class="button">Salvar</button>

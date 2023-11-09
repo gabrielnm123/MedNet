@@ -9,6 +9,7 @@ from django.contrib.auth.models import Group, User
 from django.contrib import messages
 import pandas as pd
 from django.utils.timezone import make_naive
+from django.contrib.auth.hashers import check_password
 
 # Create your views here.
 
@@ -146,8 +147,9 @@ def gerenciar_operador(request):
         operadores_df['Operador Ativo'].replace({
             True: 'Sim', False: 'Não'
         }, inplace=True)
-        operadores_df['Última Autenticação'] = operadores_df['Última Autenticação'].apply(make_naive)
-        operadores_df['Última Autenticação'] = operadores_df['Última Autenticação'].dt.strftime('%d/%m/%Y %H:%M:%S')
+        operadores_df['Última Autenticação'] = operadores_df['Última Autenticação'].apply(
+            lambda x: make_naive(x).strftime('%d/%m/%Y %H:%M:%S') if pd.notnull(x) else 'Nunca'
+        ) # estudar sobre lambda
         operadores_df['Data de Registro'] = operadores_df['Data de Registro'].apply(make_naive)
         operadores_df['Data de Registro'] = operadores_df['Data de Registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
         operadores_df['Usuário'] = operadores_df.apply(create_link_operador, axis=1)
@@ -174,20 +176,74 @@ def gerenciar_operador(request):
 @user_passes_test(is_member_of('GERENCIAR OPERADOR'), login_url='/perfil')
 @login_required(login_url='/login/')
 def submit_operador(request):
-    pass
+    try:
+        if request.POST:
+            usuario = request.POST.get('usuario')
+            usuario_ = request.POST.get('usuario_')
+            senha = request.POST.get('senha')
+            repetir_senha = request.POST.get('repetir-senha')
+            nome = request.POST.get('nome').strip().upper()
+            email = request.POST.get('email')
+            perfis = request.POST.getlist('perfil')
+            ativo = request.POST.get('ativo')
+            if senha != repetir_senha:
+                messages.error(request, 'Confirmação de Senha Incorreta')
+                return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
+            if usuario:
+                operador = User.objects.get(username=usuario)
+                if operador.username != usuario_ != '':
+                    operador.username = usuario_
+                if senha != '' and not operador.check_password(senha):
+                    operador.set_password(senha)
+                if operador.first_name != nome != '':
+                    operador.first_name = nome
+                if operador.email != email != '':
+                    operador.email = email
+                for perfil in perfis:
+                    if perfil not in [group.name for group in operador.groups.all()]:
+                        operador.groups.add(Group.objects.get(name=perfil))
+                for perfil in [group.name for group in operador.groups.all()]:
+                    if perfil not in perfis:
+                        operador.groups.remove(Group.objects.get(name=perfil))
+                if ativo == None and operador.is_active:
+                    operador.is_active = False
+                else:
+                    operador.is_active = True
+                operador.save()
+            else:
+                operador = User.objects.create(
+                    username=usuario_,
+                    first_name=nome,
+                    email=email,
+                    is_active=True
+                )
+                operador.groups.add(*[Group.objects.get(name=perfil) for perfil in perfis])
+                operador = User.objects.get(username=usuario_)
+                operador.set_password(senha)
+                operador.save()
+    except:
+        messages.error(request, 'Preencha Corretamente o Formulário')
+        return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
+    return redirect(f'/gerenciar_operador/operador/?usuario={usuario_}')
 
 @user_passes_test(is_member_of('GERENCIAR OPERADOR'), login_url='/perfil')
 @login_required(login_url='/login/')
 def operador(request):
     usuario = request.GET.get('usuario')
+    perfis = Group.objects.all()
     if usuario:
         try:
             operador = User.objects.get(username=usuario)
         except:
             messages.error(request, '')
-    perfis = Group.objects.all()
-    data = {
-        'perfis': perfis,
-        'operador': operador
-    }
+        data = {
+            'perfis': perfis,
+            'operador': operador,
+            'new': False
+        }
+    else:
+        data = {
+            'perfis': perfis,
+            'new': True
+        }
     return render(request, 'operador.html', data)
