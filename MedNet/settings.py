@@ -35,7 +35,7 @@ DATABASES_IS_DOCKER = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 if DATABASES_IS_DOCKER:
     # SECURITY WARNING: don't run with debug turned on in production!
-    DEBUG = False
+    DEBUG = True
     DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
