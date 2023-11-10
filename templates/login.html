@@ -9,15 +9,23 @@
         <label for="">Senha:</label>
       </section>
       <section class="input-login">
-        <input type="username" name="username"> <!-- o name server pra recuperar os dados depois por ele, isso acontece no views -->
+        <input type="text" name="username"> <!-- o name server pra recuperar os dados depois por ele, isso acontece no views -->
         <input type="password" name="password">
       </section>
     </section>
     <button type="submit" id="button" class="button">Entrar</button>
   </form>
   {% for message in messages %}
-    <section class="error">
-      <strong>Erro: </strong>{{ message }}
+    <section class="{% if message.tags %}{{ message.tags }}{% endif %}">
+      {% if message.tags == 'error' %}
+        <strong>ERRO: </strong>{{ message }}
+      {% elif message.tags == 'success' %}
+        <strong>SUCESSO: </strong>{{ message }}
+      {% elif message.tags == 'info' %}
+        <strong>ATENÇÃO: </strong>{{ message }}
+      {% else %}
+        {{ message }}
+      {% endif %}
     </section>
   {% endfor %}
 {% endblock %}

@@ -28,6 +28,7 @@ def login_user(request):
         return redirect('/recepcao_principal')
     return render(request, 'login.html') # abrir a pagina login.html
 
+@login_required
 def submit_login(request):
     if request.POST: # se a requisição for do tipo POST é verdadeiro
         username = request.POST.get('username')
@@ -37,7 +38,7 @@ def submit_login(request):
             login(request, usuario)
             return redirect ('/') # quando autenticado volta por indice que vai pra agenda que verifica que esta autenticado e mostrar o conteudo
         else:
-            messages.error(request, 'Usuário ou senha inválido') # se der erro no login, da uma mensagem de erro no html login
+            messages.error(request, 'USUÁRIO E/OU SENHA INVALIDO(S)') # se der erro no login, da uma mensagem de erro no html login
     return redirect('/') # independente se for um post ou não sempre vai direcionar pra pagina inicial
 
 def logout_user(request):
@@ -77,7 +78,7 @@ def gerenciar_operador(request):
                 operadores = User.objects.filter(first_name__icontains=operador)
                 if not operadores:
                     operadores = User.objects.all()
-                    messages.error(request, 'Operador não Encontrado')
+                    messages.error(request, 'OPERADOR NÃO ENCONTRADO')
             except:
                 operadores = User.objects.all()
         else:
@@ -89,12 +90,12 @@ def gerenciar_operador(request):
                     del(operadores)
                     raise ValueError()
             except:
-                messages.error(request, 'Usuário não Encontrado')
+                messages.error(request, 'USUÁRIO NÃO ENCONTRADO')
         if perfil:
             try:
                 operadores = User.objects.filter(groups__name=perfil)
             except:
-                messages.error(request, 'Perfil não Encontrado')
+                messages.error(request, 'PERFIL NÃO ENCONTRADO')
         if operador_ativo:
             try:
                 if operador_ativo == 'True':
@@ -103,9 +104,9 @@ def gerenciar_operador(request):
                     operadores = User.objects.filter(is_active=False)
             except:
                 if operador_ativo == 'True':
-                    messages.error(request, 'Não Encontrado Operadores Ativos')
+                    messages.error(request, 'NÃO ENCONTRADO OPERADORES ATIVOS')
                 else:
-                    messages.error(request, 'Não Encontrado Operadores Desativados')
+                    messages.error(request, 'NÃO ENCONTRADO OPERADORES DESATIVADOS')
         try:
             operadores_df = pd.DataFrame(
                 list(operadores.values())
@@ -133,7 +134,7 @@ def gerenciar_operador(request):
         operadores_df = pd.DataFrame(
             list(operadores.values())
         )
-        messages.error(request, 'Preencha Somente um Valor no Formulário')
+        messages.error(request, 'PREENCHA SOMENTE COM UM VALOR O FORMULÁRIO')
     try:
         operadores_df = operadores_df[
             operadores_df.is_superuser == False
@@ -199,16 +200,16 @@ def submit_operador(request):
             perfis = request.POST.getlist('perfil')
             ativo = request.POST.get('ativo')
             if not validate_email(email):
-                messages.error(request, 'Email Invalido')
+                messages.error(request, 'EMAIL INVALIDO')
                 return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
             if not usuario_novo.isnumeric() or len(usuario_novo) != 11:
-                messages.error(request, 'Usuário Deve ser o CPF')
+                messages.error(request, 'USUÁRIO DEVE SER CPF DO OPERADOR')
                 return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
             if len(senha) < 11:
-                messages.error(request, 'Senha Pequena, Minimo 11 Caractéres')
+                messages.error(request, 'SENHA PEQUENA, MINIMO 11 CARACTÉRES')
                 return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
             if senha != repetir_senha:
-                messages.error(request, 'Confirmação de Senha Incorreta')
+                messages.error(request, 'CONFIRMAÇÃO DE SENHA INCORRETA')
                 return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
             if usuario:
                 operador = User.objects.get(username=usuario)
@@ -231,6 +232,7 @@ def submit_operador(request):
                 else:
                     operador.is_active = True
                 operador.save()
+                messages.success(request, 'ALTERAÇÃO NO OPERADOR FEITA COM SUCESSO')
             else:
                 operador = User.objects.create(
                     username=usuario_novo,
@@ -242,8 +244,9 @@ def submit_operador(request):
                 operador = User.objects.get(username=usuario_novo)
                 operador.set_password(senha)
                 operador.save()
+                messages.success(request, 'OPERADOR CRIADO COM SUCESSO')
     except:
-        messages.error(request, 'Preencha Corretamente o Formulário')
+        messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
         return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
     return redirect(f'/gerenciar_operador/operador/?usuario={usuario_novo}')
 
@@ -268,3 +271,40 @@ def operador(request):
             'new': True
         }
     return render(request, 'operador.html', data)
+
+@login_required
+def submit_mudar_senha(request):
+    try:
+        if request.POST:
+            esqueci_senha = request.POST.get('esqueci_senha')
+            if esqueci_senha != 'sim':
+                senha_atual = request.POST.get('senha_atual')
+                nova_senha = request.POST.get('nova_senha')
+                repetir_nova_senha = request.POST.get('repetir_nova_senha')
+                if request.user.check_password(senha_atual):
+                    if nova_senha == repetir_nova_senha:
+                        if len(nova_senha) < 11:
+                            messages.error(request, 'A NOVA SENHA DEVE TER, NO MÍNIMO, 11 CARACTÉRES')
+                            return redirect('/perfil/mudar_senha/')
+                        else:
+                            request.user.set_password(nova_senha)
+                            request.user.save()
+                            messages.success(request, 'SENHA TROCADA COM SUCESSO')
+                            login(request, request.user)
+                            return redirect('/perfil/mudar_senha/')
+    except:
+        messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
+        return redirect('/perfil/mudar_senha/')
+
+@login_required(login_url='/login/')
+def mudar_senha(request):
+    return render(request, 'mudar_senha.html')
+
+def esqueci_senha(request):
+    esqueci_senha = request.GET.get('esqueci_senha')
+    data = {
+        'esqueci_senha': esqueci_senha
+    }
+    if esqueci_senha == 'sim':
+        messages.info(request, 'O CÓDIGO FOI ENVIADO PARA O EMAIL CADASTRADO, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
+    return render(request, 'mudar_senha.html', data)

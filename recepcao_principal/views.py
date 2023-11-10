@@ -47,7 +47,7 @@ def recepcao_principal(request):
                 pacientes = Paciente.objects.filter(nome__icontains=paciente)
                 if not pacientes:
                     pacientes = Paciente.objects.all()
-                    messages.error(request, 'Paciente não Encontrado')
+                    messages.error(request, 'PACIENTE NÃO ENCONTRADO')
             except:
                 pacientes = Paciente.objects.all()
         else:
@@ -56,7 +56,7 @@ def recepcao_principal(request):
             try:
                 pacientes = Paciente.objects.get(prontuario=prontuario)
             except:
-                messages.error(request, 'Prontuário não Encontrado')
+                messages.error(request, 'PRONTUÁRIO NÃO ENCONTRADO')
         if visitante:
             try:
                 visitantes = list(Visitante.objects.filter(nome__icontains=visitante).values())
@@ -69,7 +69,7 @@ def recepcao_principal(request):
                 pacientes = Paciente.objects.filter(prontuario__in=prontuarios)
                 if not pacientes:
                     pacientes = Paciente.objects.all()
-                    messages.error(request, 'Visitante não Encontrado')
+                    messages.error(request, 'VISITANTE NÃO ENCONTRADO')
             except:
                 pass
         try:
@@ -94,7 +94,7 @@ def recepcao_principal(request):
             list(pacientes.values())
         )
         if contador <= 1:
-            messages.error(request, 'Preencha Somente um Valor no Formulário')
+            messages.error(request, 'PREENCHA SOMENTE COM UM VALOR O FORMULÁRIO')
     try:
         pacientes_df['data_registro'] = pacientes_df['data_registro'].apply(make_naive)
         pacientes_df['data_registro'] = pacientes_df['data_registro'].dt.strftime('%d/%m/%Y %H:%M:%S')
@@ -241,8 +241,9 @@ def submit_visitante(request):
                 documento=documento,
                 operador=request.user
             )
+        messages.success(request, 'VISITA CADASTRADA COM SUCESSO')
     except Exception:
-        messages.error(request, 'Preencha Corretamente o Formulário')
+        messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
     return redirect(f'/recepcao_principal/paciente/visitante/?prontuario={prontuario}')
 
 @user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
@@ -271,7 +272,7 @@ def submit_ci(request):
                 paciente.comunicado_interno = comunicado_interno
                 paciente.save()
     except:
-        messages.error(request, 'Preencha o Formulário do Visitante')
+        messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
     return redirect(f'/recepcao_principal/paciente/?prontuario={prontuario}')
 
 def create_visualization_paciente(row):

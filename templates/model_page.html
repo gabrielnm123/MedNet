@@ -16,63 +16,77 @@
       <p class="user"><img src="{% static 'images/user.webp' %}" alt="imagem que representa um usuário"> {{ user.first_name }}</p>
       {% endif %}
     </figure>
-    {% if user.is_authenticated %}
-    <nav class="buttons-menu-box">
-      <ul class="buttons-menu">
-        {% if request.path == '/perfil/' %}
+    {% if not user.is_authenticated %}
+      <nav class="buttons-menu-box">
+        <ul class="buttons-menu">
           <li>
-            <a onclick="desativarLink(this)" href="/perfil/mudar_senha"><button class="button">Mudar Senha</button></a>
+            <a href="/login/mudar_senha/?esqueci_senha=sim&usuario={{ usuario }}"><button class="button" id="button">Esqueci a Senha</button></a>
           </li>
           <li>
-            {% if user.is_staff %}
-              <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
-            {% endif %}
-              <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
+            <a href="/login/"><button class="button" id="button">Autenticar</button></a>
           </li>
-        {% elif request.path|match:'/recepcao_principal/.*' %}
-          <li>
-            <a onclick="desativarLink(this)" href="/recepcao_principal/"><button class="button">Recepção Principal</button></a>
-              {% if boolean_comunicado_interno or boolean_visitante %}
-                <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}"><button class="button">Paciente</button></a>
-              {% endif %}
-            </li>
+        </ul>
+      </nav>
+    {% else %}
+      <nav class="buttons-menu-box">
+        <ul class="buttons-menu">
+          {% if request.path == '/perfil/' %}
             <li>
-              <a onclick="desativarLink(this)" href="{% url 'perfil' %}"> <button class="button">Perfil</button></a>
-              <a onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button class="button">Censo de Visitante</button></a>
+              <a onclick="desativarLink(this)" href="/perfil/mudar_senha"><button class="button">Mudar Senha</button></a>
             </li>
             <li>
               {% if user.is_staff %}
-              <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
+                <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
               {% endif %}
-              <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
+                <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
             </li>
-        {% elif request.path|match:'/gerenciar_operador/.*' %}
-          <li>
-            <a href="{% url 'operador' %}" onclick="desativarLink(this)"><button class="button">Adicionar Operador</button></a>
-            <a href="{% url 'gerenciar_operador' %}" onclick="desativarLink(this)"><button class="button">Gerenciar Operador</button></a>
-          </li>
-          <li>
-            <a onclick="desativarLink(this)" href="{% url 'perfil' %}"> <button class="button">Perfil</button></a>
-          </li>
-          <li>
-            {% if user.is_staff %}
-              <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
-            {% endif %}
-              <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
-          </li>
-        {% elif request.path == '/perfil/mudar_senha' %}
-          <li>
-            <a onclick="desativarLink(this)" href="/perfil/"><button class="button">Perfil</button></a>
-          </li>
-          <li>
-            {% if user.is_staff %}
-              <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
-            {% endif %}
-              <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
-          </li>
-        {% endif %}
-      </ul>
-    </nav>
+          {% elif request.path|match:'/recepcao_principal/.*' %}
+            <li>
+              <a onclick="desativarLink(this)" href="/recepcao_principal/"><button class="button">Recepção Principal</button></a>
+                {% if boolean_comunicado_interno or boolean_visitante %}
+                  <a onclick="desativarLink(this)" href="{% url 'paciente' %}?prontuario={{ prontuario }}"><button class="button">Paciente</button></a>
+                {% endif %}
+              </li>
+              <li>
+                <a onclick="desativarLink(this)" href="{% url 'perfil' %}"> <button class="button">Perfil</button></a>
+                <a onclick="desativarLink(this)" href="{% url 'censo_visitante' %}"><button class="button">Censo de Visitante</button></a>
+              </li>
+              <li>
+                {% if user.is_staff %}
+                <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
+                {% endif %}
+                <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
+              </li>
+          {% elif request.path|match:'/gerenciar_operador/.*' %}
+            <li>
+              <a href="{% url 'operador' %}" onclick="desativarLink(this)"><button class="button">Adicionar Operador</button></a>
+              <a href="{% url 'gerenciar_operador' %}" onclick="desativarLink(this)"><button class="button">Gerenciar Operador</button></a>
+            </li>
+            <li>
+              <a onclick="desativarLink(this)" href="{% url 'perfil' %}"> <button class="button">Perfil</button></a>
+            </li>
+            <li>
+              {% if user.is_staff %}
+                <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
+              {% endif %}
+                <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
+            </li>
+          {% elif request.path == '/perfil/mudar_senha/' %}
+            <li>
+              <a onclick="desativarLink(this)" href="/perfil/mudar_senha"><button class="button">Mudar Senha</button></a>
+            </li>
+            <li>
+              <a onclick="desativarLink(this)" href="/perfil/"><button class="button">Perfil</button></a>
+            </li>
+            <li>
+              {% if user.is_staff %}
+                <a onclick="desativarLink(this)" href="/admin"><button class="button">Admin</button></a>
+              {% endif %}
+                <a onclick="desativarLink(this)" href="/logout"><button class="button">Sair</button></a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
     {% endif %}
   </header>
   {% block content %} {% endblock %}

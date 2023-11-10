@@ -18,13 +18,25 @@ body {
   align-items: center;
   justify-content: space-evenly;
   min-height: 150px;
-  margin: 5px;
+  margin: 30px;
 }
 
 .error {
   text-align: center;
   margin: 5px;
   color: red;
+}
+
+.success {
+  text-align: center;
+  margin: 5px;
+  color: green;
+}
+
+.info {
+  text-align: center;
+  margin: 5px;
+  color: yellowgreen;
 }
 
 .dataframe {
@@ -97,4 +109,6 @@ a:active {
   display: flex;
   justify-content: space-evenly;
   width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
