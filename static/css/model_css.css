@@ -1,14 +1,17 @@
 * {
   margin: 0;
   text-decoration: none;
-  /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
-  font-family: Arial, sans-serif;
+  font-family: 'Open Sans', Arial, sans-serif;
   list-style-type: none;
   padding: 0;
 }
 
+button {
+  all: unset;
+}
+
 body {
-  background: linear-gradient(to bottom, #f6fafc, #dcedf5);
+  background-color: #dcedf5;
   min-height: 100vh;
 }
 
@@ -54,6 +57,7 @@ body {
 .table table {
   max-width: 100%;
   table-layout: fixed;
+  background-color: #f6fafc;
 }
 
 .table th, .table td {
@@ -73,17 +77,13 @@ body {
   color: white;
   border-radius: 30px;
   user-select: none;
-
-  /* Adiciona uma sombra para dar uma aparência 3D */
-  box-shadow: 4px 4px 6px rgba(0,0,0,0.3);
-  
-  /* Transição para suavizar o efeito de clique */
-  transition: box-shadow 0.3s ease-in-out;
+  font-size: small;
 }
 
 /* Modifica a sombra quando o botão é clicado */
 .button:active {
-  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  outline: 1px solid blueviolet;
+  outline-offset: 2px;
   color: white;
 }
 

@@ -10,6 +10,7 @@ from django.contrib import messages
 import pandas as pd
 from django.utils.timezone import make_naive
 from validate_email import validate_email
+from django.core.management.utils import get_random_secret_key
 
 # Create your views here.
 
@@ -302,6 +303,28 @@ def submit_mudar_senha(request):
 def mudar_senha(request):
     return render(request, 'mudar_senha.html')
 
+def submit_mudar_senha_esqueci(request):
+    try:
+        if request.POST:
+            esqueci_senha = request.POST.get('esqueci_senha')
+            if esqueci_senha == 'sim':
+                codigo = request.POST.get('codigo')
+                nova_senha = request.POST.get('nova_senha')
+                repetir_nova_senha = request.POST.get('repetir_nova_senha')
+                if nova_senha == repetir_nova_senha:
+                    if len(nova_senha) < 11:
+                        messages.error(request, 'A NOVA SENHA DEVE TER, NO MÍNIMO, 11 CARACTÉRES')
+                        return redirect('/perfil/mudar_senha/')
+                    else:
+                        request.user.set_password(nova_senha)
+                        request.user.save()
+                        messages.success(request, 'SENHA TROCADA COM SUCESSO')
+                        login(request, request.user)
+                        return redirect('/perfil/mudar_senha/')
+    except:
+        messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
+        return redirect('/perfil/mudar_senha/')
+
 def mudar_senha_esqueci(request):
     esqueci_senha = request.GET.get('esqueci_senha')
     usuario = request.GET.get('usuario')
@@ -309,6 +332,9 @@ def mudar_senha_esqueci(request):
         'esqueci_senha': esqueci_senha,
         'usuario': usuario
     }
+    if not usuario:
+        messages.error(request, 'FORNEÇA UM USUÁRIO PRA PODER MUDAR A SENHA')
+        return redirect('/login/')
     if esqueci_senha == 'sim':
         messages.info(request, 'O CÓDIGO FOI ENVIADO PARA O EMAIL CADASTRADO, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
     return render(request, 'mudar_senha.html', data)
