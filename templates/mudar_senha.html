@@ -1,8 +1,9 @@
 {% extends 'model_page.html' %}
 {% block content %}
-  <form action="submit" method="POST" class="form" id="form">{% csrf_token %}
-    <input type="text" name="esqueci_senha" value="{{ esqueci_senha }}" hidden>
-    <h1>Mudar Senha</h1>
+<form action="submit" method="POST" class="form" id="form">{% csrf_token %}
+  <input type="text" name="esqueci_senha" value="{{ esqueci_senha }}" hidden>
+  <h1>Mudar Senha</h1>
+  {% if esqueci_senha != 'sim' %}
     <header class="header-form">
       <section>
         <label for="">Senha Atual</label>
@@ -17,7 +18,23 @@
         <input type="password" name="repetir_nova_senha" value="{{ repetir_nova_senha }}">
       </section>
     </header>
-    <button class="button" id="button" type="submit">Mudar Senha</button>
+  {% else %}
+    <header class="header-form">
+      <section>
+        <label for="">Código</label>
+        <input type="text" name="codigo" value="{{ codigo }}">
+      </section>
+      <section>
+        <label for="">Nova Senha</label>
+        <input type="password" name="nova_senha" value="{{ nova_senha }}">
+      </section>
+      <section>
+        <label for="">Repetir Nova Senha</label>
+        <input type="password" name="repetir_nova_senha" value="{{ repetir_nova_senha }}">
+      </section>
+    </header>  
+  {% endif %}
+  <button class="button" type="submit">Mudar Senha</button>
   </form>
   {% for message in messages %}
     <section class="{% if message.tags %}{{ message.tags }}{% endif %}">

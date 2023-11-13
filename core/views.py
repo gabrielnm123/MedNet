@@ -28,9 +28,8 @@ def login_user(request):
         return redirect('/recepcao_principal')
     return render(request, 'login.html') # abrir a pagina login.html
 
-@login_required
 def submit_login(request):
-    if request.POST: # se a requisição for do tipo POST é verdadeiro
+    if 'login' in request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
         usuario = authenticate(username=username, password=password)
@@ -39,8 +38,11 @@ def submit_login(request):
             return redirect ('/') # quando autenticado volta por indice que vai pra agenda que verifica que esta autenticado e mostrar o conteudo
         else:
             messages.error(request, 'USUÁRIO E/OU SENHA INVALIDO(S)') # se der erro no login, da uma mensagem de erro no html login
-    return redirect('/') # independente se for um post ou não sempre vai direcionar pra pagina inicial
-
+        return redirect('/') # independente se for um post ou não sempre vai direcionar pra pagina inicial
+    else:
+        username = request.POST.get('username')
+        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={username}')
+        
 def logout_user(request):
     logout(request)
     return redirect('/')
@@ -272,7 +274,7 @@ def operador(request):
         }
     return render(request, 'operador.html', data)
 
-@login_required
+@login_required(login_url='/login/')
 def submit_mudar_senha(request):
     try:
         if request.POST:
@@ -300,11 +302,22 @@ def submit_mudar_senha(request):
 def mudar_senha(request):
     return render(request, 'mudar_senha.html')
 
-def esqueci_senha(request):
+def mudar_senha_esqueci(request):
     esqueci_senha = request.GET.get('esqueci_senha')
+    usuario = request.GET.get('usuario')
     data = {
-        'esqueci_senha': esqueci_senha
+        'esqueci_senha': esqueci_senha,
+        'usuario': usuario
     }
     if esqueci_senha == 'sim':
         messages.info(request, 'O CÓDIGO FOI ENVIADO PARA O EMAIL CADASTRADO, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
     return render(request, 'mudar_senha.html', data)
+
+# def esqueci_senha(request):
+#     esqueci_senha = request.GET.get('esqueci_senha')
+#     data = {
+#         'esqueci_senha': esqueci_senha
+#     }
+#     if esqueci_senha == 'sim':
+#         messages.info(request, 'O CÓDIGO FOI ENVIADO PARA O EMAIL CADASTRADO, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
+#     return render(request, 'mudar_senha.html', data)

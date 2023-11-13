@@ -5,15 +5,15 @@
     <h1>Autenticação</h1>
     <section class="login">
       <section class="label-login">
-        <label for="">Usuário:</label>
-        <label for="">Senha:</label>
+        <label for="">Usuário</label>
+        <label for="">Senha</label>
       </section>
       <section class="input-login">
         <input type="text" name="username"> <!-- o name server pra recuperar os dados depois por ele, isso acontece no views -->
         <input type="password" name="password">
       </section>
     </section>
-    <button type="submit" id="button" class="button">Entrar</button>
+    <button name="login" type="submit" class="button click">Entrar</button>
   </form>
   {% for message in messages %}
     <section class="{% if message.tags %}{{ message.tags }}{% endif %}">
