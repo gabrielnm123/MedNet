@@ -3,8 +3,8 @@
   <form action="submit" method="POST" id="form" class="operador">{% csrf_token %}
     <h1>Operador</h1>
     <input type="text" name="usuario" value="{{ operador.username }}" hidden>
-    <section class="operador-label-input">
-      <section class="operador-label">
+    <div class="operador-label-input">
+      <div class="operador-label">
         <label for="">Usuário (CPF)</label>
         <label for="">Senha</label>
         <label for="">Repita Senha</label>
@@ -14,28 +14,28 @@
         {% if not new %}
           <label for="">Ativo</label>
         {% endif %}
-      </section>
-      <section class="operador-input">
+      </div>
+      <div class="operador-input">
         <input type="text" name="usuario_novo" size="20" value="{{ operador.username }}">
         <input type="password" name="senha" size="20">
         <input type="password" name="repetir-senha" size="20">
         <input type="text" name="nome" size="100" value="{{ operador.first_name }}">
         <input type="text" name="email" size="100" value="{{ operador.email }}">
-        <section>
+        <div>
           {% for perfil in perfis %}
             <input name="perfil" type="checkbox" value="{{ perfil }}" {% if perfil in operador.groups.all %}checked{% endif %}>
             <label for="">{{ perfil }}</label>
             {% endfor %}
-          </section>
+          </div>
           {% if not new %}
             <input type="checkbox" name="ativo" value="{{ operador.is_active }}" {% if operador.is_active %}checked{% endif %}>
           {% endif %}
-      </section>
-    </section>
+      </div>
+    </div>
       <button type="submit" class="button">Salvar</button>
   </form>
   {% for message in messages %}
-    <section class="{% if message.tags %}{{ message.tags }}{% endif %}">
+    <div class="{% if message.tags %}{{ message.tags }}{% endif %}">
       {% if message.tags == 'error' %}
         <strong>ERRO: </strong>{{ message }}
       {% elif message.tags == 'success' %}
@@ -45,7 +45,7 @@
       {% else %}
         {{ message }}
       {% endif %}
-    </section>
+    </div>
   {% endfor %}
   <nav class="table">
     {% if visitantes_df %}

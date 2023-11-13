@@ -3,20 +3,20 @@
 <body>
   <form action="submit" method="POST" id="form" class="form">{% csrf_token %} <!-- action submit leva pra pagina submit, que é concatenado a login, ou seja ...login/submit, quando preencher o form e clicar no button --> <!-- quando utilizar um form que faz um post colocar o {% csrf_token %} pra gerar um token de segurança, se não da erro, por segurança -->
     <h1>Autenticação</h1>
-    <section class="login">
-      <section class="label-login">
+    <div class="login">
+      <div class="label-login">
         <label for="">Usuário</label>
         <label for="">Senha</label>
-      </section>
-      <section class="input-login">
+      </div>
+      <div class="input-login">
         <input type="text" name="username"> <!-- o name server pra recuperar os dados depois por ele, isso acontece no views -->
         <input type="password" name="password">
-      </section>
-    </section>
+      </div>
+    </div>
     <button name="login" type="submit" class="button click">Entrar</button>
   </form>
   {% for message in messages %}
-    <section class="{% if message.tags %}{{ message.tags }}{% endif %}">
+    <div class="{% if message.tags %}{{ message.tags }}{% endif %}">
       {% if message.tags == 'error' %}
         <strong>ERRO: </strong>{{ message }}
       {% elif message.tags == 'success' %}
@@ -26,6 +26,6 @@
       {% else %}
         {{ message }}
       {% endif %}
-    </section>
+    </div>
   {% endfor %}
 {% endblock %}

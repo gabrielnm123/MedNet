@@ -5,39 +5,39 @@
   <h1>Mudar Senha</h1>
   {% if esqueci_senha != 'sim' %}
     <header class="header-form">
-      <section>
+      <div>
         <label for="">Senha Atual</label>
         <input type="password" name="senha_atual" value="{{ senha_atual }}">
-      </section>
-      <section>
+      </div>
+      <div>
         <label for="">Nova Senha</label>
         <input type="password" name="nova_senha" value="{{ nova_senha }}">
-      </section>
-      <section>
+      </div>
+      <div>
         <label for="">Repetir Nova Senha</label>
         <input type="password" name="repetir_nova_senha" value="{{ repetir_nova_senha }}">
-      </section>
+      </div>
     </header>
   {% else %}
     <header class="header-form">
-      <section>
+      <div>
         <label for="">Código</label>
         <input type="text" name="codigo" value="{{ codigo }}">
-      </section>
-      <section>
+      </div>
+      <div>
         <label for="">Nova Senha</label>
         <input type="password" name="nova_senha" value="{{ nova_senha }}">
-      </section>
-      <section>
+      </div>
+      <div>
         <label for="">Repetir Nova Senha</label>
         <input type="password" name="repetir_nova_senha" value="{{ repetir_nova_senha }}">
-      </section>
+      </div>
     </header>  
   {% endif %}
   <button class="button" type="submit">Mudar Senha</button>
   </form>
   {% for message in messages %}
-    <section class="{% if message.tags %}{{ message.tags }}{% endif %}">
+    <div class="{% if message.tags %}{{ message.tags }}{% endif %}">
       {% if message.tags == 'error' %}
         <strong>ERRO: </strong>{{ message }}
       {% elif message.tags == 'success' %}
@@ -47,6 +47,6 @@
       {% else %}
         {{ message }}
       {% endif %}
-    </section>
+    </div>
   {% endfor %}
 {% endblock %}

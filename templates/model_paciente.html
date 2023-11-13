@@ -1,6 +1,6 @@
 <header class="paciente">
   <h1>Detalhes do Paciente</h1>
-  <section>
+  <div>
     <p>Nome: {{ paciente.nome }}</p>
     <p>Prontuário: {{ paciente.prontuario }}</p>
     <p>Clínica: {{ paciente.clinica }}</p>
@@ -8,5 +8,5 @@
     {% if paciente.comunicado_interno != '' %}
       <p class="paciente-ci">C.I.: <strong>{{ paciente.comunicado_interno }}</strong></p>
     {% endif %}
-  </section>
+  </div>
 </header>

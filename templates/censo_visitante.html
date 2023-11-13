@@ -3,10 +3,10 @@
   <header align="center">
     <h1>Censo de Visitante</h1>
     <form action="{% url 'censo_visitante' %}" method="GET" id="form" class="form">
-      <section>
+      <div>
         <label for="">Selecione a Data Relacionada:</label>
         <input type="date" name="data_registro" value="{{ data_registro }}">
-      </section>
+      </div>
       <button type="submit" class="button">Buscar</button>
     </form>
   </header>

@@ -18,10 +18,12 @@
     </figure>
     {% if not user.is_authenticated %}
       <nav class="buttons-menu-box">
-        <ul class="buttons-menu">
-          <li>
-            <button type="submit" form="form" class="button" name="senha">Esqueci a Senha</button>
-          </li>
+        <ul class="{% if not request.path|match:'/login/mudar_senha/*' %}buttons-menu{% else %}buttons-menu-reverse{% endif %}">
+          {% if not request.path|match:'/login/mudar_senha/*' %}
+            <li>
+              <button type="submit" form="form" class="button" name="senha">Esqueci a Senha</button>
+            </li>
+          {% endif %}
           <li>
             <a href="/login/"><button class="button">Autenticar</button></a>
           </li>

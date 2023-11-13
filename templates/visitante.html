@@ -4,18 +4,18 @@
   <form action="submit" method="POST" id="form" class="visitante">{% csrf_token %}
     <h2>Visitante</h2>
     <input type="number" name="prontuario" value="{{ paciente.prontuario }}" hidden>
-    <section>
-      <section class="nome-documento">
-        <section class="visitante-sections">
+    <div>
+      <div class="nome-documento">
+        <div class="visitante-divs">
           <label for="">Nome do Visitante</label>
           <input type="text" name="nome" size="100" value="{{ visitante.nome }}">
-        </section>
-        <section class="visitante-sections">
+        </div>
+        <div class="visitante-divs">
           <label for="">Documento</label>
           <input type="text" name="documento" size="100" value="{{ visitante.documento }}">
-        </section>
-      </section>
-      <section class="visitante-sections">
+        </div>
+      </div>
+      <div class="visitante-divs">
         <label for="">Parentesco</label>
         <select name="parentesco" id="parentesco">
           <option value="" selected>Selecione Parentesco...</option>
@@ -23,12 +23,12 @@
             <option value="{{ parentesco.tipo }}" {% if parentesco.tipo == visitante.parentesco.tipo %}selected{% endif %}>{{ parentesco.tipo }}</option>
           {% endfor %}
         </select>
-      </section>
-    </section>
+      </div>
+    </div>
     <button type="submit" class="button">Salvar</button>
   </form>
   {% for message in messages %}
-    <section class="{% if message.tags %}{{ message.tags }}{% endif %}">
+    <div class="{% if message.tags %}{{ message.tags }}{% endif %}">
       {% if message.tags == 'error' %}
         <strong>ERRO: </strong>{{ message }}
       {% elif message.tags == 'success' %}
@@ -38,7 +38,7 @@
       {% else %}
         {{ message }}
       {% endif %}
-    </section>
+    </div>
   {% endfor %}
   <nav class="table">
     {% if visitantes_df %}
