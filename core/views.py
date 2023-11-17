@@ -11,8 +11,13 @@ import pandas as pd
 from django.utils.timezone import make_naive
 from validate_email import validate_email
 from django.core.management.utils import get_random_secret_key
+from protonmail import ProtonMail
+import os
+from dotenv import load_dotenv
 
 # Create your views here.
+
+load_dotenv()
 
 class PacienteViewSet(viewsets.ModelViewSet): # classe será uma subclasse de ModelViewSet, que já possui funcionalidades predefinidas para lidar com operações CRUD (Create, Retrieve, Update, Delete) em um modelo.
     queryset = Paciente.objects.all() # Define o queryset (conjunto de objetos do banco de dados) que será usado para a visualização. Neste caso, todos os objetos do modelo Paciente são recuperados.
@@ -328,6 +333,30 @@ def submit_mudar_senha_esqueci(request):
 def mudar_senha_esqueci(request):
     esqueci_senha = request.GET.get('esqueci_senha')
     usuario = request.GET.get('usuario')
+
+
+    # username = "mednetltda@proton.me"
+    # password = "Ga21301810_"
+
+    # proton = ProtonMail()
+    # proton.login(username, password)
+
+    # private_key = 'privatekey.mednetltda@proton.me-d8922587a4eef0e31495bfd4c799970b22b00f3b.asc'
+    # passphrase = 'Ga21301810_'
+    # proton.pgp_import(private_key, passphrase=passphrase)
+
+    # recipients = ["gabrielnmatos96@gmail.com"]
+    # subject = "My first message"
+    # body = "<h1>Olá mundo! jose e maria</h1>"  # html or just text
+
+    # new_message = proton.create_message(
+    #     recipients=recipients,
+    #     subject=subject,
+    #     body=body
+    # )
+
+    # proton.send_message(new_message)
+
     data = {
         'esqueci_senha': esqueci_senha,
         'usuario': usuario
@@ -335,8 +364,37 @@ def mudar_senha_esqueci(request):
     if not usuario:
         messages.error(request, 'FORNEÇA UM USUÁRIO PRA PODER MUDAR A SENHA')
         return redirect('/login/')
+    else:
+        username = os.environ.get('USERNAME')
+        password = os.environ.get('PASSWORD')
+
+        proton = ProtonMail()
+        proton.login(username, password)
+
+        private_key = os.environ.get('PRIVATE_KEY')
+        passphrase = os.environ.get('PASSPHRASE')
+        proton.pgp_import(private_key, passphrase=passphrase)
+
+
+
+        recipients = [User.objects.get(username=usuario).email]
+        subject = 'Não Responda'
+        with open('msg.html', 'r') as file:
+            body = file.read()
+
+        new_message = proton.create_message(
+            recipients=recipients,
+            subject=subject,
+            body=body
+        )
+
+        try:
+            proton.send_message(new_message)
+        except:
+            pass
+
     if esqueci_senha == 'sim':
-        messages.info(request, 'O CÓDIGO FOI ENVIADO PARA O EMAIL CADASTRADO, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
+        messages.info(request, f'O CÓDIGO FOI ENVIADO DO EMAIL {username.upper()} PARA O EMAIL CADASTRADO, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
     return render(request, 'mudar_senha.html', data)
 
 # def esqueci_senha(request):
