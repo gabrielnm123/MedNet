@@ -334,29 +334,6 @@ def mudar_senha_esqueci(request):
     esqueci_senha = request.GET.get('esqueci_senha')
     usuario = request.GET.get('usuario')
 
-
-    # username = "mednetltda@proton.me"
-    # password = "Ga21301810_"
-
-    # proton = ProtonMail()
-    # proton.login(username, password)
-
-    # private_key = 'privatekey.mednetltda@proton.me-d8922587a4eef0e31495bfd4c799970b22b00f3b.asc'
-    # passphrase = 'Ga21301810_'
-    # proton.pgp_import(private_key, passphrase=passphrase)
-
-    # recipients = ["gabrielnmatos96@gmail.com"]
-    # subject = "My first message"
-    # body = "<h1>Olá mundo! jose e maria</h1>"  # html or just text
-
-    # new_message = proton.create_message(
-    #     recipients=recipients,
-    #     subject=subject,
-    #     body=body
-    # )
-
-    # proton.send_message(new_message)
-
     data = {
         'esqueci_senha': esqueci_senha,
         'usuario': usuario
