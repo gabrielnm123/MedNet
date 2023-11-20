@@ -10,4 +10,17 @@
       {% endif %}
     {% endfor %}
   </header>
+  {% for message in messages %}
+    <div class="{% if message.tags %}{{ message.tags }}{% endif %}">
+      {% if message.tags == 'error' %}
+        <strong>ERRO: </strong>{{ message }}
+      {% elif message.tags == 'success' %}
+        <strong>SUCESSO: </strong>{{ message }}
+      {% elif message.tags == 'info' %}
+        <strong>ATENÇÃO: </strong>{{ message }}
+      {% else %}
+        {{ message }}
+      {% endif %}
+    </div>
+  {% endfor %}
 {% endblock %}

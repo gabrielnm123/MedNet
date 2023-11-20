@@ -82,7 +82,7 @@ body {
 
 /* Modifica a sombra quando o botão é clicado */
 .button:active {
-  outline: 1px solid blueviolet;
+  outline: 1px solid #122a57;
   outline-offset: 2px;
   color: white;
 }

@@ -4,7 +4,7 @@
   <input type="text" name="esqueci_senha" value="{{ esqueci_senha }}" hidden>
   <h1>Mudar Senha</h1>
   {% if esqueci_senha != 'sim' %}
-    <header class="header-form">
+  <header class="header-form">
       <div>
         <label for="">Senha Atual</label>
         <input type="password" name="senha_atual" value="{{ senha_atual }}">
@@ -19,10 +19,12 @@
       </div>
     </header>
   {% else %}
+    <input type="text" name="code" value="{{ code }}" hidden>
+    <input type="text" name="usuario" value="{{ usuario }}" hidden>
     <header class="header-form">
       <div>
         <label for="">Código</label>
-        <input type="text" name="codigo" value="{{ codigo }}">
+        <input type="text" name="codigo" value="">
       </div>
       <div>
         <label for="">Nova Senha</label>
@@ -32,9 +34,9 @@
         <label for="">Repetir Nova Senha</label>
         <input type="password" name="repetir_nova_senha" value="{{ repetir_nova_senha }}">
       </div>
-    </header>  
+    </header>
   {% endif %}
-  <button class="button" type="submit">Mudar Senha</button>
+    <button class="button click" type="submit">Mudar Senha</button>
   </form>
   {% for message in messages %}
     <div class="{% if message.tags %}{{ message.tags }}{% endif %}">
