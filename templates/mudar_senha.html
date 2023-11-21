@@ -36,7 +36,7 @@
       </div>
     </header>
   {% endif %}
-    <button class="button click" type="submit">Mudar Senha</button>
+    <button onclick="desativarButton(this)" class="button click" type="submit">Mudar Senha</button>
   </form>
   {% for message in messages %}
     <div class="{% if message.tags %}{{ message.tags }}{% endif %}">

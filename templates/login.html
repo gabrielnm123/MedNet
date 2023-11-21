@@ -13,7 +13,7 @@
         <input type="password" name="password">
       </div>
     </div>
-    <button name="login" type="submit" class="button click">Entrar</button>
+    <button name="login" type="submit" class="button click" onclick="desativarButton(this)">Entrar</button>
   </form>
   {% for message in messages %}
     <div class="{% if message.tags %}{{ message.tags }}{% endif %}">

@@ -303,8 +303,11 @@ def submit_mudar_senha(request):
                     else:
                         messages.error(request, 'REPITA A SENHA CORRETAMENTE')
                         return redirect('/perfil/mudar_senha')
+                elif nova_senha != repetir_nova_senha:
+                    messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
+                    return redirect('/perfil/mudar_senha')
                 else:
-                    messages.error(request, 'SENHA ATUAL INCORRETA')
+                    messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
                     return redirect('/perfil/mudar_senha')
     except:
         messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
