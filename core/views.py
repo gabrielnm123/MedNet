@@ -368,8 +368,6 @@ def mudar_senha_esqueci(request):
             passphrase = os.environ.get('PASSPHRASE')
             proton.pgp_import(private_key, passphrase=passphrase)
 
-
-
             recipients = [User.objects.get(username=usuario).email]
             subject = 'Não Responda'
             code = ''.join(random.choice(string.ascii_letters + string.digits) for contador in range(10))
