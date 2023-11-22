@@ -5,11 +5,11 @@
   margin: 10px;
 }
 
-.visitante section {
+.visitante div {
   display: flex;
 }
 
-.visitante-sections {
+.visitante-divs {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

@@ -20,13 +20,6 @@ class PacienteAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(nome__icontains=self.q)  # Corrigindo o filtro para o campo 'paciente'
         return qs
 
-@user_passes_test(is_member_of('RECEPÇÃO PRINCIPAL'), login_url='/perfil')
-@login_required(login_url='/login/')
-def delete_visitante(prontuario, visitante_id):
-    visitante = Visitante.objects.get(id=visitante_id)
-    visitante.delete()
-    return redirect(f'/recepcao_principal/paciente/visitante?prontuario={prontuario}')
-
 def create_link_paciente(row):
     url = r'<a class="ativado" onclick="desativarLink(this)" href="/recepcao_principal/paciente/?prontuario='+f'{row["prontuario"]}">'+f'{row["nome"]}</a>'
     return url
@@ -164,6 +157,7 @@ def delete_visitante(request):
     try:
         visitante = Visitante.objects.get(id=visitante_id)
         visitante.delete()
+        messages.success(request, f'PACIENTE {visitante.nome} EXCLUDO COM SUCESSO')
     except Exception:
         raise Http404()
     return redirect(f'/recepcao_principal/paciente/visitante?prontuario={prontuario}')
@@ -234,14 +228,14 @@ def submit_visitante(request):
                 raise Exception()
             if documento.strip() == '':
                 raise Exception()
-            Visitante.objects.create(
+            visitante = Visitante.objects.create(
                 paciente=paciente,
                 nome=nome,
                 parentesco=parentesco,
                 documento=documento,
                 operador=request.user
             )
-        messages.success(request, 'VISITA CADASTRADA COM SUCESSO')
+            messages.success(request, f'VISITA {visitante.nome} CADASTRADA COM SUCESSO')
     except Exception:
         messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
     return redirect(f'/recepcao_principal/paciente/visitante/?prontuario={prontuario}')
