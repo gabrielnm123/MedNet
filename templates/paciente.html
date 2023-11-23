@@ -5,10 +5,10 @@
   <nav>
     <ul class="paciente-buttons">
       <li>
-        <a onclick="desativarLink(this)" href="{% url 'visitante' %}?prontuario={{ paciente.prontuario }}"><button class="button">Visitante</button></a>
+        <a onclick="desativarLink(this)" href="{% url 'visitante' %}?prontuario={{ paciente.prontuario }}"><button onclick="desativarButton(this)" class="button">Visitante</button></a>
       </li>
       <li>
-        <a onclick="desativarLink(this)" href="{% url 'comunicado_interno' %}?prontuario={{ paciente.prontuario }}"><button class="button">Editar C.I.</button></a>
+        <a onclick="desativarLink(this)" href="{% url 'comunicado_interno' %}?prontuario={{ paciente.prontuario }}"><button onclick="desativarButton(this)" class="button">Editar C.I.</button></a>
       </li>
     </ul>
   </nav>
