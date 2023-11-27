@@ -15,6 +15,12 @@ import os
 from dotenv import load_dotenv
 import random
 import string
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from MedNet.settings import EMAIL_HOST_USER
+import traceback
+from subprocess import run
 
 # Create your views here.
 
@@ -48,7 +54,7 @@ def submit_login(request):
         return redirect('/') # independente se for um post ou não sempre vai direcionar pra pagina inicial
     else:
         username = request.POST.get('username')
-        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={username}')
+        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={username}&tentativa=0')
         
 def logout_user(request):
     logout(request)
@@ -319,78 +325,70 @@ def mudar_senha(request):
     return render(request, 'mudar_senha.html')
 
 def submit_mudar_senha_esqueci(request):
+    if request.POST:
+        tentativa = int(request.POST.get('tentativa'))
     try:
         if request.POST:
             esqueci_senha = request.POST.get('esqueci_senha')
             if esqueci_senha == 'sim':
                 usuario = request.POST.get('usuario')
-                code = request.POST.get('code')
+                code = request.session.get('code')
                 codigo = request.POST.get('codigo').strip()
                 nova_senha = request.POST.get('nova_senha').strip()
                 repetir_nova_senha = request.POST.get('repetir_nova_senha').strip()
                 if nova_senha == repetir_nova_senha:
-                    if len(nova_senha) < 11:
+                    if codigo != code:
+                        tentativa =+ 1
+                        if tentativa < 3:
+                            messages.error(request, f'CÓDIGO NÃO É O MESMO ENVIADO PARA O EMAIL DO OPERADOR, MAIS {3 - tentativa} TENTATIVAS')
+                        elif tentativa == 3:
+                            messages.error(request, f'CÓDIGO NÃO É O MESMO ENVIADO PARA O EMAIL DO OPERADOR, ULTIMA TENTATIVA, SE ERRAR NOVO CÓDIGO SERÁ ENVIADO')
+                        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}&tentativa={tentativa}')
+                    elif len(nova_senha) < 11:
                         messages.error(request, 'A NOVA SENHA DEVE TER, NO MÍNIMO, 11 CARACTÉRES')
-                        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}')
+                        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}&tentativa={tentativa}')
                     elif codigo == code:
                         operador = User.objects.get(username=usuario)
                         operador.set_password(nova_senha)
                         operador.save()
                         messages.success(request, 'SENHA TROCADA COM SUCESSO')
                         login(request, operador)
-                    else:
-                        messages.error(request, 'CÓDIGO NÃO É O MESMO ENVIADO PARA O EMAIL DO OPERADOR')
-                        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}')
                 else:
-                        messages.error(request, 'REPITA A SENHA CORRETAMENTE')
-                        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}')
+                    messages.error(request, 'REPITA A SENHA CORRETAMENTE')
+                    return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}&tentativa={tentativa}')
     except:
         messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
-        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}')
+        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}&tentativa={tentativa}')
     return redirect('/')
 
 def mudar_senha_esqueci(request):
     esqueci_senha = request.GET.get('esqueci_senha')
     usuario = request.GET.get('usuario')
-
+    tentativa = int(request.GET.get('tentativa'))
     try:
         if not usuario:
             messages.error(request, 'FORNEÇA UM USUÁRIO PRA PODER MUDAR A SENHA')
             return redirect('/')
         elif esqueci_senha == 'sim':
-            username = os.environ.get('USERNAME')
-            password = os.environ.get('PASSWORD')
-
-            proton = ProtonMail()
-            proton.login(username, password)
-
-            private_key = os.environ.get('PRIVATE_KEY')
-            passphrase = os.environ.get('PASSPHRASE')
-            proton.pgp_import(private_key, passphrase=passphrase)
-
-            recipients = [User.objects.get(username=usuario).email]
-            subject = 'Não Responda'
-            code = ''.join(random.choice(string.ascii_letters + string.digits) for contador in range(10))
-            with open('msg.html', 'r') as file:
-                body = file.read().replace('code', code)
-
-            new_message = proton.create_message(
-                recipients=recipients,
-                subject=subject,
-                body=body
-            )
-
-            try:
-                proton.send_message(new_message)
-            except:
-                pass
-            messages.info(request, f'O CÓDIGO FOI ENVIADO DO EMAIL {username.upper()} PARA O EMAIL CADASTRADO DO OPERADOR, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
-            data = {
-                'esqueci_senha': esqueci_senha,
-                'usuario': usuario,
-                'code': code
-            }
-    except Exception as error:
-        messages.error(request, error)
+            if tentativa == 0 or tentativa == 3:
+                code = ''.join(random.choice(string.ascii_letters + string.digits) for contador in range(10))
+                request.session['code'] = code
+                data = {
+                    'code': code,
+                }
+                html_content = render_to_string('email/msg.html', data)
+                text_content = strip_tags(html_content)
+                user_mail = User.objects.get(username=usuario).email
+                email = EmailMultiAlternatives('Não responda', text_content, EMAIL_HOST_USER, [user_mail])
+                email.attach_alternative(html_content, 'text/html')
+                email.send()
+                messages.info(request, f'COPIE O CÓDIGO QUE FOI ENVIADO PARA {user_mail.upper()}, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
+    except Exception:
+        messages.error(request, traceback.format_exc())
         return redirect('/')
+    data = {
+        'esqueci_senha': esqueci_senha,
+        'usuario': usuario,
+        'tentativa': tentativa
+    }
     return render(request, 'mudar_senha.html', data)

@@ -11,12 +11,14 @@
 <body>
   <header class="menu">
     <figure class="brasao_user">
-      <img class="brasao" src="{% static 'images/brasao.png' %}" alt="imagem do brasão da prefeitura de Fortaleza">
+      <img class="brasao" src="{% static 'images/logo.png' %}" alt="imagem do brasão da prefeitura de Fortaleza">
       {% if user.is_authenticated %}
       <p class="user"><img src="{% static 'images/user.webp' %}" alt="imagem que representa um usuário"> {{ user.first_name }}</p>
       {% endif %}
     </figure>
-    {% if not user.is_authenticated %}
+    {% if enviado_email %}
+      {% include 'email/msg.html' %}
+    {% elif not user.is_authenticated %}
       <nav class="buttons-menu-box">
         <ul class="{% if not request.path|match:'/login/mudar_senha/*' %}buttons-menu{% else %}buttons-menu-reverse{% endif %}">
           {% if not request.path|match:'/login/mudar_senha/*' %}

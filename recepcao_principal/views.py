@@ -39,12 +39,12 @@ def recepcao_principal(request):
             try:
                 pacientes = Paciente.objects.filter(nome__icontains=paciente)
                 if not pacientes:
-                    pacientes = Paciente.objects.all()
+                    pacientes = Paciente.objects.filter(internado=True)
                     messages.error(request, 'PACIENTE NÃO ENCONTRADO')
             except:
-                pacientes = Paciente.objects.all()
+                pacientes = Paciente.objects.filter(internado=True)
         else:
-            pacientes = Paciente.objects.all()
+            pacientes = Paciente.objects.filter(internado=True)
         if prontuario:
             try:
                 pacientes = Paciente.objects.get(prontuario=prontuario)
@@ -61,7 +61,7 @@ def recepcao_principal(request):
                 prontuarios = list(set(prontuarios))
                 pacientes = Paciente.objects.filter(prontuario__in=prontuarios)
                 if not pacientes:
-                    pacientes = Paciente.objects.all()
+                    pacientes = Paciente.objects.filter(internado=True)
                     messages.error(request, 'VISITANTE NÃO ENCONTRADO')
             except:
                 pass
@@ -82,7 +82,7 @@ def recepcao_principal(request):
                 }
             )
     else:
-        pacientes = Paciente.objects.all()
+        pacientes = Paciente.objects.filter(internado=True)
         pacientes_df = pd.DataFrame(
             list(pacientes.values())
         )
