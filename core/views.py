@@ -10,17 +10,13 @@ from django.contrib import messages
 import pandas as pd
 from django.utils.timezone import make_naive
 from validate_email import validate_email
-from protonmail import ProtonMail
-import os
 from dotenv import load_dotenv
 import random
 import string
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from MedNet.settings import EMAIL_HOST_USER
 import traceback
-from subprocess import run
 
 # Create your views here.
 
@@ -339,6 +335,7 @@ def submit_mudar_senha_esqueci(request):
                 if nova_senha == repetir_nova_senha:
                     if codigo != code:
                         tentativa =+ 1
+                        print('tentaviva:' + tentativa)
                         if tentativa < 3:
                             messages.error(request, f'CÓDIGO NÃO É O MESMO ENVIADO PARA O EMAIL DO OPERADOR, MAIS {3 - tentativa} TENTATIVAS')
                         elif tentativa == 3:
@@ -379,7 +376,7 @@ def mudar_senha_esqueci(request):
                 html_content = render_to_string('email/msg.html', data)
                 text_content = strip_tags(html_content)
                 user_mail = User.objects.get(username=usuario).email
-                email = EmailMultiAlternatives('Não responda', text_content, EMAIL_HOST_USER, [user_mail])
+                email = EmailMultiAlternatives('Não responda', text_content, to=[user_mail])
                 email.attach_alternative(html_content, 'text/html')
                 email.send()
                 messages.info(request, f'COPIE O CÓDIGO QUE FOI ENVIADO PARA {user_mail.upper()}, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
