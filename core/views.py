@@ -244,7 +244,7 @@ def submit_operador(request):
                 else:
                     operador.is_active = True
                 operador.save()
-                messages.success(request, 'ALTERAÇÃO NO OPERADOR FEITA COM SUCESSO')
+                messages.success(request, 'FEITA ALTERAÇÃO NO OPERADOR')
             else:
                 operador = User.objects.create(
                     username=usuario_novo,
@@ -256,7 +256,7 @@ def submit_operador(request):
                 operador = User.objects.get(username=usuario_novo)
                 operador.set_password(senha)
                 operador.save()
-                messages.success(request, 'OPERADOR CRIADO COM SUCESSO')
+                messages.success(request, 'OPERADOR CRIADO')
     except:
         messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
         return redirect(f'/gerenciar_operador/operador/?usuario={usuario}')
@@ -301,7 +301,7 @@ def submit_mudar_senha(request):
                         else:
                             request.user.set_password(nova_senha)
                             request.user.save()
-                            messages.success(request, 'SENHA TROCADA COM SUCESSO')
+                            messages.success(request, 'SENHA TROCADA')
                             login(request, request.user)
                     else:
                         messages.error(request, 'REPITA A SENHA CORRETAMENTE')
@@ -349,7 +349,7 @@ def submit_mudar_senha_esqueci(request):
                         operador = User.objects.get(username=usuario)
                         operador.set_password(nova_senha)
                         operador.save()
-                        messages.success(request, 'SENHA TROCADA COM SUCESSO')
+                        messages.success(request, 'SENHA TROCADA')
                         login(request, operador)
                 else:
                     messages.error(request, 'REPITA A SENHA CORRETAMENTE')

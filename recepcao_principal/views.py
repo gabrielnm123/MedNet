@@ -157,7 +157,7 @@ def delete_visitante(request):
     try:
         visitante = Visitante.objects.get(id=visitante_id)
         visitante.delete()
-        messages.success(request, f'PACIENTE {visitante.nome} EXCLUDO COM SUCESSO')
+        messages.success(request, f'PACIENTE {visitante.nome} EXCLUDO')
     except Exception:
         raise Http404()
     return redirect(f'/recepcao_principal/paciente/visitante?prontuario={prontuario}')
@@ -235,7 +235,7 @@ def submit_visitante(request):
                 documento=documento,
                 operador=request.user
             )
-            messages.success(request, f'VISITA {visitante.nome} CADASTRADA COM SUCESSO')
+            messages.success(request, f'VISITA {visitante.nome} CADASTRADA')
     except Exception:
         messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
     return redirect(f'/recepcao_principal/paciente/visitante/?prontuario={prontuario}')
