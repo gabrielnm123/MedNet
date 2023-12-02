@@ -17,6 +17,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import traceback
+from MedNet.settings import EMAIL_HOST_USER
 
 # Create your views here.
 
@@ -376,10 +377,10 @@ def mudar_senha_esqueci(request):
                 html_content = render_to_string('email/msg.html', data)
                 text_content = strip_tags(html_content)
                 user_mail = User.objects.get(username=usuario).email
-                email = EmailMultiAlternatives('Não responda', text_content, to=[user_mail])
+                email = EmailMultiAlternatives('Código MedNet', text_content, EMAIL_HOST_USER, [user_mail])
                 email.attach_alternative(html_content, 'text/html')
                 email.send()
-                messages.info(request, f'COPIE O CÓDIGO QUE FOI ENVIADO PARA {user_mail.upper()}, SE NÃO FOI ENVIADO FALE COM A GERENCIA DO SEU SETOR')
+                messages.info(request, f'COPIE O CÓDIGO QUE FOI ENVIADO PARA {user_mail.upper()}, SE NÃO FOI ENVIADO NEM PARA A CAIXA DE SPAN FALE COM A GERENCIA DO SEU SETOR')
     except Exception:
         messages.error(request, traceback.format_exc())
         return redirect('/')
