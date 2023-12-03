@@ -36,6 +36,7 @@ def is_member_of(perfil_name):
 def login_user(request):
     if request.user.is_authenticated:
         return redirect('/perfil/')
+    request.session['tentativa'] = 0
     return render(request, 'login.html') # abrir a pagina login.html
 
 def submit_login(request):
@@ -51,7 +52,7 @@ def submit_login(request):
         return redirect('/') # independente se for um post ou não sempre vai direcionar pra pagina inicial
     else:
         username = request.POST.get('username')
-        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={username}&tentativa=0')
+        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={username}')
         
 def logout_user(request):
     logout(request)
@@ -322,9 +323,8 @@ def mudar_senha(request):
     return render(request, 'mudar_senha.html')
 
 def submit_mudar_senha_esqueci(request):
-    if request.POST:
-        tentativa = int(request.POST.get('tentativa'))
     try:
+        tentativa = int(request.session.get('tentativa', 0))
         if request.POST:
             esqueci_senha = request.POST.get('esqueci_senha')
             if esqueci_senha == 'sim':
@@ -333,42 +333,46 @@ def submit_mudar_senha_esqueci(request):
                 codigo = request.POST.get('codigo').strip()
                 nova_senha = request.POST.get('nova_senha').strip()
                 repetir_nova_senha = request.POST.get('repetir_nova_senha').strip()
-                if nova_senha == repetir_nova_senha:
-                    if codigo != code:
-                        tentativa =+ 1
-                        print('tentaviva:' + tentativa)
-                        if tentativa < 3:
-                            messages.error(request, f'CÓDIGO NÃO É O MESMO ENVIADO PARA O EMAIL DO OPERADOR, MAIS {3 - tentativa} TENTATIVAS')
-                        elif tentativa == 3:
-                            messages.error(request, f'CÓDIGO NÃO É O MESMO ENVIADO PARA O EMAIL DO OPERADOR, ULTIMA TENTATIVA, SE ERRAR NOVO CÓDIGO SERÁ ENVIADO')
-                        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}&tentativa={tentativa}')
-                    elif len(nova_senha) < 11:
-                        messages.error(request, 'A NOVA SENHA DEVE TER, NO MÍNIMO, 11 CARACTÉRES')
-                        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}&tentativa={tentativa}')
-                    elif codigo == code:
-                        operador = User.objects.get(username=usuario)
-                        operador.set_password(nova_senha)
-                        operador.save()
-                        messages.success(request, 'SENHA TROCADA')
-                        login(request, operador)
-                else:
+                if codigo != code:
+
+                    # input do codigo errado com o enviado pra email soma mais 1
+                    tentativa += 1
+                    if tentativa < 3:
+                        messages.error(request, f'CÓDIGO NÃO É O MESMO ENVIADO PARA O EMAIL DO OPERADOR, MAIS {3 - tentativa} TENTATIVAS')
+                    elif tentativa == 2:
+                        messages.error(request, f'CÓDIGO NÃO É O MESMO ENVIADO PARA O EMAIL DO OPERADOR, ULTIMA TENTATIVA, SE ERRAR NOVO CÓDIGO SERÁ ENVIADO')
+                    request.session['tentativa'] = tentativa
+                    return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}')
+                elif len(nova_senha) < 11:
+                    messages.error(request, 'A NOVA SENHA DEVE TER, NO MÍNIMO, 11 CARACTÉRES')
+                    return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}')
+                elif codigo == code:
+                    operador = User.objects.get(username=usuario)
+                    operador.set_password(nova_senha)
+                    operador.save()
+                    messages.success(request, 'SENHA TROCADA')
+                    login(request, operador)
+                elif nova_senha != repetir_nova_senha:
                     messages.error(request, 'REPITA A SENHA CORRETAMENTE')
-                    return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}&tentativa={tentativa}')
+                    return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}')
     except:
         messages.error(request, 'PREENCHA CORRETAMENTE O FORMULÁRIO')
-        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}&tentativa={tentativa}')
+        return redirect(f'/login/mudar_senha/?esqueci_senha=sim&usuario={usuario}')
     return redirect('/')
 
 def mudar_senha_esqueci(request):
     esqueci_senha = request.GET.get('esqueci_senha')
     usuario = request.GET.get('usuario')
-    tentativa = int(request.GET.get('tentativa'))
+    tentativa = int(request.session.get('tentativa', 0))
     try:
         if not usuario:
             messages.error(request, 'FORNEÇA UM USUÁRIO PRA PODER MUDAR A SENHA')
             return redirect('/')
         elif esqueci_senha == 'sim':
+
+            # se foi a primeira vez ou ultima tentativa do usuario pra repetir o envio do código
             if tentativa == 0 or tentativa == 3:
+                tentativa = request.session['tentativa'] = 0
                 code = ''.join(random.choice(string.ascii_letters + string.digits) for contador in range(10))
                 request.session['code'] = code
                 data = {
@@ -387,6 +391,5 @@ def mudar_senha_esqueci(request):
     data = {
         'esqueci_senha': esqueci_senha,
         'usuario': usuario,
-        'tentativa': tentativa
     }
     return render(request, 'mudar_senha.html', data)
