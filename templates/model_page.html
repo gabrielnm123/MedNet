@@ -11,7 +11,7 @@
 <body>
   <header class="menu">
     <figure class="brasao_user">
-      <img class="brasao" src="{% static 'images/logo.png' %}" alt="imagem do brasão da prefeitura de Fortaleza">
+      <img class="brasao" src="{% static 'images/logo.png' %}" alt="imagem da logo do MedNet">
       {% if user.is_authenticated %}
       <p class="user"><img src="{% static 'images/user.webp' %}" alt="imagem que representa um usuário"> {{ user.first_name }}</p>
       {% endif %}
@@ -23,7 +23,7 @@
         <ul class="{% if not request.path|match:'/login/mudar_senha/*' %}buttons-menu{% else %}buttons-menu-reverse{% endif %}">
           {% if not request.path|match:'/login/mudar_senha/*' %}
             <li>
-              <button onclick="desativarButton(this)" type="submit" form="form" class="button" name="senha">Esqueci a Senha</button>
+              <button onclick="desativarButton(this)" type="submit" form="form" class="button" name="senha">Esqueci  a Senha</button>
             </li>
           {% endif %}
           <li>

@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Define qual banco de dados vai usar, container docker ou da plataforma planetscale, se True é do container
-DATABASES_IS_DOCKER = False
+DATABASES_IS_DOCKER = True
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

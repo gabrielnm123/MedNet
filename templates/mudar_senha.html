@@ -3,7 +3,7 @@
 <form action="submit" method="POST" class="form" id="form">{% csrf_token %}
   <input type="text" name="esqueci_senha" value="{{ esqueci_senha }}" hidden>
   <h1>Mudar Senha</h1>
-  {% if esqueci_senha != 'sim' %}
+  {% if request.path == '/perfil/mudar_senha' %}
   <header class="header-form">
       <div>
         <label for="">Senha Atual</label>
