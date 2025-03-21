@@ -1,0 +1,18 @@
+services:
+  db:
+    image: mysql:8
+    container_name: mednet_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: mednet_db
+      MYSQL_USER: mednet_user
+      MYSQL_PASSWORD: mednet_pass
+    ports:
+      - "3306:3306"
+    networks:
+      - mednet_network
+
+networks:
+  mednet_network:
+    driver: bridge

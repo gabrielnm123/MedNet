@@ -20,7 +20,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('MYSQL_DATABASE', 'mednet_db'),
-        'HOST': os.environ.get('MYSQL_HOST', 'db'),
+        'HOST': os.environ.get('MYSQL_HOST', '0.0.0.0'),
         'PORT': os.environ.get('MYSQL_PORT', '3306'),
         'USER': os.environ.get('MYSQL_USER', 'root'),
         'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'root_password'),
@@ -92,10 +92,12 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = os.environ.get('STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
-STATICFILES_STORAGE = os.environ.get(
-    'STATICFILES_STORAGE',
-    'whitenoise.storage.CompressedManifestStaticFilesStorage'
-)
+if not DEBUG:
+    STATICFILES_STORAGE = os.environ.get(
+        'STATICFILES_STORAGE',
+        'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    )
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -111,4 +113,4 @@ SIMPLE_JWT = {
 
 SESSION_COOKIE_AGE = int(os.environ.get('SESSION_COOKIE_AGE', 1800))
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = os.environ.get('DATA_UPLOAD_MAX_NUMBER_FIELDS', None)
+DATA_UPLOAD_MAX_NUMBER_FIELDS = int(os.environ.get('DATA_UPLOAD_MAX_NUMBER_FIELDS', 0)) or None

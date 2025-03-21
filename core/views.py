@@ -17,11 +17,14 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import traceback
-from MedNet.settings import EMAIL_HOST_USER
+import os
+# from MedNet.settings import EMAIL_HOST_USER
 
 # Create your views here.
 
 load_dotenv()
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'default-email-host-user')
 
 class PacienteViewSet(viewsets.ModelViewSet): # classe será uma subclasse de ModelViewSet, que já possui funcionalidades predefinidas para lidar com operações CRUD (Create, Retrieve, Update, Delete) em um modelo.
     queryset = Paciente.objects.all() # Define o queryset (conjunto de objetos do banco de dados) que será usado para a visualização. Neste caso, todos os objetos do modelo Paciente são recuperados.
